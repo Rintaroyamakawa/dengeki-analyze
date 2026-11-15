@@ -1,0 +1,18 @@
+name: Auto Sync Archive
+
+on:
+  # 定期実行の設定 (例: 2時間おきに自動実行)
+  schedule:
+    - cron: '0 */2 * * *'
+  
+  # GitHubの画面から手動でもポチッと実行できるようにする設定
+  workflow_dispatch:
+
+jobs:
+  sync-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Sync API
+        # 「https://あなたのサイト.vercel.app/api/sync」の部分を、実際のVercelなどのURLに書き換えてね
+        run: |
+          curl -X GET "https://YOUR_VERCEL_URL.vercel.app/api/sync"
