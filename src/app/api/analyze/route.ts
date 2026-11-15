@@ -60,6 +60,10 @@ export async function POST(req: NextRequest) {
 
     const title = info.basic_info.title || 'タイトル不明';
     const duration = info.basic_info.duration || 0;
+    
+    // 🔍 YouTubeの公開日時を取得してISO形式に変換
+    const rawDate = info.basic_info.start_timestamp || info.basic_info.upload_date;
+    const publishedAt = rawDate ? new Date(rawDate).toISOString() : null;
 
     let rawTimestamps: { time: string; seconds: number; label: string; source: string; author: string }[] = [];
 
@@ -186,6 +190,7 @@ export async function POST(req: NextRequest) {
       videoId,
       title,
       duration,
+      publishedAt, // 👈 ここで公開日を返すように追加！
       timestamps: allTimestamps,
       heatmapData,
       maxCount,
