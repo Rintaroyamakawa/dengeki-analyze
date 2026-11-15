@@ -29,6 +29,7 @@ export async function GET(request: Request) {
 
     let title = videoId;
     let publishedAt = null;
+    let collectedAt = null;
     let timestampCount = 0;
 
     try {
@@ -36,6 +37,7 @@ export async function GET(request: Request) {
       const json = JSON.parse(content);
       if (json.title) title = json.title;
       if (json.publishedAt) publishedAt = json.publishedAt;
+      if (json.collectedAt) collectedAt = json.collectedAt;
       if (Array.isArray(json.timestamps)) {
         timestampCount = json.timestamps.length;
       }
@@ -46,14 +48,15 @@ export async function GET(request: Request) {
       title,
       publishedAt,
       updatedAt: stat.mtime,
+      collectedAt: collectedAt || stat.mtime.toISOString(),
       timestampCount,
     };
   });
 
   // デフォルトで新しい順にソートして返す
   list.sort((a, b) => {
-    const timeA = a.publishedAt ? new Date(a.publishedAt).getTime() : new Date(a.updatedAt).getTime();
-    const timeB = b.publishedAt ? new Date(b.publishedAt).getTime() : new Date(b.updatedAt).getTime();
+    const timeA = new Date(a.publishedAt || a.collectedAt || 0).getTime();
+    const timeB = new Date(b.publishedAt || b.collectedAt || 0).getTime();
     return timeB - timeA;
   });
 

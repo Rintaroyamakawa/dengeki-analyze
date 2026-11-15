@@ -32,7 +32,6 @@ export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  // デフォルト（初期値）を「新しい順 (newest)」に設定
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'title'>('newest');
 
   const [url, setUrl] = useState('');
@@ -79,18 +78,18 @@ export default function Home() {
       );
     }
 
-    // ソート処理（日付の比較向きを正しく修正）
+    // ソート処理（新しい順・古い順の向きを正しく修正済み）
     if (sortOrder === 'newest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateA - dateB; // 新しい順（日付が大きいものを上にするため反転）
+        return dateB - dateA; // 新しい順
       });
     } else if (sortOrder === 'oldest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateB - dateA; // 古い順
+        return dateA - dateB; // 古い順
       });
     } else if (sortOrder === 'title') {
       result.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
@@ -99,7 +98,6 @@ export default function Home() {
     return result;
   }, [archives, searchQuery, sortOrder]);
 
-  // グラフ側の数値を1/10にしつつ、各バーに「正確な秒数とタイムスタンプ名」を完全に紐付ける
   const optimizedHeatmap = useMemo(() => {
     if (!data?.heatmapData) return [];
     const raw = data.heatmapData;
