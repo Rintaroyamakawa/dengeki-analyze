@@ -78,18 +78,18 @@ export default function Home() {
       );
     }
 
-    // ソート処理（新しい順・古い順の向きを正しく修正済み）
+    // ソート処理（正しい向きに修正：newestは新しい順、oldestは古い順）
     if (sortOrder === 'newest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateB - dateA; // 新しい順
+        return dateB - dateA; // 新しい順（新しいものが先頭）
       });
     } else if (sortOrder === 'oldest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateA - dateB; // 古い順
+        return dateA - dateB; // 古い順（古いものが先頭）
       });
     } else if (sortOrder === 'title') {
       result.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
