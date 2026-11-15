@@ -78,19 +78,20 @@ export default function Home() {
       );
     }
 
-    // ソート処理（新しい順だけを反転）
-    if (sortOrder === 'newest') {
+    // ソート処理：古い順を基準にして、新しい順はその反転にする
+    if (sortOrder === 'oldest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateA - dateB; // 新しい順の向きを反転
+        return dateA - dateB; // 古い順（日付が小さいものが上）
       });
-    } else if (sortOrder === 'oldest') {
+    } else if (sortOrder === 'newest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateB - dateA; // 古い順
+        return dateA - dateB; // 一度古い順に並べてから…
       });
+      result.reverse(); // 🔄 完全に反転させて新しい順にする！
     } else if (sortOrder === 'title') {
       result.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
     }
