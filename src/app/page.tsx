@@ -28,11 +28,22 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
+// タイトルからジャンル（カテゴリ）を自動判定する関数
+const getCategory = (title: string) => {
+  if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
+    return '🎤 歌枠';
+  }
+  if (title.includes('荒野行動') || title.includes('荒野')) {
+    return '🔫 荒野行動';
+  }
+  return '🎮 その他の配信・ゲーム';
+};
+
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'title'>('newest');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'genre'>('newest');
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
@@ -78,26 +89,47 @@ export default function Home() {
       );
     }
 
-    // ソート処理：古い順を基準にして、新しい順はその反転にする
+    // 通常のソート処理（新しい順・古い順）
     if (sortOrder === 'oldest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateA - dateB; // 古い順（日付が小さいものが上）
+        return dateA - dateB;
       });
     } else if (sortOrder === 'newest') {
       result.sort((a, b) => {
         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateA - dateB; // 一度古い順に並べてから…
+        return dateB - dateA;
       });
-      result.reverse(); // 🔄 完全に反転させて新しい順にする！
-    } else if (sortOrder === 'title') {
-      result.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
     }
 
     return result;
   }, [archives, searchQuery, sortOrder]);
+
+  // ジャンル別にグループ化しつつ、グループ内は新しい順にソート
+  const groupedArchives = useMemo(() => {
+    if (sortOrder !== 'genre') return null;
+
+    const groups: { [key: string]: ArchiveItem[] } = {};
+    
+    filteredArchives.forEach((item) => {
+      const cat = getCategory(item.title);
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(item);
+    });
+
+    // 各ジャンルのグループ内を「新しい順」にソート
+    Object.keys(groups).forEach((cat) => {
+      groups[cat].sort((a, b) => {
+        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
+        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
+        return dateB - dateA; // 新しい順
+      });
+    });
+
+    return groups;
+  }, [filteredArchives, sortOrder]);
 
   const optimizedHeatmap = useMemo(() => {
     if (!data?.heatmapData) return [];
@@ -225,6 +257,54 @@ export default function Home() {
       count: item.count || 1,
     });
     setIsVideoLoaded(false);
+  };
+
+  // アーカイブカードの描画部品
+  const renderArchiveCard = (item: ArchiveItem) => {
+    const isSelected = data?.videoId === item.videoId;
+    return (
+      <div
+        key={item.videoId}
+        onClick={() => handleSelectArchive(item.videoId)}
+        className={`group bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col ${
+          isSelected ? 'ring-2 ring-blue-500 border-blue-500' : 'hover:border-blue-300'
+        }`}
+      >
+        {/* YouTubeサムネイル */}
+        <div className="aspect-video bg-gray-900 relative overflow-hidden">
+          <img
+            src={`https://i.ytimg.com/vi/${item.videoId}/mqdefault.jpg`}
+            alt={item.title}
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+            <span className="opacity-0 group-hover:opacity-100 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-opacity">
+              📊 見どころを解析
+            </span>
+          </div>
+        </div>
+
+        {/* タイトル＆ID */}
+        <div className="p-3 flex-1 flex flex-col justify-between">
+          <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
+            {item.title}
+          </h3>
+          <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400 font-mono">
+            <span>ID: {item.videoId}</span>
+            <a
+              href={`https://www.youtube.com/watch?v=${item.videoId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="text-gray-400 hover:text-red-500 underline"
+            >
+              YouTubeで開く ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -413,7 +493,7 @@ export default function Home() {
               >
                 <option value="newest">新しい順</option>
                 <option value="oldest">古い順</option>
-                <option value="title">タイトル順</option>
+                <option value="genre">ジャンル順</option>
               </select>
             </div>
           </div>
@@ -426,54 +506,27 @@ export default function Home() {
             <div className="bg-white border rounded-xl p-8 text-center text-gray-500 text-sm">
               該当するアーカイブが見つかりませんでした。
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredArchives.map((item) => {
-                const isSelected = data?.videoId === item.videoId;
-                return (
-                  <div
-                    key={item.videoId}
-                    onClick={() => handleSelectArchive(item.videoId)}
-                    className={`group bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col ${
-                      isSelected ? 'ring-2 ring-blue-500 border-blue-500' : 'hover:border-blue-300'
-                    }`}
-                  >
-                    {/* YouTubeサムネイル */}
-                    <div className="aspect-video bg-gray-900 relative overflow-hidden">
-                      <img
-                        src={`https://i.ytimg.com/vi/${item.videoId}/mqdefault.jpg`}
-                        alt={item.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                        <span className="opacity-0 group-hover:opacity-100 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-opacity">
-                          📊 見どころを解析
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* タイトル＆ID */}
-                    <div className="p-3 flex-1 flex flex-col justify-between">
-                      <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
-                        {item.title}
-                      </h3>
-                      <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400 font-mono">
-                        <span>ID: {item.videoId}</span>
-                        <a
-                          href={`https://www.youtube.com/watch?v=${item.videoId}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-gray-400 hover:text-red-500 underline"
-                        >
-                          YouTubeで開く ↗
-                        </a>
-                      </div>
-                    </div>
+          ) : sortOrder === 'genre' && groupedArchives ? (
+            /* 📁 ジャンル別にセクション分けして表示 */
+            <div className="space-y-8">
+              {Object.entries(groupedArchives).map(([category, items]) => (
+                <div key={category} className="space-y-3">
+                  <h3 className="text-sm font-extrabold text-gray-800 bg-white border px-4 py-2 rounded-lg shadow-sm flex items-center justify-between">
+                    <span>{category}</span>
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-mono font-normal">
+                      {items.length}件
+                    </span>
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {items.map((item) => renderArchiveCard(item))}
                   </div>
-                );
-              })}
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* 通常の一覧表示（新しい順・古い順） */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredArchives.map((item) => renderArchiveCard(item))}
             </div>
           )}
         </section>
