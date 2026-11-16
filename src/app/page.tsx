@@ -28,25 +28,58 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
-// タイトルからゲームや配信シリーズを細かく自動判定する関数
+// ご指定いただいた17個の項目に合わせて細かくジャンルを自動判定する関数
 const getCategory = (title: string) => {
-  if (title.includes('ゼルダ') || title.includes('BotW') || title.includes('ブレワイ')) {
-    return '🗡️ ゼルダの伝説BotW';
-  }
-  if (title.includes('マリオ') || title.includes('スーパーマリオ')) {
-    return '🍄 マリオシリーズ';
-  }
-  if (title.includes('荒野行動') || title.includes('荒野')) {
-    return '🔫 荒野行動';
-  }
   if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
     return '🎤 歌枠';
+  }
+  if (title.includes('耐久')) {
+    return '⏳ 耐久配信';
   }
   if (title.includes('記念') || title.includes('万人') || title.includes('周年')) {
     return '🎉 記念配信';
   }
   if (title.includes('雑談')) {
     return '☕ 雑談配信';
+  }
+  if (title.includes('コラボ') || title.includes('ゲスト') || title.includes('対談')) {
+    return '🤝 コラボ系';
+  }
+  if (title.includes('マリオ64') || title.includes('スーパーマリオ64')) {
+    return '🍄 スーパーマリオ64';
+  }
+  if (title.includes('サンシャイン')) {
+    return '☀️ スーパーマリオサンシャイン';
+  }
+  if (title.includes('ギャラクシー２') || title.includes('ギャラクシー2')) {
+    return '✨ スーパーマリオギャラクシー２';
+  }
+  if (title.includes('ギャラクシー')) {
+    return '🌟 マリオギャラクシー';
+  }
+  if (title.includes('マリオRPG')) {
+    return '⭐ スーパーマリオRPG';
+  }
+  if (title.includes('ペーパーマリオ')) {
+    return '📜 ペーパーマリオRPG';
+  }
+  if (title.includes('リズム天国') || title.includes('ミラクルスターズ')) {
+    return '🥁 リズム天国 ミラクルスターズ';
+  }
+  if (title.includes('ブレワイ') || title.includes('BotW') || title.includes('ブレス オブ ザ ワイルド')) {
+    return '🗡️ ブレスオブザワイルド';
+  }
+  if (title.includes('ティアキン') || title.includes('TotK') || title.includes('ティアーズ オブ ザ キングダム')) {
+    return '🏹 ティアーズ オブ ザ キングダム';
+  }
+  if (title.includes('時のオカリナ') || title.includes('時オカ')) {
+    return '🛡️ 時のオカリナ';
+  }
+  if (title.includes('ポケモン') || title.includes('BW')) {
+    return '⚡ ポケモンBW';
+  }
+  if (title.includes('漢字でGO')) {
+    return '✏️ 漢字でGO！';
   }
   return '🎮 その他の配信・ゲーム';
 };
@@ -119,7 +152,7 @@ export default function Home() {
     return result;
   }, [archives, searchQuery, sortOrder]);
 
-  // シリーズ・ゲーム別にグループ化し、グループ内は「タイトル順」にソート
+  // 指定されたジャンル別にグループ化し、グループ内は「新しい順（追加日順）」にソート
   const groupedArchives = useMemo(() => {
     if (sortOrder !== 'genre') return null;
 
@@ -131,9 +164,13 @@ export default function Home() {
       groups[cat].push(item);
     });
 
-    // 各グループ内を「タイトル順」にソート（再生リスト風にするため）
+    // 各グループ内を「新しい順（配信日・追加日の新しい順）」にソート
     Object.keys(groups).forEach((cat) => {
-      groups[cat].sort((a, b) => a.title.localeCompare(b.title, 'ja'));
+      groups[cat].sort((a, b) => {
+        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
+        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
+        return dateB - dateA; // 新しい順
+      });
     });
 
     return groups;
@@ -515,7 +552,7 @@ export default function Home() {
               該当するアーカイブが見つかりませんでした。
             </div>
           ) : sortOrder === 'genre' && groupedArchives ? (
-            /* 📁 シリーズ・ゲーム別にセクション分けし、中はタイトル順で表示 */
+            /* 📁 シリーズ別に分かれ、中身は「新しい順（追加日順）」で表示 */
             <div className="space-y-8">
               {Object.entries(groupedArchives).map(([category, items]) => (
                 <div key={category} className="space-y-3">
