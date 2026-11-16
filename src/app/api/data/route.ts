@@ -73,7 +73,10 @@ export async function POST(request: Request) {
     }
 
     let title = data?.title || `配信アーカイブ #${videoId}`;
+    let publishedAt = data?.publishedAt || null;
+
     try {
+      // 1. タイトルをoembedから取得
       const oembedRes = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
       if (oembedRes.ok) {
         const oembedData = await oembedRes.json();
@@ -81,13 +84,29 @@ export async function POST(request: Request) {
           title = oembedData.title;
         }
       }
-    } catch (e) {}
+
+      // 2. 公開日時をYouTubeのページHTMLから自動取得
+      const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+      });
+      if (pageRes.ok) {
+        const html = await pageRes.text();
+        const match = html.match(/itemprop="datePublished"\s+content="([^"]+)"/);
+        if (match && match[1]) {
+          publishedAt = match[1];
+        }
+      }
+    } catch (e) {
+      console.error('Failed to fetch YouTube metadata:', e);
+    }
 
     const savedData = {
       ...data,
       videoId,
       title,
-      publishedAt: data?.publishedAt || null,
+      publishedAt: publishedAt || null,
       collectedAt: new Date().toISOString(),
     };
 
@@ -98,7 +117,7 @@ export async function POST(request: Request) {
     const filePath = path.join(dataDir, `${videoId}.json`);
     fs.writeFileSync(filePath, JSON.stringify(savedData, null, 2), 'utf-8');
 
-    return NextResponse.json({ success: true, videoId, title });
+    return NextResponse.json({ success: true, videoId, title, publishedAt });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to save data' }, { status: 500 });
