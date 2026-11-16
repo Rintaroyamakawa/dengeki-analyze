@@ -33,9 +33,79 @@ const MANUAL_CATEGORY: { [videoId: string]: string } = {
   'Y6zCtzveayA': '☕ 雑談',
 };
 
+// テキストから17項目のカテゴリを判定する共通ロジック（一致しなければ null を返す）
+const matchCategoryFromText = (text: string): string | null => {
+  if (text.includes('歌枠') || text.includes('歌ってみた') || text.includes('カラオケ')) {
+    return '🎤 歌枠';
+  }
+  if (text.includes('耐久')) {
+    return '⏳ 耐久配信';
+  }
+  if (text.includes('記念') || text.includes('万人') || text.includes('周年') || text.includes('初配信')) {
+    return '🎉 記念配信';
+  }
+  if (text.includes('ASMR')) {
+    return '🎧 ASMR';
+  }
+  if (text.includes('コラボ') || text.includes('ゲスト') || text.includes('対談') || text.includes('Phasmophobia')) {
+    return '🤝 コラボ';
+  }
+  if (text.includes('雑談')) {
+    return '☕ 雑談';
+  }
+  if (text.includes('マリオ64') || text.includes('スーパーマリオ64')) {
+    return '🍄 スーパーマリオ64';
+  }
+  if (text.includes('サンシャイン')) {
+    return '☀️ スーパーマリオサンシャイン';
+  }
+  if (text.includes('ギャラクシー２') || text.includes('ギャラクシー2')) {
+    return '✨ スーパーマリオギャラクシー２';
+  }
+  if (text.includes('ギャラクシー')) {
+    return '🌟 マリオギャラクシー';
+  }
+  if (text.includes('ペーパーマリオ')) {
+    return '📜 ペーパーマリオRPG';
+  }
+  if (text.includes('マリオRPG')) {
+    return '⭐ スーパーマリオRPG';
+  }
+  if (text.includes('リズム天国') || text.includes('ミラクルスターズ')) {
+    return '🥁 リズム天国 ミラクルスターズ';
+  }
+  if (
+    text.includes('ティアキン') ||
+    text.includes('TotK') ||
+    text.includes('ティアーズ オブ ザ キングダム') ||
+    text.includes('ティアーズオブザキングダム')
+  ) {
+    return '🏹 ティアーズ オブ ザ キングダム';
+  }
+  if (
+    text.includes('ブレワイ') ||
+    text.includes('BotW') ||
+    text.includes('ブレス オブ ザ ワイルド') ||
+    text.includes('ブレスオブザワイルド')
+  ) {
+    return '🗡️ ブレスオブザワイルド';
+  }
+  if (text.includes('時のオカリナ') || text.includes('時オカ')) {
+    return '🛡️ 時のオカリナ';
+  }
+  if (text.includes('ポケモン') || text.includes('BW') || text.includes('ホワイト') || text.includes('ポケットモンスター')) {
+    return '⚡ ポケモンBW';
+  }
+  if (text.includes('漢字でGO')) {
+    return '✏️ 漢字でGO！';
+  }
+
+  return null;
+};
+
 // ご指定の条件に合わせてジャンルを自動判定する関数
 const getCategory = (item: ArchiveItem) => {
-  // 1. 個別指定リストにあればそれを最優先（前後の空白も除去して照合）
+  // 1. 個別指定リストにあればそれを最優先
   const cleanId = item.videoId.trim();
   if (MANUAL_CATEGORY[cleanId]) {
     return MANUAL_CATEGORY[cleanId];
@@ -43,69 +113,31 @@ const getCategory = (item: ArchiveItem) => {
 
   const title = item.title.trim();
 
-  // 2. タイトルの先頭に「雑談」がある場合は、後ろに「歌枠」などが入っていても確実に雑談にする
-  if (
-    title.startsWith('雑談') ||
-    title.startsWith('【雑談】') ||
-    title.includes('歌枠のお礼')
-  ) {
+  // 2. 【】で囲まれた部分をすべて抜き出して、そこを最優先の判断材料にする
+  const bracketMatches = title.match(/【([^】]+)】/g);
+  if (bracketMatches) {
+    // チャンネル名表記（【電撃ニコ / ぽけぶい】など）はノイズになるため除外して結合
+    const bracketText = bracketMatches
+      .map(m => m.slice(1, -1))
+      .filter(inner => !inner.includes('電撃ニコ'))
+      .join(' ');
+
+    if (bracketText) {
+      const catFromBracket = matchCategoryFromText(bracketText);
+      if (catFromBracket) return catFromBracket;
+    }
+  }
+
+  // 3. タイトルの先頭に「雑談」がある場合
+  if (title.startsWith('雑談') || title.includes('歌枠のお礼')) {
     return '☕ 雑談';
   }
 
-  if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
-    return '🎤 歌枠';
-  }
-  if (title.includes('耐久')) {
-    return '⏳ 耐久配信';
-  }
-  if (title.includes('記念') || title.includes('万人') || title.includes('周年') || title.includes('初配信')) {
-    return '🎉 記念配信';
-  }
-  if (title.includes('ASMR')) {
-    return '🎧 ASMR';
-  }
-  if (title.includes('コラボ') || title.includes('ゲスト') || title.includes('対談') || title.includes('Phasmophobia')) {
-    return '🤝 コラボ';
-  }
-  if (title.includes('マリオ64') || title.includes('スーパーマリオ64')) {
-    return '🍄 スーパーマリオ64';
-  }
-  if (title.includes('サンシャイン')) {
-    return '☀️ スーパーマリオサンシャイン';
-  }
-  if (title.includes('ギャラクシー２') || title.includes('ギャラクシー2')) {
-    return '✨ スーパーマリオギャラクシー２';
-  }
-  if (title.includes('ギャラクシー')) {
-    return '🌟 マリオギャラクシー';
-  }
-  // ※「ペーパーマリオ」を「マリオRPG」より先に判定する！
-  if (title.includes('ペーパーマリオ')) {
-    return '📜 ペーパーマリオRPG';
-  }
-  if (title.includes('マリオRPG')) {
-    return '⭐ スーパーマリオRPG';
-  }
-  if (title.includes('リズム天国') || title.includes('ミラクルスターズ')) {
-    return '🥁 リズム天国 ミラクルスターズ';
-  }
-  if (title.includes('ブレワイ') || title.includes('BotW') || title.includes('ブレス オブ ザ ワイルド')) {
-    return '🗡️ ブレスオブザワイルド';
-  }
-  if (title.includes('ティアキン') || title.includes('TotK') || title.includes('ティアーズ オブ ザ キングダム')) {
-    return '🏹 ティアーズ オブ ザ キングダム';
-  }
-  if (title.includes('時のオカリナ') || title.includes('時オカ')) {
-    return '🛡️ 時のオカリナ';
-  }
-  if (title.includes('ポケモン') || title.includes('BW') || title.includes('ホワイト') || title.includes('ポケットモンスター')) {
-    return '⚡ ポケモンBW';
-  }
-  if (title.includes('漢字でGO')) {
-    return '✏️ 漢字でGO！';
-  }
+  // 4. 【】で決まらなかった場合は、タイトル全体から判定
+  const catFromTitle = matchCategoryFromText(title);
+  if (catFromTitle) return catFromTitle;
 
-  // 上記以外はすべて「雑談」にまとめる
+  // 5. 上記以外はすべて「雑談」にまとめる
   return '☕ 雑談';
 };
 
