@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
 type ArchiveItem = {
@@ -39,9 +39,33 @@ export default function AdminPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // 未収集データの収集・JSON化用ステート
+  const [targetUrl, setTargetUrl] = useState('');
+  const [isCollecting, setIsCollecting] = useState(false);
+
+  // アーカイブ一覧の取得（手動割り当て情報とマージ）
+  const fetchArchives = useCallback(async () => {
+    try {
+      const res = await fetch('/api/data');
+      if (res.ok) {
+        const list = await res.json();
+        const manualMap = JSON.parse(localStorage.getItem('manual_assignments') || '{}');
+        const initialized = list.map((item: ArchiveItem) => ({
+          ...item,
+          category: manualMap[item.videoId] || '',
+        }));
+        setArchives(initialized);
+      }
+    } catch (e) {
+      console.error('データ取得エラー:', e);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    // ローカルストレージからカスタムカテゴリや手動割り当てを読み込む
     const savedCategories = localStorage.getItem('custom_categories');
     if (savedCategories) {
       try {
@@ -50,28 +74,76 @@ export default function AdminPage() {
         console.error(e);
       }
     }
-
-    const fetchArchives = async () => {
-      try {
-        const res = await fetch('/api/data');
-        if (res.ok) {
-          const list = await res.json();
-          // ローカルストレージから割り当て情報を復元
-          const manualMap = JSON.parse(localStorage.getItem('manual_assignments') || '{}');
-          const initialized = list.map((item: ArchiveItem) => ({
-            ...item,
-            category: manualMap[item.videoId] || '',
-          }));
-          setArchives(initialized);
-        }
-      } catch (e) {
-        console.error('データ取得エラー:', e);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchArchives();
-  }, []);
+  }, [fetchArchives]);
+
+  const showNotice = (msg: string, isError = false) => {
+    if (isError) {
+      setErrorMessage(msg);
+      setMessage('');
+      setTimeout(() => setErrorMessage(''), 5000);
+    } else {
+      setMessage(msg);
+      setErrorMessage('');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
+  // 【修正】未収集アーカイブの一括同期・JSON化 (/api/sync)
+  const handleSyncUncollected = async () => {
+    setIsCollecting(true);
+    try {
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || '未収集データの同期・JSON化に失敗しました');
+      }
+
+      showNotice(data.message || '未収集アーカイブのJSON化が完了しました！');
+      await fetchArchives(); // 一覧を最新に更新
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '通信エラーが発生しました';
+      showNotice(msg, true);
+    } finally {
+      setIsCollecting(false);
+    }
+  };
+
+  // 【修正】個別URL/IDの解析・JSON化 (/api/analyze)
+  const handleAnalyzeSingle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!targetUrl.trim()) return;
+
+    setIsCollecting(true);
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: targetUrl.trim(),
+          videoId: targetUrl.trim(),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || '動画の解析・JSON化に失敗しました');
+      }
+
+      showNotice(data.message || '指定した動画のデータを収集・JSON化しました！');
+      setTargetUrl('');
+      await fetchArchives(); // 一覧を最新に更新
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '通信エラーが発生しました';
+      showNotice(msg, true);
+    } finally {
+      setIsCollecting(false);
+    }
+  };
 
   // 新しい項目の追加
   const handleAddCategory = (e: React.FormEvent) => {
@@ -85,27 +157,24 @@ export default function AdminPage() {
     setCategories(updated);
     localStorage.setItem('custom_categories', JSON.stringify(updated));
     setNewCategoryName('');
-    setMessage('新しい項目を追加しました！');
-    setTimeout(() => setMessage(''), 3000);
+    showNotice('新しい項目を追加しました！');
   };
 
   // 各アーカイブのカテゴリ変更
   const handleCategoryChange = (videoId: string, newCat: string) => {
-    const updated = archives.map(item => 
+    const updated = archives.map((item) =>
       item.videoId === videoId ? { ...item, category: newCat } : item
     );
     setArchives(updated);
 
-    // ローカルストレージに保存
     const manualMap: { [key: string]: string } = {};
-    updated.forEach(item => {
+    updated.forEach((item) => {
       if (item.category) {
         manualMap[item.videoId] = item.category;
       }
     });
     localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
-    setMessage('変更を保存しました！');
-    setTimeout(() => setMessage(''), 2000);
+    showNotice('変更を保存しました！');
   };
 
   return (
@@ -133,8 +202,49 @@ export default function AdminPage() {
             ✨ {message}
           </div>
         )}
+        {errorMessage && (
+          <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm font-bold">
+            ⚠️ {errorMessage}
+          </div>
+        )}
 
-        {/* 新規項目の追加セクション */}
+        {/* 1. 未収集データの収集・JSON化セクション */}
+        <section className="bg-white border rounded-xl p-5 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h2 className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
+              <span>📥</span>
+              <span>未収集データの取得・JSON化</span>
+            </h2>
+            <button
+              type="button"
+              onClick={handleSyncUncollected}
+              disabled={isCollecting}
+              className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-400 text-white font-bold text-xs px-4 py-2 rounded-lg transition-colors shrink-0"
+            >
+              {isCollecting ? '⏳ 同期・JSON化中...' : '🔄 未収集アーカイブを一括JSON化'}
+            </button>
+          </div>
+
+          <form onSubmit={handleAnalyzeSingle} className="flex gap-2">
+            <input
+              type="text"
+              value={targetUrl}
+              onChange={(e) => setTargetUrl(e.target.value)}
+              disabled={isCollecting}
+              placeholder="YouTubeの動画URL または 動画ID を入力して個別にJSON化..."
+              className="border border-gray-300 p-2.5 flex-1 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-gray-100"
+            />
+            <button
+              type="submit"
+              disabled={isCollecting || !targetUrl.trim()}
+              className="bg-emerald-600 text-white font-bold text-sm px-6 py-2.5 rounded-lg hover:bg-emerald-700 disabled:bg-gray-400 transition-colors shrink-0"
+            >
+              {isCollecting ? '解析中...' : '解析してJSON化'}
+            </button>
+          </form>
+        </section>
+
+        {/* 2. 新規項目の追加セクション */}
         <section className="bg-white border rounded-xl p-5 shadow-sm space-y-3">
           <h2 className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
             <span>➕</span>
@@ -157,7 +267,7 @@ export default function AdminPage() {
           </form>
         </section>
 
-        {/* アーカイブの選択・手動割り当てセクション */}
+        {/* 3. アーカイブの選択・手動割り当てセクション */}
         <section className="bg-white border rounded-xl p-5 shadow-sm space-y-4">
           <h2 className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
             <span>📋</span>
@@ -172,7 +282,10 @@ export default function AdminPage() {
           ) : (
             <div className="border rounded-lg overflow-hidden divide-y">
               {archives.map((item) => (
-                <div key={item.videoId} className="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white hover:bg-gray-50 transition-colors">
+                <div
+                  key={item.videoId}
+                  className="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white hover:bg-gray-50 transition-colors"
+                >
                   <div className="flex items-center gap-3 flex-1">
                     <img
                       src={`https://i.ytimg.com/vi/${item.videoId}/mqdefault.jpg`}
