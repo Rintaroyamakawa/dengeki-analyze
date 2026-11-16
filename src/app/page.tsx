@@ -30,7 +30,8 @@ type ArchiveItem = {
 
 // 🛠️ 例外用：特定の動画IDを強制的に好きなカテゴリに入れたいときはここに追記
 const MANUAL_CATEGORY: { [videoId: string]: string } = {
-  'Y6zCtzveayA': '☕ 雑談',
+  'Y6zCtzveayA': '☕ 雑談', // 歌枠のお礼雑談
+  '3P5GTXoTH_Q': '☕ 雑談', // 初配信振り返り雑談
 };
 
 // テキストから17項目のカテゴリを判定する共通ロジック（一致しなければ null を返す）
@@ -50,7 +51,7 @@ const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('コラボ') || text.includes('ゲスト') || text.includes('対談') || text.includes('Phasmophobia')) {
     return '🤝 コラボ';
   }
-  if (text.includes('雑談')) {
+  if (text.includes('雑談') || text.includes('振り返り')) {
     return '☕ 雑談';
   }
   if (text.includes('マリオ64') || text.includes('スーパーマリオ64')) {
@@ -128,8 +129,8 @@ const getCategory = (item: ArchiveItem) => {
     }
   }
 
-  // 3. タイトルの先頭に「雑談」がある場合
-  if (title.startsWith('雑談') || title.includes('歌枠のお礼')) {
+  // 3. タイトルの先頭に「雑談」がある場合や、「歌枠のお礼」「振り返り」などは雑談にする
+  if (title.startsWith('雑談') || title.includes('歌枠のお礼') || title.includes('振り返り')) {
     return '☕ 雑談';
   }
 
