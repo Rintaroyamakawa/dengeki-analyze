@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 type SavedItem = {
   videoId: string;
@@ -227,7 +228,16 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-8 max-w-3xl mx-auto font-sans">
-      <h1 className="text-2xl font-bold mb-4">ローカルデータ収集ダッシュボード</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">ローカルデータ収集ダッシュボード</h1>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-700"
+        >
+          <span>⚡</span>
+          <span>ニコすこ！に戻る</span>
+        </Link>
+      </div>
 
       {/* チャンネル自動同期 ＆ 一括収集センター */}
       <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
