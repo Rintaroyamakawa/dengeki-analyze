@@ -28,13 +28,25 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
-// タイトルからジャンル（カテゴリ）を自動判定する関数
+// タイトルからゲームや配信シリーズを細かく自動判定する関数
 const getCategory = (title: string) => {
-  if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
-    return '🎤 歌枠';
+  if (title.includes('ゼルダ') || title.includes('BotW') || title.includes('ブレワイ')) {
+    return '🗡️ ゼルダの伝説BotW';
+  }
+  if (title.includes('マリオ') || title.includes('スーパーマリオ')) {
+    return '🍄 マリオシリーズ';
   }
   if (title.includes('荒野行動') || title.includes('荒野')) {
     return '🔫 荒野行動';
+  }
+  if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
+    return '🎤 歌枠';
+  }
+  if (title.includes('記念') || title.includes('万人') || title.includes('周年')) {
+    return '🎉 記念配信';
+  }
+  if (title.includes('雑談')) {
+    return '☕ 雑談配信';
   }
   return '🎮 その他の配信・ゲーム';
 };
@@ -107,7 +119,7 @@ export default function Home() {
     return result;
   }, [archives, searchQuery, sortOrder]);
 
-  // ジャンル別にグループ化しつつ、グループ内は新しい順にソート
+  // シリーズ・ゲーム別にグループ化し、グループ内は「タイトル順」にソート
   const groupedArchives = useMemo(() => {
     if (sortOrder !== 'genre') return null;
 
@@ -119,13 +131,9 @@ export default function Home() {
       groups[cat].push(item);
     });
 
-    // 各ジャンルのグループ内を「新しい順」にソート
+    // 各グループ内を「タイトル順」にソート（再生リスト風にするため）
     Object.keys(groups).forEach((cat) => {
-      groups[cat].sort((a, b) => {
-        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
-        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateB - dateA; // 新しい順
-      });
+      groups[cat].sort((a, b) => a.title.localeCompare(b.title, 'ja'));
     });
 
     return groups;
@@ -507,7 +515,7 @@ export default function Home() {
               該当するアーカイブが見つかりませんでした。
             </div>
           ) : sortOrder === 'genre' && groupedArchives ? (
-            /* 📁 ジャンル別にセクション分けして表示 */
+            /* 📁 シリーズ・ゲーム別にセクション分けし、中はタイトル順で表示 */
             <div className="space-y-8">
               {Object.entries(groupedArchives).map(([category, items]) => (
                 <div key={category} className="space-y-3">
