@@ -28,13 +28,23 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
+// 📌 ユーザー独自のマイクリップ（ブックマーク）の型
+type MyBookmark = {
+  id: string;
+  videoId: string;
+  videoTitle: string;
+  time: string;
+  seconds: number;
+  label: string;
+  createdAt: string;
+};
+
 // 🛠️ 例外用：特定の動画IDを強制的に好きなカテゴリに入れたいときはここに追記
 const MANUAL_CATEGORY: { [videoId: string]: string } = {
   'Y6zCtzveayA': '☕ 雑談', // 歌枠のお礼雑談
   '3P5GTXoTH_Q': '☕ 雑談', // 初配信振り返り雑談
 };
 
-// テキストから項目のカテゴリを判定する共通ロジック
 const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('歌枠') || text.includes('歌ってみた') || text.includes('カラオケ')) {
     return '🎤 歌枠';
@@ -160,9 +170,12 @@ export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all'); // 'all', 'bookmarks', または各カテゴリ名
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
   const [isLocal, setIsLocal] = useState(false);
+
+  // 📌 マイクリップの状態管理（localStorage永続化）
+  const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
@@ -179,11 +192,20 @@ export default function Home() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
-    // ローカル環境（localhost）かどうかを判定
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
         setIsLocal(true);
+      }
+
+      // 保存済みのマイクリップをロード
+      const savedBookmarks = localStorage.getItem('my_clip_bookmarks');
+      if (savedBookmarks) {
+        try {
+          setMyBookmarks(JSON.parse(savedBookmarks));
+        } catch (e) {
+          console.error('ブックマークの読み込みに失敗しました:', e);
+        }
       }
     }
 
@@ -203,6 +225,39 @@ export default function Home() {
     fetchArchives();
   }, []);
 
+  // 📌 ブックマークの追加・削除ハンドラー
+  const toggleBookmark = (item: TimestampItem) => {
+    if (!data) return;
+    const clipId = `${data.videoId}_${item.seconds}`;
+    const exists = myBookmarks.some(b => b.id === clipId);
+
+    let updated: MyBookmark[];
+    if (exists) {
+      updated = myBookmarks.filter(b => b.id !== clipId);
+    } else {
+      const newBookmark: MyBookmark = {
+        id: clipId,
+        videoId: data.videoId,
+        videoTitle: data.title,
+        time: item.time,
+        seconds: item.seconds,
+        label: item.label,
+        createdAt: new Date().toLocaleString('ja-JP'),
+      };
+      updated = [newBookmark, ...myBookmarks];
+    }
+
+    setMyBookmarks(updated);
+    localStorage.setItem('my_clip_bookmarks', JSON.stringify(updated));
+  };
+
+  const removeBookmark = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = myBookmarks.filter(b => b.id !== id);
+    setMyBookmarks(updated);
+    localStorage.setItem('my_clip_bookmarks', JSON.stringify(updated));
+  };
+
   const filteredArchives = useMemo(() => {
     let result = [...archives];
     
@@ -215,7 +270,7 @@ export default function Home() {
       );
     }
 
-    if (selectedCategory !== 'all') {
+    if (selectedCategory !== 'all' && selectedCategory !== 'bookmarks') {
       result = result.filter((item) => getCategory(item) === selectedCategory);
     }
 
@@ -414,7 +469,6 @@ export default function Home() {
               {archives.length}件収録
             </span>
           </div>
-          {/* ローカル環境のときだけデータ管理ボタンを表示する */}
           {isLocal && (
             <Link
               href="/admin"
@@ -427,6 +481,7 @@ export default function Home() {
       </header>
 
       <div className="max-w-5xl mx-auto px-4 pt-6 space-y-8">
+        {/* 🔍 見どころ解析パネル */}
         <section className="bg-white border rounded-xl p-5 shadow-sm">
           <h2 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
             <span>📊</span>
@@ -518,11 +573,14 @@ export default function Home() {
                 </div>
               )}
 
+              {/* タイムスタンプ一覧（⭐ブックマークボタン付き） */}
               <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
                 {data.timestamps.length === 0 ? (
                   <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
                 ) : (
                   data.timestamps.map((item, idx) => {
+                    const clipId = `${data.videoId}_${item.seconds}`;
+                    const isBookmarked = myBookmarks.some(b => b.id === clipId);
                     const authorName = item.authors?.[0] || '視聴者';
                     const count = item.count || 1;
                     const otherCount = count - 1;
@@ -530,20 +588,39 @@ export default function Home() {
                     return (
                       <div
                         key={idx}
-                        onClick={() => handleOpenModal(item)}
-                        className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 cursor-pointer transition-colors"
+                        className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 transition-colors"
                       >
-                        <span className="font-mono font-bold text-blue-600 w-16 shrink-0">
+                        <span
+                          onClick={() => handleOpenModal(item)}
+                          className="font-mono font-bold text-blue-600 w-16 shrink-0 cursor-pointer hover:underline"
+                        >
                           {item.time}
                         </span>
-                        <span className="flex-1 flex flex-wrap items-center gap-2">
+                        <span
+                          onClick={() => handleOpenModal(item)}
+                          className="flex-1 flex flex-wrap items-center gap-2 cursor-pointer"
+                        >
                           <span>{item.label}</span>
                           {count > 1 && (
                             <span className="bg-orange-100 text-orange-700 text-xs px-2.5 py-0.5 rounded-full font-bold shrink-0">
-                              🔥 {count}人がタイムスタンプに設定してます！
+                              🔥 {count}人設定
                             </span>
                           )}
                         </span>
+                        
+                        {/* 🌟 ブックマークボタン */}
+                        <button
+                          onClick={() => toggleBookmark(item)}
+                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all shrink-0 flex items-center gap-1 ${
+                            isBookmarked
+                              ? 'bg-amber-400 text-white shadow-sm'
+                              : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                          }`}
+                          title={isBookmarked ? 'ブックマーク解除' : '切り抜き用にブックマーク'}
+                        >
+                          {isBookmarked ? '⭐ ブックマーク中' : '☆ ブックマーク'}
+                        </button>
+
                         <span className="text-xs text-gray-400 shrink-0 hidden sm:inline">
                           [{item.source}: {authorName} {otherCount > 0 ? `他${otherCount}人` : ''}]
                         </span>
@@ -556,35 +633,39 @@ export default function Home() {
           )}
         </section>
 
+        {/* 📚 保存済みアーカイブ一覧セクション */}
         <section className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-base font-extrabold text-gray-800 flex items-center gap-2">
               <span>🎬</span>
-              <span>アーカイブ一覧</span>
+              <span>{selectedCategory === 'bookmarks' ? '⭐ マイクリップ（ブックマーク一覧）' : 'アーカイブ一覧'}</span>
               <span className="text-xs font-normal text-gray-500">
-                {filteredArchives.length}件表示中
+                {selectedCategory === 'bookmarks' ? `${myBookmarks.length}件保存中` : `${filteredArchives.length}件表示中`}
               </span>
             </h2>
 
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="タイトルやゲーム名で検索..."
-                className="border border-gray-300 bg-white px-3 py-1.5 rounded-lg text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <select
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as any)}
-                className="border border-gray-300 bg-white px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-700 shrink-0"
-              >
-                <option value="newest">新しい順</option>
-                <option value="oldest">古い順</option>
-              </select>
-            </div>
+            {selectedCategory !== 'bookmarks' && (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="タイトルやゲーム名で検索..."
+                  className="border border-gray-300 bg-white px-3 py-1.5 rounded-lg text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value as any)}
+                  className="border border-gray-300 bg-white px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-700 shrink-0"
+                >
+                  <option value="newest">新しい順</option>
+                  <option value="oldest">古い順</option>
+                </select>
+              </div>
+            )}
           </div>
 
+          {/* 🎯 カテゴリ目次（「⭐ マイクリップ」タブ付き） */}
           <div className="bg-white border rounded-xl p-3 shadow-sm space-y-2">
             <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
               <span>📂 カテゴリ・シリーズで絞り込み（クリックで選択）</span>
@@ -608,6 +689,19 @@ export default function Home() {
               >
                 すべて ({archives.length})
               </button>
+
+              {/* 🌟 マイクリップ専用タブ */}
+              <button
+                onClick={() => setSelectedCategory('bookmarks')}
+                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1 ${
+                  selectedCategory === 'bookmarks'
+                    ? 'bg-amber-500 text-white shadow'
+                    : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200'
+                }`}
+              >
+                ⭐ マイクリップ ({myBookmarks.length})
+              </button>
+
               {CATEGORIES.map((cat) => {
                 const count = archives.filter(item => getCategory(item) === cat).length;
                 if (count === 0) return null;
@@ -628,7 +722,72 @@ export default function Home() {
             </div>
           </div>
 
-          {loadingArchives ? (
+          {/* 表示切り替え：マイクリップタブが選ばれている場合 */}
+          {selectedCategory === 'bookmarks' ? (
+            myBookmarks.length === 0 ? (
+              <div className="bg-white border rounded-xl p-12 text-center text-gray-500 text-sm space-y-2">
+                <p className="font-bold text-base">⭐ マイクリップはまだありません</p>
+                <p className="text-xs text-gray-400">配信を解析したときに、タイムスタンプの横にある「☆ ブックマーク」ボタンを押すとここに保存されます！</p>
+              </div>
+            ) : (
+              <div className="bg-white border rounded-xl divide-y overflow-hidden">
+                {myBookmarks.map((clip) => (
+                  <div
+                    key={clip.id}
+                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-amber-50/50 transition-colors"
+                  >
+                    <div className="flex items-start sm:items-center gap-3 flex-1">
+                      <img
+                        src={`https://i.ytimg.com/vi/${clip.videoId}/mqdefault.jpg`}
+                        alt={clip.videoTitle}
+                        className="w-28 aspect-video object-cover rounded shrink-0 bg-gray-900 cursor-pointer"
+                        onClick={() => handleSelectArchive(clip.videoId)}
+                      />
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span
+                            onClick={() => {
+                              handleSelectArchive(clip.videoId);
+                              // 少し遅らせてモーダルを開く
+                              setTimeout(() => {
+                                setActiveItem({
+                                  time: clip.time,
+                                  seconds: clip.seconds,
+                                  label: clip.label,
+                                  source: 'マイクリップ',
+                                  authors: ['自分'],
+                                  count: 1,
+                                });
+                              }, 600);
+                            }}
+                            className="font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded cursor-pointer hover:underline text-xs"
+                          >
+                            ▶ {clip.time} から再生
+                          </span>
+                          <span className="text-[10px] text-gray-400">{clip.createdAt} 追加</span>
+                        </div>
+                        <h4 className="text-xs font-extrabold text-gray-800 line-clamp-1">
+                          {clip.label}
+                        </h4>
+                        <p className="text-[11px] text-gray-500 line-clamp-1">
+                          動画: {clip.videoTitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                      <button
+                        onClick={(e) => removeBookmark(clip.id, e)}
+                        className="text-xs bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg transition-colors"
+                      >
+                        🗑️ 削除
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          ) : loadingArchives ? (
             <div className="text-center py-12 text-gray-400 text-sm">
               アーカイブを読み込み中...
             </div>
@@ -644,6 +803,7 @@ export default function Home() {
         </section>
       </div>
 
+      {/* 🎬 ポップアップ小窓レイヤー */}
       {activeItem && data && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-xl overflow-hidden animate-fadeIn">
