@@ -18,7 +18,7 @@ type SyncedVideo = {
   publishedAt: string;
 };
 
-const DEFAULT_CHANNEL_ID = 'UCoal0OX6-5TCEVRApZjj5-Q';
+const DEFAULT_CHANNEL_ID = 'UCoaI0OX6-5TCEVRApZjj5-Q';
 
 const DEFAULT_CATEGORIES = [
   '🎤 歌枠',
