@@ -26,6 +26,31 @@ export default function AdminDashboard() {
   const [isProcessing, setIsProcessing] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  // どんなYouTubeのURL形式（/live/, watch?v=, youtu.beなど）でも確実に11桁のIDを切り出す関数
+  const extractVideoId = (input: string) => {
+    const trimmed = input.trim();
+    if (/^[0-9A-Za-z_-]{11}$/.test(trimmed)) return trimmed;
+    try {
+      const url = new URL(trimmed);
+      if (url.hostname === 'youtu.be') {
+        return url.pathname.slice(1, 12);
+      }
+      if (url.hostname.includes('youtube.com')) {
+        const v = url.searchParams.get('v');
+        if (v) return v;
+        const parts = url.pathname.split('/');
+        const idx = parts.findIndex(p => p === 'live' || p === 'embed' || p === 'v');
+        if (idx !== -1 && parts[idx + 1]) {
+          return parts[idx + 1].slice(0, 11);
+        }
+      }
+    } catch (e) {
+      // URL形式でない場合のフォールバック
+    }
+    const match = trimmed.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+    return match ? match[1] : trimmed;
+  };
+
   const fetchSavedList = async () => {
     const res = await fetch('/api/data');
     const data = await res.json();
@@ -142,8 +167,8 @@ export default function AdminDashboard() {
   };
 
   const handleStartCollection = async () => {
-    const urls = urlInput.split('\n').map(u => u.trim()).filter(Boolean);
-    if (urls.length === 0) {
+    const rawLines = urlInput.split('\n').map(u => u.trim()).filter(Boolean);
+    if (rawLines.length === 0) {
       alert('配信のURLまたは動画IDを入力してください');
       return;
     }
@@ -152,17 +177,21 @@ export default function AdminDashboard() {
     abortControllerRef.current = new AbortController();
     const currentMaster = [...masterArchives];
 
-    for (let i = 0; i < urls.length; i++) {
+    for (let i = 0; i < rawLines.length; i++) {
       if (abortControllerRef.current?.signal.aborted) {
         setStatusText('中断しました');
         break;
       }
 
-      const target = urls[i];
-      const videoIdMatch = target.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
-      const videoId = videoIdMatch ? videoIdMatch[1] : target;
+      const targetUrl = rawLines[i];
+      const videoId = extractVideoId(targetUrl);
 
-      setStatusText(`収集中 (${i + 1}/${urls.length}): ${videoId}`);
+      if (!videoId || videoId.length !== 11) {
+        setStatusText(`エラー: 有効な動画IDが取得できませんでした (${targetUrl})`);
+        continue;
+      }
+
+      setStatusText(`収集中 (${i + 1}/${rawLines.length}): ${videoId}`);
 
       try {
         const res = await fetch('/api/data', {
@@ -172,7 +201,10 @@ export default function AdminDashboard() {
           signal: abortControllerRef.current.signal,
         });
 
-        if (!res.ok) throw new Error('保存に失敗しました');
+        if (!res.ok) {
+          const errJson = await res.json().catch(() => ({}));
+          throw new Error(errJson.error || '保存に失敗しました');
+        }
 
         const resultJson = await res.json();
         const fetchedTitle = resultJson.title || `配信 #${videoId}`;
@@ -183,6 +215,7 @@ export default function AdminDashboard() {
       } catch (err: any) {
         if (err.name === 'AbortError') break;
         console.error(err);
+        setStatusText(`エラー: ${err.message}`);
       }
     }
 
@@ -200,8 +233,7 @@ export default function AdminDashboard() {
 
   const handleAddManual = (e: React.FormEvent) => {
     e.preventDefault();
-    const videoIdMatch = newUrlInput.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
-    const videoId = videoIdMatch ? videoIdMatch[1] : newUrlInput.trim();
+    const videoId = extractVideoId(newUrlInput);
 
     if (!videoId || videoId.length !== 11) {
       alert('正しいYouTubeのURLか動画IDを入力してください');
