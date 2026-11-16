@@ -28,8 +28,25 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
+// 🛠️ 例外用：特定の動画IDを強制的に好きなカテゴリに入れたいときはここに追記！
+const MANUAL_CATEGORY: { [videoId: string]: string } = {
+  'Y6zCtzveayA': '☕ 雑談', // 歌枠のお礼雑談
+};
+
 // ご指定の条件に合わせてジャンルを自動判定する関数
-const getCategory = (title: string) => {
+const getCategory = (item: ArchiveItem) => {
+  // 1. 個別指定リストにあればそれを最優先
+  if (MANUAL_CATEGORY[item.videoId]) {
+    return MANUAL_CATEGORY[item.videoId];
+  }
+
+  const title = item.title;
+
+  // 2. タイトルの先頭に「雑談」がある場合は、後ろに別ワードがあっても雑談にする
+  if (title.startsWith('雑談') || title.startsWith('【雑談】') || title.startsWith('雑談！')) {
+    return '☕ 雑談';
+  }
+
   if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
     return '🎤 歌枠';
   }
@@ -85,7 +102,7 @@ const getCategory = (title: string) => {
   return '☕ 雑談';
 };
 
-// 目次ボタンで使うカテゴリ一覧（「その他・ゲーム」は削除）
+// 目次ボタンで使うカテゴリ一覧
 const CATEGORIES = [
   '🎤 歌枠',
   '⏳ 耐久配信',
@@ -160,7 +177,7 @@ export default function Home() {
 
     // カテゴリ（目次）フィルタ
     if (selectedCategory !== 'all') {
-      result = result.filter((item) => getCategory(item.title) === selectedCategory);
+      result = result.filter((item) => getCategory(item) === selectedCategory);
     }
 
     // ソート処理（新しい順・古い順）
@@ -564,7 +581,7 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
               {CATEGORIES.map((cat) => {
-                const count = archives.filter(item => getCategory(item.title) === cat).length;
+                const count = archives.filter(item => getCategory(item) === cat).length;
                 if (count === 0) return null; // 0件のカテゴリは非表示
                 return (
                   <button
