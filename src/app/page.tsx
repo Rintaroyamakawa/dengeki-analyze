@@ -34,7 +34,7 @@ const MANUAL_CATEGORY: { [videoId: string]: string } = {
   '3P5GTXoTH_Q': '☕ 雑談', // 初配信振り返り雑談
 };
 
-// テキストから17項目のカテゴリを判定する共通ロジック（一致しなければ null を返す）
+// テキストから項目のカテゴリを判定する共通ロジック
 const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('歌枠') || text.includes('歌ってみた') || text.includes('カラオケ')) {
     return '🎤 歌枠';
@@ -104,9 +104,7 @@ const matchCategoryFromText = (text: string): string | null => {
   return null;
 };
 
-// ご指定の条件に合わせてジャンルを自動判定する関数
 const getCategory = (item: ArchiveItem) => {
-  // 1. 個別指定リストにあればそれを最優先
   const cleanId = item.videoId.trim();
   if (MANUAL_CATEGORY[cleanId]) {
     return MANUAL_CATEGORY[cleanId];
@@ -114,10 +112,8 @@ const getCategory = (item: ArchiveItem) => {
 
   const title = item.title.trim();
 
-  // 2. 【】で囲まれた部分をすべて抜き出して、そこを最優先の判断材料にする
   const bracketMatches = title.match(/【([^】]+)】/g);
   if (bracketMatches) {
-    // チャンネル名表記（【電撃ニコ / ぽけぶい】など）はノイズになるため除外して結合
     const bracketText = bracketMatches
       .map(m => m.slice(1, -1))
       .filter(inner => !inner.includes('電撃ニコ'))
@@ -129,20 +125,16 @@ const getCategory = (item: ArchiveItem) => {
     }
   }
 
-  // 3. タイトルの先頭に「雑談」がある場合や、「歌枠のお礼」「振り返り」などは雑談にする
   if (title.startsWith('雑談') || title.includes('歌枠のお礼') || title.includes('振り返り')) {
     return '☕ 雑談';
   }
 
-  // 4. 【】で決まらなかった場合は、タイトル全体から判定
   const catFromTitle = matchCategoryFromText(title);
   if (catFromTitle) return catFromTitle;
 
-  // 5. 上記以外はすべて「雑談」にまとめる
   return '☕ 雑談';
 };
 
-// 目次ボタンで使うカテゴリ一覧
 const CATEGORIES = [
   '🎤 歌枠',
   '⏳ 耐久配信',
@@ -170,6 +162,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [isLocal, setIsLocal] = useState(false);
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
@@ -186,6 +179,14 @@ export default function Home() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
+    // ローカル環境（localhost）かどうかを判定
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        setIsLocal(true);
+      }
+    }
+
     const fetchArchives = async () => {
       try {
         const res = await fetch('/api/data');
@@ -205,7 +206,6 @@ export default function Home() {
   const filteredArchives = useMemo(() => {
     let result = [...archives];
     
-    // 検索フィルタ
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -215,12 +215,10 @@ export default function Home() {
       );
     }
 
-    // カテゴリ（目次）フィルタ
     if (selectedCategory !== 'all') {
       result = result.filter((item) => getCategory(item) === selectedCategory);
     }
 
-    // ソート処理（新しい順・古い順）
     result.sort((a, b) => {
       const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
       const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
@@ -358,7 +356,6 @@ export default function Home() {
     setIsVideoLoaded(false);
   };
 
-  // アーカイブカードの描画部品
   const renderArchiveCard = (item: ArchiveItem) => {
     const isSelected = data?.videoId === item.videoId;
     return (
@@ -369,7 +366,6 @@ export default function Home() {
           isSelected ? 'ring-2 ring-blue-500 border-blue-500' : 'hover:border-blue-300'
         }`}
       >
-        {/* YouTubeサムネイル */}
         <div className="aspect-video bg-gray-900 relative overflow-hidden">
           <img
             src={`https://i.ytimg.com/vi/${item.videoId}/mqdefault.jpg`}
@@ -384,7 +380,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* タイトル＆ID */}
         <div className="p-3 flex-1 flex flex-col justify-between">
           <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
             {item.title}
@@ -408,7 +403,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 font-sans pb-16">
-      {/* ヘッダー */}
       <header className="bg-white border-b sticky top-0 z-30 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -420,17 +414,19 @@ export default function Home() {
               {archives.length}件収録
             </span>
           </div>
-          <Link
-            href="/admin"
-            className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded transition-colors"
-          >
-            ⚙️ データ管理 (/admin)
-          </Link>
+          {/* ローカル環境のときだけデータ管理ボタンを表示する */}
+          {isLocal && (
+            <Link
+              href="/admin"
+              className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded transition-colors"
+            >
+              ⚙️ データ管理 (/admin)
+            </Link>
+          )}
         </div>
       </header>
 
       <div className="max-w-5xl mx-auto px-4 pt-6 space-y-8">
-        {/* 🔍 見どころ解析パネル */}
         <section className="bg-white border rounded-xl p-5 shadow-sm">
           <h2 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
             <span>📊</span>
@@ -485,16 +481,12 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* 📊 ヒートマップ */}
               {optimizedHeatmap.length > 0 && (
                 <div className="bg-gray-50 border rounded-lg p-4">
                   <h4 className="text-xs font-bold text-gray-700 mb-2 flex items-center justify-between">
                     <span>🔥 チャット熱量ヒートマップ（配信全体の盛り上がり分布）</span>
                     <span className="text-[11px] text-gray-400 font-normal">バーをクリックするとその時間にジャンプ</span>
                   </h4>
-                  <p className="text-[11px] text-gray-500 mb-2">
-                    ※アーカイブ動画のコメント欄やタイムスタンプをもとに、コメントの集中度を集計しています。
-                  </p>
                   
                   <div className="h-28 flex items-end gap-[1px] bg-white border-b border-x p-1 rounded">
                     {optimizedHeatmap.map((item, idx) => {
@@ -526,7 +518,6 @@ export default function Home() {
                 </div>
               )}
 
-              {/* タイムスタンプ一覧 */}
               <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
                 {data.timestamps.length === 0 ? (
                   <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
@@ -565,7 +556,6 @@ export default function Home() {
           )}
         </section>
 
-        {/* 📚 保存済みアーカイブ一覧セクション */}
         <section className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-base font-extrabold text-gray-800 flex items-center gap-2">
@@ -576,7 +566,6 @@ export default function Home() {
               </span>
             </h2>
 
-            {/* 検索＆ソートコントロール */}
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -596,7 +585,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 🎯 カテゴリ目次（クリックで一発選択・絞り込み） */}
           <div className="bg-white border rounded-xl p-3 shadow-sm space-y-2">
             <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
               <span>📂 カテゴリ・シリーズで絞り込み（クリックで選択）</span>
@@ -622,7 +610,7 @@ export default function Home() {
               </button>
               {CATEGORIES.map((cat) => {
                 const count = archives.filter(item => getCategory(item) === cat).length;
-                if (count === 0) return null; // 0件のカテゴリは非表示
+                if (count === 0) return null;
                 return (
                   <button
                     key={cat}
@@ -656,7 +644,6 @@ export default function Home() {
         </section>
       </div>
 
-      {/* 🎬 ポップアップ小窓レイヤー */}
       {activeItem && data && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-xl overflow-hidden animate-fadeIn">

@@ -1,439 +1,215 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-type SavedItem = {
-  videoId: string;
-  title?: string;
-  publishedAt?: string;
-  updatedAt: string;
-};
-
-type MasterArchive = {
+type ArchiveItem = {
   videoId: string;
   title: string;
+  publishedAt: string | null;
+  updatedAt: string;
+  timestampCount: number;
+  category?: string; // 手動設定用
 };
 
-export default function AdminDashboard() {
-  const [urlInput, setUrlInput] = useState('');
-  const [channelInput, setChannelInput] = useState('UCoal0OX6-5TCEVRApZjj5-Q'); // 電撃ニコのチャンネルIDを初期値に設定！
-  const [savedList, setSavedList] = useState<SavedItem[]>([]);
-  const [masterArchives, setMasterArchives] = useState<MasterArchive[]>([]);
-  const [newTitleInput, setNewTitleInput] = useState('');
-  const [newUrlInput, setNewUrlInput] = useState('');
-  const [statusText, setStatusText] = useState('準備完了');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
+const DEFAULT_CATEGORIES = [
+  '🎤 歌枠',
+  '⏳ 耐久配信',
+  '🎉 記念配信',
+  '🎧 ASMR',
+  '🤝 コラボ',
+  '☕ 雑談',
+  '🍄 スーパーマリオ64',
+  '☀️ スーパーマリオサンシャイン',
+  '✨ スーパーマリオギャラクシー２',
+  '🌟 マリオギャラクシー',
+  '⭐ スーパーマリオRPG',
+  '📜 ペーパーマリオRPG',
+  '🥁 リズム天国 ミラクルスターズ',
+  '🗡️ ブレスオブザワイルド',
+  '🏹 ティアーズ オブ ザ キングダム',
+  '🛡️ 時のオカリナ',
+  '⚡ ポケモンBW',
+  '✏️ 漢字でGO！',
+];
 
-  // どんなYouTubeのURL形式（/live/, watch?v=, youtu.beなど）でも確実に11桁のIDを切り出す関数
-  const extractVideoId = (input: string) => {
-    const trimmed = input.trim();
-    if (/^[0-9A-Za-z_-]{11}$/.test(trimmed)) return trimmed;
-    try {
-      const url = new URL(trimmed);
-      if (url.hostname === 'youtu.be') {
-        return url.pathname.slice(1, 12);
-      }
-      if (url.hostname.includes('youtube.com')) {
-        const v = url.searchParams.get('v');
-        if (v) return v;
-        const parts = url.pathname.split('/');
-        const idx = parts.findIndex(p => p === 'live' || p === 'embed' || p === 'v');
-        if (idx !== -1 && parts[idx + 1]) {
-          return parts[idx + 1].slice(0, 11);
-        }
-      }
-    } catch (e) {
-      // URL形式でない場合のフォールバック
-    }
-    const match = trimmed.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
-    return match ? match[1] : trimmed;
-  };
-
-  const fetchSavedList = async () => {
-    const res = await fetch('/api/data');
-    const data = await res.json();
-    if (Array.isArray(data)) {
-      setSavedList(data);
-    }
-  };
+export default function AdminPage() {
+  const [archives, setArchives] = useState<ArchiveItem[]>([]);
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetchSavedList();
-    const savedMaster = localStorage.getItem('dengekiniko_master_archives');
-    if (savedMaster) {
+    // ローカルストレージからカスタムカテゴリや手動割り当てを読み込む
+    const savedCategories = localStorage.getItem('custom_categories');
+    if (savedCategories) {
       try {
-        setMasterArchives(JSON.parse(savedMaster));
+        setCategories(JSON.parse(savedCategories));
       } catch (e) {
         console.error(e);
       }
     }
+
+    const fetchArchives = async () => {
+      try {
+        const res = await fetch('/api/data');
+        if (res.ok) {
+          const list = await res.json();
+          // ローカルストレージから割り当て情報を復元
+          const manualMap = JSON.parse(localStorage.getItem('manual_assignments') || '{}');
+          const initialized = list.map((item: ArchiveItem) => ({
+            ...item,
+            category: manualMap[item.videoId] || '',
+          }));
+          setArchives(initialized);
+        }
+      } catch (e) {
+        console.error('データ取得エラー:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArchives();
   }, []);
 
-  const saveMasterToStorage = (newList: MasterArchive[]) => {
-    setMasterArchives(newList);
-    localStorage.setItem('dengekiniko_master_archives', JSON.stringify(newList));
-  };
-
-  // YouTubeチャンネルの全配信をAPIで一括同期する
-  const handleSyncChannel = async () => {
-    if (!channelInput.trim()) {
-      alert('チャンネルIDを入力してください');
-      return;
-    }
-
-    setIsProcessing(true);
-    setStatusText('YouTubeからチャンネルの全配信を同期中...');
-
-    try {
-      const res = await fetch('/api/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ channelInput: channelInput.trim() }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || '同期に失敗しました');
-
-      const currentMaster = [...masterArchives];
-      let addedCount = 0;
-
-      for (const v of data.videos) {
-        if (!currentMaster.some(m => m.videoId === v.videoId)) {
-          currentMaster.push({ videoId: v.videoId, title: v.title });
-          addedCount++;
-        }
-      }
-
-      saveMasterToStorage(currentMaster);
-      setStatusText(`同期完了！ 新規に ${addedCount}件 のアーカイブをリストに追加しました。`);
-    } catch (err: any) {
-      console.error(err);
-      setStatusText(`エラー: ${err.message}`);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const savedVideoIds = new Set(savedList.map(item => item.videoId));
-  const uncollectedCount = masterArchives.filter(m => !savedVideoIds.has(m.videoId)).length;
-
-  // 未収集のアーカイブを一括で自動収集する
-  const handleBatchCollectUncollected = async () => {
-    const uncollected = masterArchives.filter(m => !savedVideoIds.has(m.videoId));
-    if (uncollected.length === 0) {
-      alert('未収集の配信はありません！すべて収集済みです。');
-      return;
-    }
-
-    if (!confirm(`未収集の配信 ${uncollected.length}件 の一括自動収集を開始しますか？`)) {
-      return;
-    }
-
-    setIsProcessing(true);
-    abortControllerRef.current = new AbortController();
-
-    for (let i = 0; i < uncollected.length; i++) {
-      if (abortControllerRef.current?.signal.aborted) {
-        setStatusText('一括収集を中断しました');
-        break;
-      }
-
-      const target = uncollected[i];
-      setStatusText(`一括収集中 (${i + 1}/${uncollected.length}): ${target.title}`);
-
-      try {
-        const res = await fetch('/api/data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            videoId: target.videoId, 
-            data: { videoId: target.videoId, title: target.title, heatmap: [] } 
-          }),
-          signal: abortControllerRef.current.signal,
-        });
-
-        if (!res.ok) throw new Error('保存に失敗しました');
-      } catch (err: any) {
-        if (err.name === 'AbortError') break;
-        console.error(err);
-      }
-    }
-
-    setIsProcessing(false);
-    setStatusText('一括収集が完了しました！');
-    fetchSavedList();
-  };
-
-  const handleStartCollection = async () => {
-    const rawLines = urlInput.split('\n').map(u => u.trim()).filter(Boolean);
-    if (rawLines.length === 0) {
-      alert('配信のURLまたは動画IDを入力してください');
-      return;
-    }
-
-    setIsProcessing(true);
-    abortControllerRef.current = new AbortController();
-    const currentMaster = [...masterArchives];
-
-    for (let i = 0; i < rawLines.length; i++) {
-      if (abortControllerRef.current?.signal.aborted) {
-        setStatusText('中断しました');
-        break;
-      }
-
-      const targetUrl = rawLines[i];
-      const videoId = extractVideoId(targetUrl);
-
-      if (!videoId || videoId.length !== 11) {
-        setStatusText(`エラー: 有効な動画IDが取得できませんでした (${targetUrl})`);
-        continue;
-      }
-
-      setStatusText(`収集中 (${i + 1}/${rawLines.length}): ${videoId}`);
-
-      try {
-        const res = await fetch('/api/data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ videoId, data: { videoId, heatmap: [] } }),
-          signal: abortControllerRef.current.signal,
-        });
-
-        if (!res.ok) {
-          const errJson = await res.json().catch(() => ({}));
-          throw new Error(errJson.error || '保存に失敗しました');
-        }
-
-        const resultJson = await res.json();
-        const fetchedTitle = resultJson.title || `配信 #${videoId}`;
-
-        if (!currentMaster.some(m => m.videoId === videoId)) {
-          currentMaster.push({ videoId, title: fetchedTitle });
-        }
-      } catch (err: any) {
-        if (err.name === 'AbortError') break;
-        console.error(err);
-        setStatusText(`エラー: ${err.message}`);
-      }
-    }
-
-    saveMasterToStorage(currentMaster);
-    setIsProcessing(false);
-    setStatusText('完了しました！');
-    setUrlInput('');
-    fetchSavedList();
-  };
-
-  const handleAbort = () => {
-    if (abortControllerRef.current) abortControllerRef.current.abort();
-    setIsProcessing(false);
-  };
-
-  const handleAddManual = (e: React.FormEvent) => {
+  // 新しい項目の追加
+  const handleAddCategory = (e: React.FormEvent) => {
     e.preventDefault();
-    const videoId = extractVideoId(newUrlInput);
-
-    if (!videoId || videoId.length !== 11) {
-      alert('正しいYouTubeのURLか動画IDを入力してください');
+    if (!newCategoryName.trim()) return;
+    if (categories.includes(newCategoryName.trim())) {
+      alert('すでに存在する項目です');
       return;
     }
-
-    if (masterArchives.some(m => m.videoId === videoId)) {
-      alert('すでにこの配信はリストに登録されています');
-      return;
-    }
-
-    const newList = [...masterArchives, { videoId, title: newTitleInput.trim() || `配信 #${videoId}` }];
-    saveMasterToStorage(newList);
-    setNewUrlInput('');
-    setNewTitleInput('');
+    const updated = [...categories, newCategoryName.trim()];
+    setCategories(updated);
+    localStorage.setItem('custom_categories', JSON.stringify(updated));
+    setNewCategoryName('');
+    setMessage('新しい項目を追加しました！');
+    setTimeout(() => setMessage(''), 3000);
   };
 
-  const handleDeleteMaster = (videoId: string) => {
-    if (confirm('この配信を管理リストから削除しますか？')) {
-      const newList = masterArchives.filter(m => m.videoId !== videoId);
-      saveMasterToStorage(newList);
-    }
+  // 各アーカイブのカテゴリ変更
+  const handleCategoryChange = (videoId: string, newCat: string) => {
+    const updated = archives.map(item => 
+      item.videoId === videoId ? { ...item, category: newCat } : item
+    );
+    setArchives(updated);
+
+    // ローカルストレージに保存
+    const manualMap: { [key: string]: string } = {};
+    updated.forEach(item => {
+      if (item.category) {
+        manualMap[item.videoId] = item.category;
+      }
+    });
+    localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
+    setMessage('変更を保存しました！');
+    setTimeout(() => setMessage(''), 2000);
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto font-sans">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">ローカルデータ収集ダッシュボード</h1>
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-700"
-        >
-          <span>⚡</span>
-          <span>ニコすこ！に戻る</span>
-        </Link>
-      </div>
-
-      {/* チャンネル自動同期 ＆ 一括収集センター */}
-      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-        <label className="block text-sm font-semibold mb-1 text-blue-900">
-          YouTubeチャンネル自動同期センター
-        </label>
-        <p className="text-xs text-blue-700 mb-3">
-          1. チャンネルIDで同期して全配信をリストに登録し、2. 未収集の配信を一括で自動取得できます。
-        </p>
-        <div className="flex gap-2 mb-3">
-          <input
-            type="text"
-            className="flex-1 p-2 border rounded text-sm bg-white font-mono"
-            value={channelInput}
-            onChange={(e) => setChannelInput(e.target.value)}
-            disabled={isProcessing}
-          />
-          <button
-            onClick={handleSyncChannel}
-            disabled={isProcessing}
-            className="px-4 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+    <main className="min-h-screen bg-gray-50 text-gray-900 font-sans pb-16">
+      <header className="bg-white border-b sticky top-0 z-30 shadow-sm">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">⚙️</span>
+            <h1 className="text-lg font-extrabold tracking-tight text-gray-900">
+              データ管理・項目編集 (管理者画面)
+            </h1>
+          </div>
+          <Link
+            href="/"
+            className="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded transition-colors"
           >
-            チャンネルを同期する
-          </button>
+            🏠 サイトに戻る
+          </Link>
         </div>
+      </header>
 
-        <div>
-          <button
-            onClick={handleBatchCollectUncollected}
-            disabled={isProcessing || uncollectedCount === 0}
-            className="w-full py-3 bg-purple-600 text-white rounded font-semibold text-sm hover:bg-purple-700 disabled:opacity-50 transition-colors shadow-sm"
-          >
-            🚀 未収集の配信（{uncollectedCount}件）をすべて一括で自動収集する
-          </button>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">
-          個別収集したい配信のURL（1行に1つ）
-        </label>
-        <textarea
-          className="w-full h-20 p-3 border rounded-md text-sm"
-          placeholder="https://www.youtube.com/watch?v=xxxxx"
-          value={urlInput}
-          onChange={(e) => setUrlInput(e.target.value)}
-          disabled={isProcessing}
-        />
-      </div>
-
-      <div className="flex gap-4 mb-6">
-        {!isProcessing ? (
-          <button
-            onClick={handleStartCollection}
-            className="px-6 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700"
-          >
-            選択したURLのデータを収集する
-          </button>
-        ) : (
-          <button
-            onClick={handleAbort}
-            className="px-6 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700"
-          >
-            中断する
-          </button>
+      <div className="max-w-5xl mx-auto px-4 pt-6 space-y-6">
+        {message && (
+          <div className="bg-green-50 border border-green-200 text-green-700 p-3 rounded-lg text-sm font-bold">
+            ✨ {message}
+          </div>
         )}
-        <span className="self-center text-sm text-gray-600 font-mono">
-          ステータス: {statusText}
-        </span>
-      </div>
 
-      {/* ローカル保存済みデータ一覧 */}
-      <div className="border-t pt-6 mb-8">
-        <h2 className="text-lg font-semibold mb-1">ローカル保存済みデータ一覧 ({savedList.length}件)</h2>
-        <p className="text-xs text-gray-500 mb-3">dataフォルダに実ファイルとして保存されているデータです。</p>
-        <ul className="bg-gray-50 border rounded-md divide-y max-h-60 overflow-y-auto">
-          {savedList.length === 0 ? (
-            <li className="p-4 text-sm text-gray-500">まだ保存されたデータはありません</li>
+        {/* 新規項目の追加セクション */}
+        <section className="bg-white border rounded-xl p-5 shadow-sm space-y-3">
+          <h2 className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
+            <span>➕</span>
+            <span>新しい項目（カテゴリ・シリーズ）の追加</span>
+          </h2>
+          <form onSubmit={handleAddCategory} className="flex gap-2">
+            <input
+              type="text"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+              placeholder="例: 🎨 お絵描き配信、💡 新企画 など..."
+              className="border border-gray-300 p-2.5 flex-1 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 text-white font-bold text-sm px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+            >
+              項目を追加
+            </button>
+          </form>
+        </section>
+
+        {/* アーカイブの選択・手動割り当てセクション */}
+        <section className="bg-white border rounded-xl p-5 shadow-sm space-y-4">
+          <h2 className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
+            <span>📋</span>
+            <span>アーカイブごとの項目（カテゴリ）選択・管理</span>
+          </h2>
+          <p className="text-xs text-gray-500">
+            自動判定がズレている動画や、別の項目に動かしたい動画は、プルダウンから自由に変更できます（ブラウザに自動保存されます）。
+          </p>
+
+          {loading ? (
+            <div className="text-center py-8 text-gray-400 text-sm">読み込み中...</div>
           ) : (
-            savedList.map((item) => (
-              <li key={item.videoId} className="p-3 flex justify-between items-center text-sm">
-                <div>
-                  <div className="font-semibold text-gray-800">{item.title}</div>
-                  <div className="text-xs text-gray-400 font-mono">ID: {item.videoId}</div>
-                </div>
-                <div className="text-right text-xs text-gray-500">
-                  <div>更新: {new Date(item.updatedAt).toLocaleString()}</div>
-                </div>
-              </li>
-            ))
-          )}
-        </ul>
-      </div>
-
-      {/* 配信アーカイブ管理リスト */}
-      <div className="border-t pt-6">
-        <h2 className="text-lg font-semibold mb-1">配信アーカイブ管理リスト ({masterArchives.length}件)</h2>
-        <p className="text-xs text-gray-500 mb-3">収集済みのものは黄色にハイライトされます。</p>
-
-        <form onSubmit={handleAddManual} className="flex gap-2 mb-4">
-          <input
-            type="text"
-            placeholder="YouTubeのURLまたはID"
-            className="flex-1 p-2 border rounded text-sm"
-            value={newUrlInput}
-            onChange={(e) => setNewUrlInput(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="タイトル（任意）"
-            className="w-1/3 p-2 border rounded text-sm"
-            value={newTitleInput}
-            onChange={(e) => setNewTitleInput(e.target.value)}
-          />
-          <button type="submit" className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-700">
-            個別追加
-          </button>
-        </form>
-
-        <div className="bg-gray-50 border rounded-md divide-y max-h-80 overflow-y-auto">
-          {masterArchives.length === 0 ? (
-            <div className="p-4 text-sm text-gray-500">管理リストに配信がありません。上の「チャンネルを同期する」ボタンを押してください。</div>
-          ) : (
-            masterArchives.map((target) => {
-              const isCollected = savedVideoIds.has(target.videoId);
-              const savedInfo = savedList.filter(s => s.videoId === target.videoId)[0];
-
-              return (
-                <div
-                  key={target.videoId}
-                  className={`p-3 flex justify-between items-center text-sm transition-colors ${
-                    isCollected ? 'bg-yellow-100 border-l-4 border-yellow-500' : 'bg-white'
-                  }`}
-                >
-                  <div>
-                    <div className="font-semibold text-gray-800">
-                      {savedInfo?.title || target.title}
-                    </div>
-                    <div className="text-xs text-gray-500 font-mono">
-                      ID: {target.videoId} {isCollected ? '✨ [収集済み]' : '⏳ [未収集]'}
+            <div className="border rounded-lg overflow-hidden divide-y">
+              {archives.map((item) => (
+                <div key={item.videoId} className="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center gap-3 flex-1">
+                    <img
+                      src={`https://i.ytimg.com/vi/${item.videoId}/mqdefault.jpg`}
+                      alt={item.title}
+                      className="w-24 aspect-video object-cover rounded shrink-0 bg-gray-900"
+                    />
+                    <div className="space-y-1">
+                      <h3 className="text-xs font-bold text-gray-800 line-clamp-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-[10px] text-gray-400 font-mono">
+                        ID: {item.videoId}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    {!isCollected && (
-                      <button
-                        onClick={() => setUrlInput(prev => prev ? `${prev}\nhttps://www.youtube.com/watch?v=${target.videoId}` : `https://www.youtube.com/watch?v=${target.videoId}`)}
-                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-xs font-medium"
-                      >
-                        入力欄に追加
-                      </button>
-                    )}
-                    <button
-                      onClick={() => handleDeleteMaster(target.videoId)}
-                      className="text-xs text-red-500 hover:underline"
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-gray-500 font-bold">項目:</span>
+                    <select
+                      value={item.category || ''}
+                      onChange={(e) => handleCategoryChange(item.videoId, e.target.value)}
+                      className="border border-gray-300 bg-white px-3 py-1.5 rounded-lg text-xs font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      削除
-                    </button>
+                      <option value="">（自動判定に任せる）</option>
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
-              );
-            })
+              ))}
+            </div>
           )}
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
