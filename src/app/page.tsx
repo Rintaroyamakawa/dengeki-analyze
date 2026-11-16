@@ -28,22 +28,27 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
-// 🛠️ 例外用：特定の動画IDを強制的に好きなカテゴリに入れたいときはここに追記！
+// 🛠️ 例外用：特定の動画IDを強制的に好きなカテゴリに入れたいときはここに追記
 const MANUAL_CATEGORY: { [videoId: string]: string } = {
-  'Y6zCtzveayA': '☕ 雑談', // 歌枠のお礼雑談
+  'Y6zCtzveayA': '☕ 雑談',
 };
 
 // ご指定の条件に合わせてジャンルを自動判定する関数
 const getCategory = (item: ArchiveItem) => {
-  // 1. 個別指定リストにあればそれを最優先
-  if (MANUAL_CATEGORY[item.videoId]) {
-    return MANUAL_CATEGORY[item.videoId];
+  // 1. 個別指定リストにあればそれを最優先（前後の空白も除去して照合）
+  const cleanId = item.videoId.trim();
+  if (MANUAL_CATEGORY[cleanId]) {
+    return MANUAL_CATEGORY[cleanId];
   }
 
-  const title = item.title;
+  const title = item.title.trim();
 
-  // 2. タイトルの先頭に「雑談」がある場合は、後ろに別ワードがあっても雑談にする
-  if (title.startsWith('雑談') || title.startsWith('【雑談】') || title.startsWith('雑談！')) {
+  // 2. タイトルの先頭に「雑談」がある場合は、後ろに「歌枠」などが入っていても確実に雑談にする
+  if (
+    title.startsWith('雑談') ||
+    title.startsWith('【雑談】') ||
+    title.includes('歌枠のお礼')
+  ) {
     return '☕ 雑談';
   }
 
@@ -74,11 +79,12 @@ const getCategory = (item: ArchiveItem) => {
   if (title.includes('ギャラクシー')) {
     return '🌟 マリオギャラクシー';
   }
-  if (title.includes('マリオRPG')) {
-    return '⭐ スーパーマリオRPG';
-  }
+  // ※「ペーパーマリオ」を「マリオRPG」より先に判定する！
   if (title.includes('ペーパーマリオ')) {
     return '📜 ペーパーマリオRPG';
+  }
+  if (title.includes('マリオRPG')) {
+    return '⭐ スーパーマリオRPG';
   }
   if (title.includes('リズム天国') || title.includes('ミラクルスターズ')) {
     return '🥁 リズム天国 ミラクルスターズ';
@@ -98,6 +104,7 @@ const getCategory = (item: ArchiveItem) => {
   if (title.includes('漢字でGO')) {
     return '✏️ 漢字でGO！';
   }
+
   // 上記以外はすべて「雑談」にまとめる
   return '☕ 雑談';
 };
