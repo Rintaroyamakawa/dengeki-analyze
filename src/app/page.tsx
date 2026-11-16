@@ -28,7 +28,7 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
-// ご指定いただいた17個の項目に合わせて細かくジャンルを自動判定する関数
+// ご指定いただいた項目に合わせて細かくジャンルを自動判定する関数（ポケモンホワイトもポケモンBWに統合）
 const getCategory = (title: string) => {
   if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
     return '🎤 歌枠';
@@ -75,7 +75,7 @@ const getCategory = (title: string) => {
   if (title.includes('時のオカリナ') || title.includes('時オカ')) {
     return '🛡️ 時のオカリナ';
   }
-  if (title.includes('ポケモン') || title.includes('BW')) {
+  if (title.includes('ポケモン') || title.includes('BW') || title.includes('ホワイト') || title.includes('ポケットモンスター')) {
     return '⚡ ポケモンBW';
   }
   if (title.includes('漢字でGO')) {
@@ -84,11 +84,34 @@ const getCategory = (title: string) => {
   return '🎮 その他の配信・ゲーム';
 };
 
+// 目次ボタンで使うカテゴリ一覧
+const CATEGORIES = [
+  '🎤 歌枠',
+  '⏳ 耐久配信',
+  '🎉 記念配信',
+  '☕ 雑談配信',
+  '🤝 コラボ系',
+  '🍄 スーパーマリオ64',
+  '☀️ スーパーマリオサンシャイン',
+  '✨ スーパーマリオギャラクシー２',
+  '🌟 マリオギャラクシー',
+  '⭐ スーパーマリオRPG',
+  '📜 ペーパーマリオRPG',
+  '🥁 リズム天国 ミラクルスターズ',
+  '🗡️ ブレスオブザワイルド',
+  '🏹 ティアーズ オブ ザ キングダム',
+  '🛡️ 時のオカリナ',
+  '⚡ ポケモンBW',
+  '✏️ 漢字でGO！',
+  '🎮 その他の配信・ゲーム',
+];
+
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'genre'>('newest');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
@@ -134,47 +157,20 @@ export default function Home() {
       );
     }
 
-    // 通常のソート処理（新しい順・古い順）
-    if (sortOrder === 'oldest') {
-      result.sort((a, b) => {
-        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
-        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateA - dateB;
-      });
-    } else if (sortOrder === 'newest') {
-      result.sort((a, b) => {
-        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
-        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateB - dateA;
-      });
+    // カテゴリ（目次）フィルタ
+    if (selectedCategory !== 'all') {
+      result = result.filter((item) => getCategory(item.title) === selectedCategory);
     }
 
+    // ソート処理（新しい順・古い順）
+    result.sort((a, b) => {
+      const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
+      const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+
     return result;
-  }, [archives, searchQuery, sortOrder]);
-
-  // 指定されたジャンル別にグループ化し、グループ内は「新しい順（追加日順）」にソート
-  const groupedArchives = useMemo(() => {
-    if (sortOrder !== 'genre') return null;
-
-    const groups: { [key: string]: ArchiveItem[] } = {};
-    
-    filteredArchives.forEach((item) => {
-      const cat = getCategory(item.title);
-      if (!groups[cat]) groups[cat] = [];
-      groups[cat].push(item);
-    });
-
-    // 各グループ内を「新しい順（配信日・追加日の新しい順）」にソート
-    Object.keys(groups).forEach((cat) => {
-      groups[cat].sort((a, b) => {
-        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
-        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-        return dateB - dateA; // 新しい順
-      });
-    });
-
-    return groups;
-  }, [filteredArchives, sortOrder]);
+  }, [archives, searchQuery, selectedCategory, sortOrder]);
 
   const optimizedHeatmap = useMemo(() => {
     if (!data?.heatmapData) return [];
@@ -516,7 +512,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-base font-extrabold text-gray-800 flex items-center gap-2">
               <span>🎬</span>
-              <span>アーカイブ一覧（クリックで即解析）</span>
+              <span>アーカイブ一覧</span>
               <span className="text-xs font-normal text-gray-500">
                 {filteredArchives.length}件表示中
               </span>
@@ -534,12 +530,55 @@ export default function Home() {
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}
-                className="border border-gray-300 bg-white px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-700"
+                className="border border-gray-300 bg-white px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-700 shrink-0"
               >
                 <option value="newest">新しい順</option>
                 <option value="oldest">古い順</option>
-                <option value="genre">ジャンル順</option>
               </select>
+            </div>
+          </div>
+
+          {/* 🎯 カテゴリ目次（クリックで一発選択・絞り込み） */}
+          <div className="bg-white border rounded-xl p-3 shadow-sm space-y-2">
+            <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
+              <span>📂 シリーズ・カテゴリで絞り込み（クリックで選択）</span>
+              {selectedCategory !== 'all' && (
+                <button
+                  onClick={() => setSelectedCategory('all')}
+                  className="text-blue-600 hover:underline text-xs"
+                >
+                  ✕ 絞り込みを解除
+                </button>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
+                  selectedCategory === 'all'
+                    ? 'bg-blue-600 text-white shadow'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                すべて ({archives.length})
+              </button>
+              {CATEGORIES.map((cat) => {
+                const count = archives.filter(item => getCategory(item.title) === cat).length;
+                if (count === 0) return null; // 0件のカテゴリは非表示
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
+                      selectedCategory === cat
+                        ? 'bg-blue-600 text-white shadow'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    {cat} ({count})
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -551,25 +590,7 @@ export default function Home() {
             <div className="bg-white border rounded-xl p-8 text-center text-gray-500 text-sm">
               該当するアーカイブが見つかりませんでした。
             </div>
-          ) : sortOrder === 'genre' && groupedArchives ? (
-            /* 📁 シリーズ別に分かれ、中身は「新しい順（追加日順）」で表示 */
-            <div className="space-y-8">
-              {Object.entries(groupedArchives).map(([category, items]) => (
-                <div key={category} className="space-y-3">
-                  <h3 className="text-sm font-extrabold text-gray-800 bg-white border px-4 py-2 rounded-lg shadow-sm flex items-center justify-between">
-                    <span>{category}</span>
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-mono font-normal">
-                      {items.length}件
-                    </span>
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {items.map((item) => renderArchiveCard(item))}
-                  </div>
-                </div>
-              ))}
-            </div>
           ) : (
-            /* 通常の一覧表示（新しい順・古い順） */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredArchives.map((item) => renderArchiveCard(item))}
             </div>
