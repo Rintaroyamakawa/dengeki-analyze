@@ -28,7 +28,7 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
-// ご指定いただいた項目に合わせて細かくジャンルを自動判定する関数（ポケモンホワイトもポケモンBWに統合）
+// ご指定の条件に合わせてジャンルを自動判定する関数
 const getCategory = (title: string) => {
   if (title.includes('歌枠') || title.includes('歌ってみた') || title.includes('カラオケ')) {
     return '🎤 歌枠';
@@ -36,14 +36,14 @@ const getCategory = (title: string) => {
   if (title.includes('耐久')) {
     return '⏳ 耐久配信';
   }
-  if (title.includes('記念') || title.includes('万人') || title.includes('周年')) {
+  if (title.includes('記念') || title.includes('万人') || title.includes('周年') || title.includes('初配信')) {
     return '🎉 記念配信';
   }
-  if (title.includes('雑談')) {
-    return '☕ 雑談配信';
+  if (title.includes('ASMR')) {
+    return '🎧 ASMR';
   }
-  if (title.includes('コラボ') || title.includes('ゲスト') || title.includes('対談')) {
-    return '🤝 コラボ系';
+  if (title.includes('コラボ') || title.includes('ゲスト') || title.includes('対談') || title.includes('Phasmophobia')) {
+    return '🤝 コラボ';
   }
   if (title.includes('マリオ64') || title.includes('スーパーマリオ64')) {
     return '🍄 スーパーマリオ64';
@@ -81,16 +81,18 @@ const getCategory = (title: string) => {
   if (title.includes('漢字でGO')) {
     return '✏️ 漢字でGO！';
   }
-  return '🎮 その他の配信・ゲーム';
+  // 上記以外はすべて「雑談」にまとめる
+  return '☕ 雑談';
 };
 
-// 目次ボタンで使うカテゴリ一覧
+// 目次ボタンで使うカテゴリ一覧（「その他・ゲーム」は削除）
 const CATEGORIES = [
   '🎤 歌枠',
   '⏳ 耐久配信',
   '🎉 記念配信',
-  '☕ 雑談配信',
-  '🤝 コラボ系',
+  '🎧 ASMR',
+  '🤝 コラボ',
+  '☕ 雑談',
   '🍄 スーパーマリオ64',
   '☀️ スーパーマリオサンシャイン',
   '✨ スーパーマリオギャラクシー２',
@@ -103,7 +105,6 @@ const CATEGORIES = [
   '🛡️ 時のオカリナ',
   '⚡ ポケモンBW',
   '✏️ 漢字でGO！',
-  '🎮 その他の配信・ゲーム',
 ];
 
 export default function Home() {
@@ -541,7 +542,7 @@ export default function Home() {
           {/* 🎯 カテゴリ目次（クリックで一発選択・絞り込み） */}
           <div className="bg-white border rounded-xl p-3 shadow-sm space-y-2">
             <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
-              <span>📂 シリーズ・カテゴリで絞り込み（クリックで選択）</span>
+              <span>📂 カテゴリ・シリーズで絞り込み（クリックで選択）</span>
               {selectedCategory !== 'all' && (
                 <button
                   onClick={() => setSelectedCategory('all')}
