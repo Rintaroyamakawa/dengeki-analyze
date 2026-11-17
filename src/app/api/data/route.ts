@@ -67,50 +67,37 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
-    // 🛠️ 管理画面から直接送られてくる解析データオブジェクトから videoId を取得
     const videoId = body.videoId;
 
     if (!videoId) {
       return NextResponse.json({ error: 'Missing videoId' }, { status: 400 });
     }
 
-    let title = body?.title || `配信アーカイブ #${videoId}`;
-    let publishedAt = body?.publishedAt || null;
+    // 🛠️ 解析側（analyze）で取得した正確な publishedAt と title を最優先で使う
+    let title = body.title || `配信アーカイブ #${videoId}`;
+    let publishedAt = body.publishedAt !== undefined ? body.publishedAt : null;
 
+    // タイトルが不明な場合のみoEmbedで補完
     try {
-      // 1. タイトルをoembedから取得
-      const oembedRes = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
-      if (oembedRes.ok) {
-        const oembedData = await oembedRes.json();
-        if (oembedData.title) {
-          title = oembedData.title;
-        }
-      }
-
-      // 2. 公開日時をYouTubeのページHTMLから自動取得
-      const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
-      });
-      if (pageRes.ok) {
-        const html = await pageRes.text();
-        const match = html.match(/itemprop="datePublished"\s+content="([^"]+)"/);
-        if (match && match[1]) {
-          publishedAt = match[1];
+      if (!body.title || body.title === 'タイトル不明') {
+        const oembedRes = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+        if (oembedRes.ok) {
+          const oembedData = await oembedRes.json();
+          if (oembedData.title) {
+            title = oembedData.title;
+          }
         }
       }
     } catch (e) {
-      console.error('Failed to fetch YouTube metadata:', e);
+      console.error('Failed to fetch YouTube oEmbed title:', e);
     }
 
-    // 🛠️ 解析データ（timestampsやheatmapDataなど）を一切欠落させずにそのまま保存データに統合
+    // 🛠️ 送られてきたデータを崩さず、正確な publishedAt を保持したまま保存
     const savedData = {
       ...body,
       videoId,
-      title: title || body.title,
-      publishedAt: publishedAt || body.publishedAt || null,
+      title,
+      publishedAt,
       collectedAt: new Date().toISOString(),
     };
 

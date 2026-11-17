@@ -573,9 +573,20 @@ export default function Home() {
                   </h3>
                   <p className="text-xs text-gray-500 mt-1">
                     {data ? (
-                      <>
-                        総時間: {Math.floor(data.duration / 3600)}時間{Math.floor((data.duration % 3600) / 60)}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
-                      </>
+                      (() => {
+                        const effectiveDuration = data.duration > 0 
+                          ? data.duration 
+                          : (data.heatmapData && data.heatmapData.length > 0 
+                              ? data.heatmapData[data.heatmapData.length - 1].minute * 60 
+                              : 0);
+                        const hours = Math.floor(effectiveDuration / 3600);
+                        const mins = Math.floor((effectiveDuration % 3600) / 60);
+                        return (
+                          <>
+                            総時間: {hours}時間{mins}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
+                          </>
+                        );
+                      })()
                     ) : (
                       'データを解析中...'
                     )}
