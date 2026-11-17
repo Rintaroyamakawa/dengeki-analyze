@@ -57,6 +57,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '有効なYouTube URLではありません' }, { status: 400 });
     }
 
+    // 🛠️ 【追加】すでに public/data/ に保存済みのJSONがあれば、YouTubeを叩かずにそれをそのまま返す
+    const dataFilePath = path.join(process.cwd(), 'public', 'data', `${videoId}.json`);
+    if (fs.existsSync(dataFilePath)) {
+      try {
+        const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
+        const jsonData = JSON.parse(fileContent);
+        if (jsonData.heatmapData && jsonData.heatmapData.length > 0) {
+          return NextResponse.json(jsonData);
+        }
+      } catch (e) {
+        console.warn('保存済みJSONの読み込みに失敗しました:', e);
+      }
+    }
+
     const youtube = await getYoutubeClient();
     const info = await youtube.getBasicInfo(videoId);
 
@@ -208,13 +222,13 @@ export async function POST(req: NextRequest) {
       maxCount,
     };
 
-    // 🛠️ 解析結果を data/ フォルダに JSON ファイルとして自動保存
+    // 🛠️ 解析結果を public/data/ フォルダに JSON ファイルとして自動保存
     try {
-      const dataDir = path.join(process.cwd(), 'public', 'data');
-      if (!fs.existsSync(dataDir)) {
-        fs.mkdirSync(dataDir, { recursive: true });
+      const publicDataDir = path.join(process.cwd(), 'public', 'data');
+      if (!fs.existsSync(publicDataDir)) {
+        fs.mkdirSync(publicDataDir, { recursive: true });
       }
-      const filePath = path.join(dataDir, `${videoId}.json`);
+      const filePath = path.join(publicDataDir, `${videoId}.json`);
       fs.writeFileSync(filePath, JSON.stringify(responseData, null, 2), 'utf-8');
     } catch (saveErr) {
       console.warn('JSONファイルの保存に失敗しました:', saveErr);
