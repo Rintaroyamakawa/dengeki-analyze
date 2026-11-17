@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Innertube } from 'youtubei.js';
+import fs from 'fs';
+import path from 'path';
 
 let youtubeClient: Innertube | null = null;
 
@@ -58,7 +60,6 @@ export async function POST(req: NextRequest) {
     const youtube = await getYoutubeClient();
     const info = await youtube.getBasicInfo(videoId);
 
-    // 🛠️ タイトルを確実に取得（youtubei.jsが失敗した場合はYouTube公式oEmbed APIで必ず取得）
     let title = info.basic_info?.title;
     if (!title || title === 'タイトル不明') {
       try {
@@ -197,7 +198,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({
+    const responseData = {
       videoId,
       title,
       duration,
@@ -205,7 +206,21 @@ export async function POST(req: NextRequest) {
       timestamps: allTimestamps,
       heatmapData,
       maxCount,
-    });
+    };
+
+    // 🛠️ 解析結果を data/ フォルダに JSON ファイルとして自動保存
+    try {
+      const dataDir = path.join(process.cwd(), 'data');
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+      const filePath = path.join(dataDir, `${videoId}.json`);
+      fs.writeFileSync(filePath, JSON.stringify(responseData, null, 2), 'utf-8');
+    } catch (saveErr) {
+      console.warn('JSONファイルの保存に失敗しました:', saveErr);
+    }
+
+    return NextResponse.json(responseData);
   } catch (error: any) {
     console.error('API Error:', error);
     return NextResponse.json({ error: `エラー: ${error.message || '動画情報の取得に失敗しました'}` }, { status: 500 });
