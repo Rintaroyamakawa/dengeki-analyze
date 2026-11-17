@@ -180,6 +180,7 @@ export default function Home() {
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
+  const [activeArchiveTitle, setActiveArchiveTitle] = useState<string>(''); // 👈 選択中のアーカイブタイトル保持用
   const [data, setData] = useState<{
     videoId: string;
     title: string;
@@ -236,10 +237,11 @@ export default function Home() {
     if (exists) {
       updated = myBookmarks.filter(b => b.id !== clipId);
     } else {
+      const currentTitle = data.title || activeArchiveTitle || '無題の配信';
       const newBookmark: MyBookmark = {
         id: clipId,
         videoId: data.videoId,
-        videoTitle: data.title,
+        videoTitle: currentTitle,
         time: item.time,
         seconds: item.seconds,
         label: item.label,
@@ -349,12 +351,15 @@ export default function Home() {
     return Math.max(...optimizedHeatmap.map(item => item.count));
   }, [optimizedHeatmap]);
 
-  const runAnalyze = async (targetUrl: string) => {
+  const runAnalyze = async (targetUrl: string, presetTitle?: string) => {
     setUrl(targetUrl);
     setAnalyzing(true);
     setError('');
     setData(null);
     setActiveItem(null);
+    if (presetTitle) {
+      setActiveArchiveTitle(presetTitle);
+    }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -380,9 +385,9 @@ export default function Home() {
     runAnalyze(url);
   };
 
-  const handleSelectArchive = (videoId: string) => {
+  const handleSelectArchive = (videoId: string, title?: string) => {
     const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
-    runAnalyze(watchUrl);
+    runAnalyze(watchUrl, title);
   };
 
   const handleOpenModal = (item: TimestampItem) => {
@@ -417,7 +422,7 @@ export default function Home() {
     return (
       <div
         key={item.videoId}
-        onClick={() => handleSelectArchive(item.videoId)}
+        onClick={() => handleSelectArchive(item.videoId, item.title)}
         className={`group bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col ${
           isSelected ? 'ring-2 ring-blue-500 border-blue-500' : 'hover:border-blue-300'
         }`}
@@ -520,13 +525,21 @@ export default function Home() {
             </div>
           )}
 
-          {data && !analyzing && (
+          {(data || analyzing) && (
             <div className="mt-6 pt-6 border-t space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <h3 className="font-bold text-lg text-gray-900">{data.title}</h3>
+                  <h3 className="font-bold text-lg text-gray-900">
+                    {data?.title || activeArchiveTitle || (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
+                  </h3>
                   <p className="text-xs text-gray-500 mt-1">
-                    総時間: {Math.floor(data.duration / 3600)}時間{Math.floor((data.duration % 3600) / 60)}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
+                    {data ? (
+                      <>
+                        総時間: {Math.floor(data.duration / 3600)}時間{Math.floor((data.duration % 3600) / 60)}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
+                      </>
+                    ) : (
+                      'データを解析中...'
+                    )}
                   </p>
                 </div>
                 <button
@@ -537,7 +550,7 @@ export default function Home() {
                 </button>
               </div>
 
-              {optimizedHeatmap.length > 0 && (
+              {data && optimizedHeatmap.length > 0 && (
                 <div className="bg-gray-50 border rounded-lg p-4">
                   <h4 className="text-xs font-bold text-gray-700 mb-2 flex items-center justify-between">
                     <span>🔥 チャット熱量ヒートマップ（配信全体の盛り上がり分布）</span>
@@ -575,54 +588,56 @@ export default function Home() {
               )}
 
               {/* タイムスタンプ一覧（アニメーション付きブックマークボタン） */}
-              <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
-                {data.timestamps.length === 0 ? (
-                  <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
-                ) : (
-                  data.timestamps.map((item, idx) => {
-                    const clipId = `${data.videoId}_${item.seconds}`;
-                    const isBookmarked = myBookmarks.some(b => b.id === clipId);
-                    const authorName = item.authors?.[0] || '視聴者';
-                    const count = item.count || 1;
-                    const otherCount = count - 1;
+              {data && (
+                <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
+                  {data.timestamps.length === 0 ? (
+                    <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
+                  ) : (
+                    data.timestamps.map((item, idx) => {
+                      const clipId = `${data.videoId}_${item.seconds}`;
+                      const isBookmarked = myBookmarks.some(b => b.id === clipId);
+                      const authorName = item.authors?.[0] || '視聴者';
+                      const count = item.count || 1;
+                      const otherCount = count - 1;
 
-                    return (
-                      <div
-                        key={idx}
-                        className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 transition-colors"
-                      >
-                        <span
-                          onClick={() => handleOpenModal(item)}
-                          className="font-mono font-bold text-blue-600 w-16 shrink-0 cursor-pointer hover:underline"
+                      return (
+                        <div
+                          key={idx}
+                          className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 transition-colors"
                         >
-                          {item.time}
-                        </span>
-                        <span
-                          onClick={() => handleOpenModal(item)}
-                          className="flex-1 flex flex-wrap items-center gap-2 cursor-pointer"
-                        >
-                          <span>{item.label}</span>
-                          {count > 1 && (
-                            <span className="bg-orange-100 text-orange-700 text-xs px-2.5 py-0.5 rounded-full font-bold shrink-0">
-                              🔥 {count}人設定
-                            </span>
-                          )}
-                        </span>
-                        
-                        {/* 🌟 アニメーション付きブックマークボタン */}
-                        <BookmarkButton
-                          initialBookmarked={isBookmarked}
-                          onToggle={() => toggleBookmark(item)}
-                        />
+                          <span
+                            onClick={() => handleOpenModal(item)}
+                            className="font-mono font-bold text-blue-600 w-16 shrink-0 cursor-pointer hover:underline"
+                          >
+                            {item.time}
+                          </span>
+                          <span
+                            onClick={() => handleOpenModal(item)}
+                            className="flex-1 flex flex-wrap items-center gap-2 cursor-pointer"
+                          >
+                            <span>{item.label}</span>
+                            {count > 1 && (
+                              <span className="bg-orange-100 text-orange-700 text-xs px-2.5 py-0.5 rounded-full font-bold shrink-0">
+                                🔥 {count}人設定
+                              </span>
+                            )}
+                          </span>
+                          
+                          {/* 🌟 アニメーション付きブックマークボタン */}
+                          <BookmarkButton
+                            initialBookmarked={isBookmarked}
+                            onToggle={() => toggleBookmark(item)}
+                          />
 
-                        <span className="text-xs text-gray-400 shrink-0 hidden sm:inline">
-                          [{item.source}: {authorName} {otherCount > 0 ? `他${otherCount}人` : ''}]
-                        </span>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
+                          <span className="text-xs text-gray-400 shrink-0 hidden sm:inline">
+                            [{item.source}: {authorName} {otherCount > 0 ? `他${otherCount}人` : ''}]
+                          </span>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              )}
             </div>
           )}
         </section>
@@ -735,13 +750,13 @@ export default function Home() {
                         src={`https://i.ytimg.com/vi/${clip.videoId}/mqdefault.jpg`}
                         alt={clip.videoTitle}
                         className="w-28 aspect-video object-cover rounded shrink-0 bg-gray-900 cursor-pointer"
-                        onClick={() => handleSelectArchive(clip.videoId)}
+                        onClick={() => handleSelectArchive(clip.videoId, clip.videoTitle)}
                       />
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span
                             onClick={() => {
-                              handleSelectArchive(clip.videoId);
+                              handleSelectArchive(clip.videoId, clip.videoTitle);
                               setTimeout(() => {
                                 setActiveItem({
                                   time: clip.time,
