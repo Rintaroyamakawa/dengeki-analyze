@@ -203,7 +203,7 @@ export default function Home() {
         try {
           setMyBookmarks(JSON.parse(savedBookmarks));
         } catch (e) {
-          console.error('ブックマークの読み込みに失敗しました:', e);
+          console.error('切り抜きポイントの読み込みに失敗しました:', e);
         }
       }
     }
@@ -629,7 +629,7 @@ export default function Home() {
                             )}
                           </span>
                           
-                          {/* 🌟 ブックマークボタン */}
+                          {/* 🌟 切り抜きポイントボタン */}
                           <BookmarkButton
                             initialBookmarked={isBookmarked}
                             onToggle={() => toggleBookmark(item)}
@@ -653,7 +653,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-base font-extrabold text-gray-800 flex items-center gap-2">
               <span>🎬</span>
-              <span>{selectedCategory === 'bookmarks' ? '⭐ マイクリップ（ブックマーク一覧）' : 'アーカイブ一覧'}</span>
+              <span>{selectedCategory === 'bookmarks' ? '⭐ マイ切り抜きポイント一覧' : 'アーカイブ一覧'}</span>
               <span className="text-xs font-normal text-gray-500">
                 {selectedCategory === 'bookmarks' ? `${myBookmarks.length}件保存中` : `${filteredArchives.length}件表示中`}
               </span>
@@ -705,7 +705,7 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
 
-              {/* 🌟 マイクリップ専用タブ（静止画アイコン付き） */}
+              {/* 🌟 マイ切り抜きポイント専用タブ（静止画アイコン付き） */}
               <button
                 onClick={() => setSelectedCategory('bookmarks')}
                 className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
@@ -716,10 +716,10 @@ export default function Home() {
               >
                 <img
                   src="/lottie/ニコすこ！＿ブクマ＿ロゴ＿項目のところの静止画.png"
-                  alt="マイクリップ"
+                  alt="マイ切り抜きポイント"
                   className="w-4 h-4 object-contain select-none pointer-events-none"
                 />
-                マイクリップ ({myBookmarks.length})
+                マイ切り抜きポイント ({myBookmarks.length})
               </button>
 
               {CATEGORIES.map((cat) => {
@@ -745,8 +745,8 @@ export default function Home() {
           {selectedCategory === 'bookmarks' ? (
             myBookmarks.length === 0 ? (
               <div className="bg-white border rounded-xl p-12 text-center text-gray-500 text-sm space-y-2">
-                <p className="font-bold text-base">⭐ マイクリップはまだありません</p>
-                <p className="text-xs text-gray-400">配信を解析したときに、タイムスタンプの横にあるブックマークボタンを押すとここに保存されます！</p>
+                <p className="font-bold text-base">⭐ マイ切り抜きポイントはまだありません</p>
+                <p className="text-xs text-gray-400">配信を解析したときに、タイムスタンプの横にある切り抜きポイントボタンを押すとここに保存されます！</p>
               </div>
             ) : (
               <div className="bg-white border rounded-xl divide-y overflow-hidden">
@@ -772,7 +772,7 @@ export default function Home() {
                                   time: clip.time,
                                   seconds: clip.seconds,
                                   label: clip.label,
-                                  source: 'マイクリップ',
+                                  source: 'マイ切り抜きポイント',
                                   authors: ['自分'],
                                   count: 1,
                                 });

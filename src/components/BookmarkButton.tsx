@@ -43,13 +43,13 @@ export default function BookmarkButton({
       type="button"
       onClick={handleClick}
       className="relative flex items-center justify-center w-11 h-11 rounded-full hover:bg-gray-100/80 transition-transform active:scale-90 focus:outline-none cursor-pointer"
-      aria-label="ブックマーク"
-      title={isBookmarked ? 'ブックマーク解除' : '切り抜き用にブックマーク'}
+      aria-label="切り抜きポイント"
+      title={isBookmarked ? '切り抜きポイント解除' : '切り抜きポイントに追加'}
     >
       {!isBookmarked ? (
         <img
           src="/lottie/ニコすこ！＿ブクマ＿オフ.png"
-          alt="ブックマークオフ"
+          alt="切り抜きポイントオフ"
           className="w-7 h-7 object-contain select-none pointer-events-none transition-transform hover:scale-110"
         />
       ) : (
