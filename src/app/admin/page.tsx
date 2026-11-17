@@ -58,6 +58,7 @@ export default function AdminPage() {
   // 同期・収集用ステート
   const [channelInput, setChannelInput] = useState(DEFAULT_CHANNEL_ID);
   const [uncollectedVideos, setUncollectedVideos] = useState<SyncedVideo[]>([]);
+  const [showUncollectedList, setShowUncollectedList] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [isCollecting, setIsCollecting] = useState(false);
   const [bulkUrls, setBulkUrls] = useState('');
@@ -131,6 +132,9 @@ export default function AdminPage() {
       const uncollected = allVideos.filter((v) => !collectedIds.has(v.videoId));
 
       setUncollectedVideos(uncollected);
+      if (uncollected.length > 0) {
+        setShowUncollectedList(true);
+      }
       setStatusText(`同期完了（全${allVideos.length}件中、未収集 ${uncollected.length}件）`);
       showNotice(`チャンネル同期成功：未収集 ${uncollected.length}件`);
     } catch (err: unknown) {
@@ -361,6 +365,67 @@ export default function AdminPage() {
           >
             🚀 未収集の配信 ({uncollectedVideos.length}件) をすべて一括で自動収集する
           </button>
+
+          {/* 未収集リストの中身プレビュー（アコーディオン） */}
+          {uncollectedVideos.length > 0 && (
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setShowUncollectedList((prev) => !prev)}
+                className="w-full flex items-center justify-between bg-white hover:bg-blue-50 border border-blue-200 text-blue-900 font-bold text-xs px-3.5 py-2 rounded-lg transition-colors"
+              >
+                <span>📋 未収集の配信一覧を確認する（{uncollectedVideos.length}件）</span>
+                <span>{showUncollectedList ? '▲ 閉じる' : '▼ 開く'}</span>
+              </button>
+
+              {showUncollectedList && (
+                <div className="mt-2 bg-white border border-blue-200 rounded-lg max-h-80 overflow-y-auto divide-y divide-gray-100">
+                  {uncollectedVideos.map((video, index) => (
+                    <div
+                      key={video.videoId}
+                      className="p-2.5 flex items-center justify-between gap-3 hover:bg-gray-50"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <span className="text-[11px] font-mono text-gray-400 w-6 text-right shrink-0">
+                          {index + 1}.
+                        </span>
+                        <img
+                          src={`https://i.ytimg.com/vi/${video.videoId}/mqdefault.jpg`}
+                          alt={video.title}
+                          className="w-20 aspect-video object-cover rounded shrink-0 bg-gray-900"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <a
+                            href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-bold text-gray-800 hover:text-blue-600 line-clamp-1 block"
+                          >
+                            {video.title}
+                          </a>
+                          <div className="flex items-center gap-3 text-[11px] text-gray-500 mt-0.5 font-mono">
+                            <span>
+                              投稿・配信日時:{' '}
+                              {video.publishedAt
+                                ? new Date(video.publishedAt).toLocaleString('ja-JP', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                  })
+                                : '不明'}
+                            </span>
+                            <span className="text-gray-400">ID: {video.videoId}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </section>
 
         {/* 2. 個別収集したい配信のURL（1行に1つ） */}
