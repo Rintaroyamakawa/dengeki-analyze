@@ -1,7 +1,543 @@
 {
   "videoId": "3P5GTXoTH_Q",
   "title": "失敗しすぎた初配信振り返り…！？【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-08-04T09:30:04-07:00",
-  "collectedAt": "2026-11-16T01:53:22.590Z"
+  "duration": 3688,
+  "publishedAt": "2026-08-04T14:00:39.000Z",
+  "timestamps": [
+    {
+      "time": "2:57",
+      "seconds": 177,
+      "label": "はじまり（イケボ）",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:43",
+      "seconds": 283,
+      "label": "２５２５ shopping　振り返り",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "7:21",
+      "seconds": 441,
+      "label": "歌ってみたの話",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "12:09",
+      "seconds": 729,
+      "label": "初配信振り返り（チョコの話など）",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "13:50",
+      "seconds": 830,
+      "label": "ファンネームの話",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "16:03",
+      "seconds": 963,
+      "label": "マリオのタイトル",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "17:51",
+      "seconds": 1071,
+      "label": "お部屋紹介",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "21:24",
+      "seconds": 1284,
+      "label": "グッズについて",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "22:15",
+      "seconds": 1335,
+      "label": "スクショタイム📷（昨日よりアップで）",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "24:19",
+      "seconds": 1459,
+      "label": "昨日見せてない表情いろいろ①",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "24:51",
+      "seconds": 1491,
+      "label": "初配信もだけど、表情お披露目した後のゴキゲンな「･･･の、顔〜！🎵」が可愛すぎて好き！（ 25:41 26:09 27:16 28:42 ）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "25:26",
+      "seconds": 1526,
+      "label": "ここすき",
+      "source": "コメント",
+      "authors": [
+        "@セモりナ",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "29:49",
+      "seconds": 1789,
+      "label": "昨日のやらかしの話",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "33:06",
+      "seconds": 1986,
+      "label": "表情いろいろ②（+ヤンデレ風）",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "35:39",
+      "seconds": 2139,
+      "label": "リュック",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "36:44",
+      "seconds": 2204,
+      "label": "愛称について（アンケート）",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "42:13",
+      "seconds": 2533,
+      "label": "同期を調理して食べようとするニコちゃん",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "45:58",
+      "seconds": 2758,
+      "label": "挨拶について（アンケート）",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "54:04",
+      "seconds": 3244,
+      "label": "マリオの配信タイトルが「所見」になってる",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "54:28",
+      "seconds": 3268,
+      "label": "55:10 ニコちゃんの弱点🎯",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "58:06",
+      "seconds": 3486,
+      "label": "配信スケジュール",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "59:50",
+      "seconds": 3590,
+      "label": "おつにこー",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 10
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 10
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 0
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 10
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 0
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 10
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 10
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 0
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 20
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 10
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 0
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 10
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 10
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 0
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 20
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 20
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 0
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 10
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 0
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 10
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 0
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 10
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 10
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 0
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 0
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 0
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 0
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 0
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 10
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 0
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 0
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 10
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 0
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 0
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 0
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 0
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 0
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 0
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 0
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 0
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 20
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 0
+    },
+    {
+      "minute": 56,
+      "timeLabel": "56m",
+      "count": 0
+    },
+    {
+      "minute": 57,
+      "timeLabel": "57m",
+      "count": 0
+    },
+    {
+      "minute": 58,
+      "timeLabel": "58m",
+      "count": 10
+    },
+    {
+      "minute": 59,
+      "timeLabel": "59m",
+      "count": 10
+    },
+    {
+      "minute": 60,
+      "timeLabel": "1h0m",
+      "count": 0
+    },
+    {
+      "minute": 61,
+      "timeLabel": "1h1m",
+      "count": 0
+    }
+  ],
+  "maxCount": 20
 }

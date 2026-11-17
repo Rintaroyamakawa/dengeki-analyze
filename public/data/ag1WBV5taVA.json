@@ -1,7 +1,716 @@
 {
   "videoId": "ag1WBV5taVA",
   "title": "まだ寝てないしハロウィン終わってないよね！！【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-10-31T21:47:02-07:00",
-  "collectedAt": "2026-11-16T01:52:03.212Z"
+  "duration": 6408,
+  "publishedAt": "2026-10-31T14:53:01.000Z",
+  "timestamps": [
+    {
+      "time": "3:08",
+      "seconds": 188,
+      "label": "配信開始",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "16:25",
+      "seconds": 985,
+      "label": "お肉食べてお腹痛くなった話",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "17:50",
+      "seconds": 1070,
+      "label": "病み顔ニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "29:32",
+      "seconds": 1772,
+      "label": "マロ顔ニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "32:28",
+      "seconds": 1948,
+      "label": "ニコイングリッシュ「カーがブンブン」",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "44:19",
+      "seconds": 2659,
+      "label": "悪魔猫目ニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "45:08",
+      "seconds": 2708,
+      "label": "和風スイーツも好き",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "45:43",
+      "seconds": 2743,
+      "label": "魔王ニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "50:40",
+      "seconds": 3040,
+      "label": "にくなりやる(焼く)なり",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "52:38",
+      "seconds": 3158,
+      "label": "ニコちは最下級の悪魔だった",
+      "source": "コメント",
+      "authors": [
+        "@user-rin_yama"
+      ],
+      "count": 1
+    },
+    {
+      "time": "54:04",
+      "seconds": 3244,
+      "label": "青いホイップ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "58:39",
+      "seconds": 3519,
+      "label": "蝙蝠が読めないニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:04:03",
+      "seconds": 3843,
+      "label": "悪い顔？なニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:05:06",
+      "seconds": 3906,
+      "label": "病み悪役顔ニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:16:04",
+      "seconds": 4564,
+      "label": "しんちゃんのモノマネのモノマネ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:24:47",
+      "seconds": 5087,
+      "label": "ハロウィンボイスの裏話",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:41:29",
+      "seconds": 6089,
+      "label": "ステファニーボイス",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 10
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 0
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 0
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 0
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 0
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 0
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 10
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 10
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 0
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 0
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 0
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 0
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 0
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 10
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 10
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 0
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 0
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 0
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 0
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 0
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 0
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 0
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 0
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 0
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 0
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 0
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 10
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 20
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 0
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 0
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 0
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 0
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 10
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 0
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 10
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 0
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 10
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 0
+    },
+    {
+      "minute": 56,
+      "timeLabel": "56m",
+      "count": 0
+    },
+    {
+      "minute": 57,
+      "timeLabel": "57m",
+      "count": 0
+    },
+    {
+      "minute": 58,
+      "timeLabel": "58m",
+      "count": 10
+    },
+    {
+      "minute": 59,
+      "timeLabel": "59m",
+      "count": 0
+    },
+    {
+      "minute": 60,
+      "timeLabel": "1h0m",
+      "count": 0
+    },
+    {
+      "minute": 61,
+      "timeLabel": "1h1m",
+      "count": 0
+    },
+    {
+      "minute": 62,
+      "timeLabel": "1h2m",
+      "count": 0
+    },
+    {
+      "minute": 63,
+      "timeLabel": "1h3m",
+      "count": 0
+    },
+    {
+      "minute": 64,
+      "timeLabel": "1h4m",
+      "count": 10
+    },
+    {
+      "minute": 65,
+      "timeLabel": "1h5m",
+      "count": 10
+    },
+    {
+      "minute": 66,
+      "timeLabel": "1h6m",
+      "count": 0
+    },
+    {
+      "minute": 67,
+      "timeLabel": "1h7m",
+      "count": 0
+    },
+    {
+      "minute": 68,
+      "timeLabel": "1h8m",
+      "count": 0
+    },
+    {
+      "minute": 69,
+      "timeLabel": "1h9m",
+      "count": 0
+    },
+    {
+      "minute": 70,
+      "timeLabel": "1h10m",
+      "count": 0
+    },
+    {
+      "minute": 71,
+      "timeLabel": "1h11m",
+      "count": 0
+    },
+    {
+      "minute": 72,
+      "timeLabel": "1h12m",
+      "count": 0
+    },
+    {
+      "minute": 73,
+      "timeLabel": "1h13m",
+      "count": 0
+    },
+    {
+      "minute": 74,
+      "timeLabel": "1h14m",
+      "count": 0
+    },
+    {
+      "minute": 75,
+      "timeLabel": "1h15m",
+      "count": 0
+    },
+    {
+      "minute": 76,
+      "timeLabel": "1h16m",
+      "count": 10
+    },
+    {
+      "minute": 77,
+      "timeLabel": "1h17m",
+      "count": 0
+    },
+    {
+      "minute": 78,
+      "timeLabel": "1h18m",
+      "count": 0
+    },
+    {
+      "minute": 79,
+      "timeLabel": "1h19m",
+      "count": 0
+    },
+    {
+      "minute": 80,
+      "timeLabel": "1h20m",
+      "count": 0
+    },
+    {
+      "minute": 81,
+      "timeLabel": "1h21m",
+      "count": 0
+    },
+    {
+      "minute": 82,
+      "timeLabel": "1h22m",
+      "count": 0
+    },
+    {
+      "minute": 83,
+      "timeLabel": "1h23m",
+      "count": 0
+    },
+    {
+      "minute": 84,
+      "timeLabel": "1h24m",
+      "count": 10
+    },
+    {
+      "minute": 85,
+      "timeLabel": "1h25m",
+      "count": 0
+    },
+    {
+      "minute": 86,
+      "timeLabel": "1h26m",
+      "count": 0
+    },
+    {
+      "minute": 87,
+      "timeLabel": "1h27m",
+      "count": 0
+    },
+    {
+      "minute": 88,
+      "timeLabel": "1h28m",
+      "count": 0
+    },
+    {
+      "minute": 89,
+      "timeLabel": "1h29m",
+      "count": 0
+    },
+    {
+      "minute": 90,
+      "timeLabel": "1h30m",
+      "count": 0
+    },
+    {
+      "minute": 91,
+      "timeLabel": "1h31m",
+      "count": 0
+    },
+    {
+      "minute": 92,
+      "timeLabel": "1h32m",
+      "count": 0
+    },
+    {
+      "minute": 93,
+      "timeLabel": "1h33m",
+      "count": 0
+    },
+    {
+      "minute": 94,
+      "timeLabel": "1h34m",
+      "count": 0
+    },
+    {
+      "minute": 95,
+      "timeLabel": "1h35m",
+      "count": 0
+    },
+    {
+      "minute": 96,
+      "timeLabel": "1h36m",
+      "count": 0
+    },
+    {
+      "minute": 97,
+      "timeLabel": "1h37m",
+      "count": 0
+    },
+    {
+      "minute": 98,
+      "timeLabel": "1h38m",
+      "count": 0
+    },
+    {
+      "minute": 99,
+      "timeLabel": "1h39m",
+      "count": 0
+    },
+    {
+      "minute": 100,
+      "timeLabel": "1h40m",
+      "count": 0
+    },
+    {
+      "minute": 101,
+      "timeLabel": "1h41m",
+      "count": 10
+    },
+    {
+      "minute": 102,
+      "timeLabel": "1h42m",
+      "count": 0
+    },
+    {
+      "minute": 103,
+      "timeLabel": "1h43m",
+      "count": 0
+    },
+    {
+      "minute": 104,
+      "timeLabel": "1h44m",
+      "count": 0
+    },
+    {
+      "minute": 105,
+      "timeLabel": "1h45m",
+      "count": 0
+    },
+    {
+      "minute": 106,
+      "timeLabel": "1h46m",
+      "count": 0
+    }
+  ],
+  "maxCount": 20
 }

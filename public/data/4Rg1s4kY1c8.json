@@ -1,7 +1,3176 @@
 {
   "videoId": "4Rg1s4kY1c8",
   "title": "【ポケモンホワイト/ BW】#4 完全初見プレイ！相棒になったツタージャとジムバッジ4個目GETしにいくぞ！！【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-10-30T08:26:02-07:00",
-  "collectedAt": "2026-11-16T01:52:04.591Z"
+  "duration": 22186,
+  "publishedAt": "2026-10-30T08:55:29.000Z",
+  "timestamps": [
+    {
+      "time": "6:02",
+      "seconds": 362,
+      "label": "開始・「ジーニアスもう胃腸炎治ったんじゃね？ハンバーガー食べれるじゃんヤッフー！担当」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "14:14",
+      "seconds": 854,
+      "label": "ズルッグを捕まえたい・「捕まえよ！目が4つあるヘビ。」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "16:45",
+      "seconds": 1005,
+      "label": "ころっぐゲット&命名",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "18:39",
+      "seconds": 1119,
+      "label": "鳴き声EDM",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "20:05",
+      "seconds": 1205,
+      "label": "オタマロの顔にジワるニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "20:43",
+      "seconds": 1243,
+      "label": "∟  「もういいって！！やだあ！無理ぃ！」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "31:49",
+      "seconds": 1909,
+      "label": "はっぱカッター当たらなカッター",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "32:30",
+      "seconds": 1950,
+      "label": "\"ちょこざい\" を知らない",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "33:22",
+      "seconds": 2002,
+      "label": "∟  「\"チョコ罪な\" ってこと？作業員チョコレート食べてんのかよ。よこせ？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "37:42",
+      "seconds": 2262,
+      "label": "手持ち整理・みはちゅー再加入",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "38:17",
+      "seconds": 2297,
+      "label": "みはちゅー復帰",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "41:50",
+      "seconds": 2510,
+      "label": "前回のチェレン戦で見たつんにゃん（チョロネコ）の進化後の姿について・「猫じゃないのかもしれない、豹かな？でも \"にゃん\" って付いてるし…」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "42:31",
+      "seconds": 2551,
+      "label": "∟  \"つんにゃん\" がニックネームであることをコメントで思い出す",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "47:03",
+      "seconds": 2823,
+      "label": "危うく一体に壊滅させられかけたトレーナー戦とかねw",
+      "source": "コメント",
+      "authors": [
+        "@やまひげおにい",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "47:29",
+      "seconds": 2849,
+      "label": "シャクラオ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "47:45",
+      "seconds": 2865,
+      "label": "∟  悲鳴:_PON:",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "48:03",
+      "seconds": 2883,
+      "label": "∟  レベル差7あるけどみはちゅー出してみる・「みはちゅー いけっか？」→「ほんっとごめんって思ってる」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "51:41",
+      "seconds": 3101,
+      "label": "ナイス回避からの勝利",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "55:05",
+      "seconds": 3305,
+      "label": "テクい戦法で勝利",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "55:52",
+      "seconds": 3352,
+      "label": "∟  ボロボロすぎるパーティを見て笑っちゃうニコちゃん",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "57:26",
+      "seconds": 3446,
+      "label": "不安だけど次の釣り人に挑戦してみる",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "57:46",
+      "seconds": 3466,
+      "label": "∟  「やばい4体いる！？…終わったのでは？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:09:04",
+      "seconds": 4144,
+      "label": "∟  バスラオ4匹相手にして再びパーティがボロボロに",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:16:00",
+      "seconds": 4560,
+      "label": "つんにゃん進化✨",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:17:20",
+      "seconds": 4640,
+      "label": "∟  進化後つんにゃんの図鑑を確認",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:17:53",
+      "seconds": 4673,
+      "label": "つんにゃんの鳴き声モノマネ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:18:11",
+      "seconds": 4691,
+      "label": "つんにゃんソング",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:20:49",
+      "seconds": 4849,
+      "label": "おといれ！キャンセル",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:34:35",
+      "seconds": 5675,
+      "label": "今作の推しポケモンはまだ決まってない",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:38:49",
+      "seconds": 5929,
+      "label": "「あぶなぁー！…ん？…違う逆だ。当てろ！」・ここ笑ったｗｗ",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:41:12",
+      "seconds": 6072,
+      "label": "💬『ぽけぶいメンバーで瀕●になった回数ぶっちぎりトップに立ちそう』→「そんな多いかなぼく…」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:42:12",
+      "seconds": 6132,
+      "label": "ころだっまの技が当たらない",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:44:15",
+      "seconds": 6255,
+      "label": "進化後つんにゃん初出し・「すごい可愛いね つんにゃん！横顔まで可愛い～」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:48:38",
+      "seconds": 6518,
+      "label": "バックパッカーが可愛くてテンション上がる",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:48:55",
+      "seconds": 6535,
+      "label": "∟  「モンメン？…燃やそっ？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:50:19",
+      "seconds": 6619,
+      "label": "燃やせる〜",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:54:28",
+      "seconds": 6868,
+      "label": "自由にウェイ！ウェイ！",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:57:27",
+      "seconds": 7047,
+      "label": "アララギ博士に呼ばれていたこと忘れてた",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:59:55",
+      "seconds": 7195,
+      "label": "小学生の朗読タイム",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:02:10",
+      "seconds": 7330,
+      "label": "催眠術を連続回避",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:04:14",
+      "seconds": 7454,
+      "label": "「ヤブクロンは燃やせるから燃やそ？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:05:25",
+      "seconds": 7525,
+      "label": "遊園地があると知ってテンションUP・「左に？（右に歩いていくプラズマ団を見て）」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:06:15",
+      "seconds": 7575,
+      "label": "自転車ゲット",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:06:37",
+      "seconds": 7597,
+      "label": "もんじゃ焼き",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:07:13",
+      "seconds": 7633,
+      "label": "サンドイッチ？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:08:03",
+      "seconds": 7683,
+      "label": "Nと遭遇",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 3
+    },
+    {
+      "time": "2:08:59",
+      "seconds": 7739,
+      "label": "「 請われる」を読めないニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 4
+    },
+    {
+      "time": "2:10:05",
+      "seconds": 7805,
+      "label": "N戦",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:10:30",
+      "seconds": 7830,
+      "label": "VS N・メグロコに〇タテされる",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:17:35",
+      "seconds": 8255,
+      "label": "急所エンド",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:18:59",
+      "seconds": 8339,
+      "label": "打倒Nのため手持ち整理",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:31:55",
+      "seconds": 9115,
+      "label": "アホなの主人公は？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:32:59",
+      "seconds": 9179,
+      "label": "N戦パート2",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:35:00",
+      "seconds": 9300,
+      "label": "ころだっま詰んでしまう",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:37:00",
+      "seconds": 9420,
+      "label": "∟  ダルマッカに〇タテされる",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:42:30",
+      "seconds": 9750,
+      "label": "ゼルダに出てきそう",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:43:55",
+      "seconds": 9835,
+      "label": "何か爆弾とか投げられないの？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:45:33",
+      "seconds": 9933,
+      "label": "みはちゅーリストラされる",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:48:05",
+      "seconds": 10085,
+      "label": "N戦パート3",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:50:49",
+      "seconds": 10249,
+      "label": "∟  シンボラーに総力戦で挑む",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:55:23",
+      "seconds": 10523,
+      "label": "まろまろナイス回避で勝利",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:58:33",
+      "seconds": 10713,
+      "label": "まろまろの顔が笑える原因を解説",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:01:20",
+      "seconds": 10880,
+      "label": "ジムが分からず迷子になるニコちゃん",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:02:55",
+      "seconds": 10975,
+      "label": "ニコちのマロ顔",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "3:03:29",
+      "seconds": 11009,
+      "label": "ドレスアップに挑戦・「（出すポケモンは）一択だよね」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:06:20",
+      "seconds": 11180,
+      "label": "まろまろのメガネずらし",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "3:08:20",
+      "seconds": 11300,
+      "label": "まろまろのコーディネート完成",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:09:48",
+      "seconds": 11388,
+      "label": "まろまろでミュージカルに参加",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:10:39",
+      "seconds": 11439,
+      "label": "ドラえもん？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:12:38",
+      "seconds": 11558,
+      "label": "∟  「ぼくの子どうしたｗｗまろまろ、お前はここじゃないｗｗ舞台袖に行けｗｗ」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:16:31",
+      "seconds": 11791,
+      "label": "つたーぱ（本命）でミュージカル参加",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:25:55",
+      "seconds": 12355,
+      "label": "直球でくれ！",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "3:27:49",
+      "seconds": 12469,
+      "label": "ニコちのエコーボイス",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:30:09",
+      "seconds": 12609,
+      "label": "全部の充電切れそうでピンチ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:32:37",
+      "seconds": 12757,
+      "label": "ゲルダ族いる〜！",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:34:32",
+      "seconds": 12872,
+      "label": "ナゲキの顔にジワるニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:42:59",
+      "seconds": 13379,
+      "label": "⭐️⭐️ある",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25",
+        "@ファミコン-famicom"
+      ],
+      "count": 3
+    },
+    {
+      "time": "3:44:58",
+      "seconds": 13498,
+      "label": "ピカチュウのモノマネ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:46:22",
+      "seconds": 13582,
+      "label": "ライモンジム　開始",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:48:30",
+      "seconds": 13710,
+      "label": "エモンガとの初対面",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:58:48",
+      "seconds": 14328,
+      "label": "何かムカつくなぁ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:59:29",
+      "seconds": 14369,
+      "label": "お金持ちの人のモノマネ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:01:32",
+      "seconds": 14492,
+      "label": "囁き「クラクラさせるよ」",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "4:02:13",
+      "seconds": 14533,
+      "label": "前世リス説",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:03:48",
+      "seconds": 14628,
+      "label": "小さい頃自認が犬だった",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:05:28",
+      "seconds": 14728,
+      "label": "「胡桃」 こもも",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:08:27",
+      "seconds": 14907,
+      "label": "叡智だよね",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:11:36",
+      "seconds": 15096,
+      "label": "⭐️⭐️丸出し",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:15:14",
+      "seconds": 15314,
+      "label": "回復ソング",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:20:35",
+      "seconds": 15635,
+      "label": "泣いちゃうからね",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:21:36",
+      "seconds": 15696,
+      "label": "寂しいから泣くよ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:24:17",
+      "seconds": 15857,
+      "label": "販売？売買？完売？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:25:07",
+      "seconds": 15907,
+      "label": "ジムリーダーカミツレ戦　開始",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "4:25:28",
+      "seconds": 15928,
+      "label": "カミツレさんにメロつくニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "4:25:57",
+      "seconds": 15957,
+      "label": "先頭が まろまろ なことに困惑・「誰かぼくの思考回路教えて？なんで まろまろ にした？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:26:23",
+      "seconds": 15983,
+      "label": "∟  真相",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:27:59",
+      "seconds": 16079,
+      "label": "カミツレさん登場で叫ぶ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:31:26",
+      "seconds": 16286,
+      "label": "しまねるの進化先ネタバレ？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "4:32:05",
+      "seconds": 16325,
+      "label": "急所を引いて怒声をあげるニコちゃん",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:35:17",
+      "seconds": 16517,
+      "label": "うにゃー！・かわいい",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:35:44",
+      "seconds": 16544,
+      "label": "宿木の種が活躍",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:37:55",
+      "seconds": 16675,
+      "label": "ドパって技選択ミス",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:48:29",
+      "seconds": 17309,
+      "label": "ころだっま潔く散る",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:49:43",
+      "seconds": 17383,
+      "label": "打倒カミツレのため手持ち整理",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:59:01",
+      "seconds": 17941,
+      "label": "カミツレ戦パート2",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "5:00:45",
+      "seconds": 18045,
+      "label": "「帰るな帰るな」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:01:14",
+      "seconds": 18074,
+      "label": "∟  「ねええええええ！」・初めて台パンしそうになった",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:02:15",
+      "seconds": 18135,
+      "label": "ヴァロち登場",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25",
+        "@ファミコン-famicom"
+      ],
+      "count": 3
+    },
+    {
+      "time": "5:23:05",
+      "seconds": 19385,
+      "label": "歯茎を見せずに戦うニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:23:50",
+      "seconds": 19430,
+      "label": "勝利目前で逃げようとする",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:25:06",
+      "seconds": 19506,
+      "label": "帽子のバッジを見せるニコちゃん・かわいい",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:27:00",
+      "seconds": 19620,
+      "label": "💬『エモンガ気に入った？』→「ムカついてる」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:33:08",
+      "seconds": 19988,
+      "label": "叡智だな",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:34:30",
+      "seconds": 20070,
+      "label": "あれぇ僕負ける？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "5:35:02",
+      "seconds": 20102,
+      "label": "メロメロニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:36:41",
+      "seconds": 20201,
+      "label": "負けて煽られる",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "5:39:02",
+      "seconds": 20342,
+      "label": "カンチョーするぞ！",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "5:43:38",
+      "seconds": 20618,
+      "label": "ファルコンパンチ！",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:45:44",
+      "seconds": 20744,
+      "label": "ヤバいやついる",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "5:46:27",
+      "seconds": 20787,
+      "label": "迷いの森！？コログ？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:51:34",
+      "seconds": 21094,
+      "label": "交通ルール違反デース",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "5:52:00",
+      "seconds": 21120,
+      "label": "コアルヒー初見・「かわいい！おてて！」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:54:19",
+      "seconds": 21259,
+      "label": "うるさい！",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25",
+        "@ファミコン-famicom"
+      ],
+      "count": 3
+    },
+    {
+      "time": "5:55:36",
+      "seconds": 21336,
+      "label": "あなた警察行きますよー",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:56:22",
+      "seconds": 21382,
+      "label": "モグリュー初見・「手こわ。なにこれ。」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "6:05:31",
+      "seconds": 21931,
+      "label": "囁き「話聞いて」",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "6:06:56",
+      "seconds": 22016,
+      "label": "囁き「だーめ」",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "6:08:54",
+      "seconds": 22134,
+      "label": "囁き「じゃあ解禁聞いていいよ」",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 0
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 10
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 0
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 0
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 10
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 10
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 0
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 10
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 30
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 0
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 0
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 0
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 0
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 0
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 20
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 10
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 10
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 0
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 0
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 0
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 10
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 10
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 0
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 0
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 10
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 10
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 0
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 0
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 0
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 0
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 40
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 10
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 0
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 0
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 10
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 0
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 0
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 0
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 20
+    },
+    {
+      "minute": 56,
+      "timeLabel": "56m",
+      "count": 0
+    },
+    {
+      "minute": 57,
+      "timeLabel": "57m",
+      "count": 20
+    },
+    {
+      "minute": 58,
+      "timeLabel": "58m",
+      "count": 0
+    },
+    {
+      "minute": 59,
+      "timeLabel": "59m",
+      "count": 0
+    },
+    {
+      "minute": 60,
+      "timeLabel": "1h0m",
+      "count": 0
+    },
+    {
+      "minute": 61,
+      "timeLabel": "1h1m",
+      "count": 0
+    },
+    {
+      "minute": 62,
+      "timeLabel": "1h2m",
+      "count": 0
+    },
+    {
+      "minute": 63,
+      "timeLabel": "1h3m",
+      "count": 0
+    },
+    {
+      "minute": 64,
+      "timeLabel": "1h4m",
+      "count": 0
+    },
+    {
+      "minute": 65,
+      "timeLabel": "1h5m",
+      "count": 0
+    },
+    {
+      "minute": 66,
+      "timeLabel": "1h6m",
+      "count": 0
+    },
+    {
+      "minute": 67,
+      "timeLabel": "1h7m",
+      "count": 0
+    },
+    {
+      "minute": 68,
+      "timeLabel": "1h8m",
+      "count": 0
+    },
+    {
+      "minute": 69,
+      "timeLabel": "1h9m",
+      "count": 10
+    },
+    {
+      "minute": 70,
+      "timeLabel": "1h10m",
+      "count": 0
+    },
+    {
+      "minute": 71,
+      "timeLabel": "1h11m",
+      "count": 0
+    },
+    {
+      "minute": 72,
+      "timeLabel": "1h12m",
+      "count": 0
+    },
+    {
+      "minute": 73,
+      "timeLabel": "1h13m",
+      "count": 0
+    },
+    {
+      "minute": 74,
+      "timeLabel": "1h14m",
+      "count": 0
+    },
+    {
+      "minute": 75,
+      "timeLabel": "1h15m",
+      "count": 0
+    },
+    {
+      "minute": 76,
+      "timeLabel": "1h16m",
+      "count": 20
+    },
+    {
+      "minute": 77,
+      "timeLabel": "1h17m",
+      "count": 30
+    },
+    {
+      "minute": 78,
+      "timeLabel": "1h18m",
+      "count": 10
+    },
+    {
+      "minute": 79,
+      "timeLabel": "1h19m",
+      "count": 0
+    },
+    {
+      "minute": 80,
+      "timeLabel": "1h20m",
+      "count": 10
+    },
+    {
+      "minute": 81,
+      "timeLabel": "1h21m",
+      "count": 0
+    },
+    {
+      "minute": 82,
+      "timeLabel": "1h22m",
+      "count": 0
+    },
+    {
+      "minute": 83,
+      "timeLabel": "1h23m",
+      "count": 0
+    },
+    {
+      "minute": 84,
+      "timeLabel": "1h24m",
+      "count": 0
+    },
+    {
+      "minute": 85,
+      "timeLabel": "1h25m",
+      "count": 0
+    },
+    {
+      "minute": 86,
+      "timeLabel": "1h26m",
+      "count": 0
+    },
+    {
+      "minute": 87,
+      "timeLabel": "1h27m",
+      "count": 0
+    },
+    {
+      "minute": 88,
+      "timeLabel": "1h28m",
+      "count": 0
+    },
+    {
+      "minute": 89,
+      "timeLabel": "1h29m",
+      "count": 0
+    },
+    {
+      "minute": 90,
+      "timeLabel": "1h30m",
+      "count": 0
+    },
+    {
+      "minute": 91,
+      "timeLabel": "1h31m",
+      "count": 0
+    },
+    {
+      "minute": 92,
+      "timeLabel": "1h32m",
+      "count": 0
+    },
+    {
+      "minute": 93,
+      "timeLabel": "1h33m",
+      "count": 0
+    },
+    {
+      "minute": 94,
+      "timeLabel": "1h34m",
+      "count": 10
+    },
+    {
+      "minute": 95,
+      "timeLabel": "1h35m",
+      "count": 0
+    },
+    {
+      "minute": 96,
+      "timeLabel": "1h36m",
+      "count": 0
+    },
+    {
+      "minute": 97,
+      "timeLabel": "1h37m",
+      "count": 0
+    },
+    {
+      "minute": 98,
+      "timeLabel": "1h38m",
+      "count": 20
+    },
+    {
+      "minute": 99,
+      "timeLabel": "1h39m",
+      "count": 0
+    },
+    {
+      "minute": 100,
+      "timeLabel": "1h40m",
+      "count": 0
+    },
+    {
+      "minute": 101,
+      "timeLabel": "1h41m",
+      "count": 10
+    },
+    {
+      "minute": 102,
+      "timeLabel": "1h42m",
+      "count": 20
+    },
+    {
+      "minute": 103,
+      "timeLabel": "1h43m",
+      "count": 0
+    },
+    {
+      "minute": 104,
+      "timeLabel": "1h44m",
+      "count": 10
+    },
+    {
+      "minute": 105,
+      "timeLabel": "1h45m",
+      "count": 0
+    },
+    {
+      "minute": 106,
+      "timeLabel": "1h46m",
+      "count": 0
+    },
+    {
+      "minute": 107,
+      "timeLabel": "1h47m",
+      "count": 0
+    },
+    {
+      "minute": 108,
+      "timeLabel": "1h48m",
+      "count": 20
+    },
+    {
+      "minute": 109,
+      "timeLabel": "1h49m",
+      "count": 0
+    },
+    {
+      "minute": 110,
+      "timeLabel": "1h50m",
+      "count": 20
+    },
+    {
+      "minute": 111,
+      "timeLabel": "1h51m",
+      "count": 0
+    },
+    {
+      "minute": 112,
+      "timeLabel": "1h52m",
+      "count": 0
+    },
+    {
+      "minute": 113,
+      "timeLabel": "1h53m",
+      "count": 0
+    },
+    {
+      "minute": 114,
+      "timeLabel": "1h54m",
+      "count": 10
+    },
+    {
+      "minute": 115,
+      "timeLabel": "1h55m",
+      "count": 0
+    },
+    {
+      "minute": 116,
+      "timeLabel": "1h56m",
+      "count": 0
+    },
+    {
+      "minute": 117,
+      "timeLabel": "1h57m",
+      "count": 20
+    },
+    {
+      "minute": 118,
+      "timeLabel": "1h58m",
+      "count": 0
+    },
+    {
+      "minute": 119,
+      "timeLabel": "1h59m",
+      "count": 10
+    },
+    {
+      "minute": 120,
+      "timeLabel": "2h0m",
+      "count": 0
+    },
+    {
+      "minute": 121,
+      "timeLabel": "2h1m",
+      "count": 0
+    },
+    {
+      "minute": 122,
+      "timeLabel": "2h2m",
+      "count": 10
+    },
+    {
+      "minute": 123,
+      "timeLabel": "2h3m",
+      "count": 0
+    },
+    {
+      "minute": 124,
+      "timeLabel": "2h4m",
+      "count": 10
+    },
+    {
+      "minute": 125,
+      "timeLabel": "2h5m",
+      "count": 10
+    },
+    {
+      "minute": 126,
+      "timeLabel": "2h6m",
+      "count": 30
+    },
+    {
+      "minute": 127,
+      "timeLabel": "2h7m",
+      "count": 20
+    },
+    {
+      "minute": 128,
+      "timeLabel": "2h8m",
+      "count": 70
+    },
+    {
+      "minute": 129,
+      "timeLabel": "2h9m",
+      "count": 0
+    },
+    {
+      "minute": 130,
+      "timeLabel": "2h10m",
+      "count": 20
+    },
+    {
+      "minute": 131,
+      "timeLabel": "2h11m",
+      "count": 0
+    },
+    {
+      "minute": 132,
+      "timeLabel": "2h12m",
+      "count": 0
+    },
+    {
+      "minute": 133,
+      "timeLabel": "2h13m",
+      "count": 0
+    },
+    {
+      "minute": 134,
+      "timeLabel": "2h14m",
+      "count": 0
+    },
+    {
+      "minute": 135,
+      "timeLabel": "2h15m",
+      "count": 0
+    },
+    {
+      "minute": 136,
+      "timeLabel": "2h16m",
+      "count": 0
+    },
+    {
+      "minute": 137,
+      "timeLabel": "2h17m",
+      "count": 20
+    },
+    {
+      "minute": 138,
+      "timeLabel": "2h18m",
+      "count": 10
+    },
+    {
+      "minute": 139,
+      "timeLabel": "2h19m",
+      "count": 0
+    },
+    {
+      "minute": 140,
+      "timeLabel": "2h20m",
+      "count": 0
+    },
+    {
+      "minute": 141,
+      "timeLabel": "2h21m",
+      "count": 0
+    },
+    {
+      "minute": 142,
+      "timeLabel": "2h22m",
+      "count": 0
+    },
+    {
+      "minute": 143,
+      "timeLabel": "2h23m",
+      "count": 0
+    },
+    {
+      "minute": 144,
+      "timeLabel": "2h24m",
+      "count": 0
+    },
+    {
+      "minute": 145,
+      "timeLabel": "2h25m",
+      "count": 0
+    },
+    {
+      "minute": 146,
+      "timeLabel": "2h26m",
+      "count": 0
+    },
+    {
+      "minute": 147,
+      "timeLabel": "2h27m",
+      "count": 0
+    },
+    {
+      "minute": 148,
+      "timeLabel": "2h28m",
+      "count": 0
+    },
+    {
+      "minute": 149,
+      "timeLabel": "2h29m",
+      "count": 0
+    },
+    {
+      "minute": 150,
+      "timeLabel": "2h30m",
+      "count": 0
+    },
+    {
+      "minute": 151,
+      "timeLabel": "2h31m",
+      "count": 10
+    },
+    {
+      "minute": 152,
+      "timeLabel": "2h32m",
+      "count": 20
+    },
+    {
+      "minute": 153,
+      "timeLabel": "2h33m",
+      "count": 0
+    },
+    {
+      "minute": 154,
+      "timeLabel": "2h34m",
+      "count": 0
+    },
+    {
+      "minute": 155,
+      "timeLabel": "2h35m",
+      "count": 10
+    },
+    {
+      "minute": 156,
+      "timeLabel": "2h36m",
+      "count": 0
+    },
+    {
+      "minute": 157,
+      "timeLabel": "2h37m",
+      "count": 10
+    },
+    {
+      "minute": 158,
+      "timeLabel": "2h38m",
+      "count": 0
+    },
+    {
+      "minute": 159,
+      "timeLabel": "2h39m",
+      "count": 0
+    },
+    {
+      "minute": 160,
+      "timeLabel": "2h40m",
+      "count": 0
+    },
+    {
+      "minute": 161,
+      "timeLabel": "2h41m",
+      "count": 0
+    },
+    {
+      "minute": 162,
+      "timeLabel": "2h42m",
+      "count": 20
+    },
+    {
+      "minute": 163,
+      "timeLabel": "2h43m",
+      "count": 10
+    },
+    {
+      "minute": 164,
+      "timeLabel": "2h44m",
+      "count": 0
+    },
+    {
+      "minute": 165,
+      "timeLabel": "2h45m",
+      "count": 20
+    },
+    {
+      "minute": 166,
+      "timeLabel": "2h46m",
+      "count": 0
+    },
+    {
+      "minute": 167,
+      "timeLabel": "2h47m",
+      "count": 0
+    },
+    {
+      "minute": 168,
+      "timeLabel": "2h48m",
+      "count": 20
+    },
+    {
+      "minute": 169,
+      "timeLabel": "2h49m",
+      "count": 0
+    },
+    {
+      "minute": 170,
+      "timeLabel": "2h50m",
+      "count": 10
+    },
+    {
+      "minute": 171,
+      "timeLabel": "2h51m",
+      "count": 0
+    },
+    {
+      "minute": 172,
+      "timeLabel": "2h52m",
+      "count": 0
+    },
+    {
+      "minute": 173,
+      "timeLabel": "2h53m",
+      "count": 0
+    },
+    {
+      "minute": 174,
+      "timeLabel": "2h54m",
+      "count": 0
+    },
+    {
+      "minute": 175,
+      "timeLabel": "2h55m",
+      "count": 10
+    },
+    {
+      "minute": 176,
+      "timeLabel": "2h56m",
+      "count": 0
+    },
+    {
+      "minute": 177,
+      "timeLabel": "2h57m",
+      "count": 0
+    },
+    {
+      "minute": 178,
+      "timeLabel": "2h58m",
+      "count": 10
+    },
+    {
+      "minute": 179,
+      "timeLabel": "2h59m",
+      "count": 0
+    },
+    {
+      "minute": 180,
+      "timeLabel": "3h0m",
+      "count": 0
+    },
+    {
+      "minute": 181,
+      "timeLabel": "3h1m",
+      "count": 10
+    },
+    {
+      "minute": 182,
+      "timeLabel": "3h2m",
+      "count": 20
+    },
+    {
+      "minute": 183,
+      "timeLabel": "3h3m",
+      "count": 10
+    },
+    {
+      "minute": 184,
+      "timeLabel": "3h4m",
+      "count": 0
+    },
+    {
+      "minute": 185,
+      "timeLabel": "3h5m",
+      "count": 0
+    },
+    {
+      "minute": 186,
+      "timeLabel": "3h6m",
+      "count": 20
+    },
+    {
+      "minute": 187,
+      "timeLabel": "3h7m",
+      "count": 0
+    },
+    {
+      "minute": 188,
+      "timeLabel": "3h8m",
+      "count": 10
+    },
+    {
+      "minute": 189,
+      "timeLabel": "3h9m",
+      "count": 10
+    },
+    {
+      "minute": 190,
+      "timeLabel": "3h10m",
+      "count": 10
+    },
+    {
+      "minute": 191,
+      "timeLabel": "3h11m",
+      "count": 0
+    },
+    {
+      "minute": 192,
+      "timeLabel": "3h12m",
+      "count": 10
+    },
+    {
+      "minute": 193,
+      "timeLabel": "3h13m",
+      "count": 0
+    },
+    {
+      "minute": 194,
+      "timeLabel": "3h14m",
+      "count": 0
+    },
+    {
+      "minute": 195,
+      "timeLabel": "3h15m",
+      "count": 0
+    },
+    {
+      "minute": 196,
+      "timeLabel": "3h16m",
+      "count": 10
+    },
+    {
+      "minute": 197,
+      "timeLabel": "3h17m",
+      "count": 0
+    },
+    {
+      "minute": 198,
+      "timeLabel": "3h18m",
+      "count": 0
+    },
+    {
+      "minute": 199,
+      "timeLabel": "3h19m",
+      "count": 0
+    },
+    {
+      "minute": 200,
+      "timeLabel": "3h20m",
+      "count": 0
+    },
+    {
+      "minute": 201,
+      "timeLabel": "3h21m",
+      "count": 0
+    },
+    {
+      "minute": 202,
+      "timeLabel": "3h22m",
+      "count": 0
+    },
+    {
+      "minute": 203,
+      "timeLabel": "3h23m",
+      "count": 0
+    },
+    {
+      "minute": 204,
+      "timeLabel": "3h24m",
+      "count": 0
+    },
+    {
+      "minute": 205,
+      "timeLabel": "3h25m",
+      "count": 20
+    },
+    {
+      "minute": 206,
+      "timeLabel": "3h26m",
+      "count": 0
+    },
+    {
+      "minute": 207,
+      "timeLabel": "3h27m",
+      "count": 10
+    },
+    {
+      "minute": 208,
+      "timeLabel": "3h28m",
+      "count": 0
+    },
+    {
+      "minute": 209,
+      "timeLabel": "3h29m",
+      "count": 0
+    },
+    {
+      "minute": 210,
+      "timeLabel": "3h30m",
+      "count": 10
+    },
+    {
+      "minute": 211,
+      "timeLabel": "3h31m",
+      "count": 0
+    },
+    {
+      "minute": 212,
+      "timeLabel": "3h32m",
+      "count": 10
+    },
+    {
+      "minute": 213,
+      "timeLabel": "3h33m",
+      "count": 0
+    },
+    {
+      "minute": 214,
+      "timeLabel": "3h34m",
+      "count": 10
+    },
+    {
+      "minute": 215,
+      "timeLabel": "3h35m",
+      "count": 0
+    },
+    {
+      "minute": 216,
+      "timeLabel": "3h36m",
+      "count": 0
+    },
+    {
+      "minute": 217,
+      "timeLabel": "3h37m",
+      "count": 0
+    },
+    {
+      "minute": 218,
+      "timeLabel": "3h38m",
+      "count": 0
+    },
+    {
+      "minute": 219,
+      "timeLabel": "3h39m",
+      "count": 0
+    },
+    {
+      "minute": 220,
+      "timeLabel": "3h40m",
+      "count": 0
+    },
+    {
+      "minute": 221,
+      "timeLabel": "3h41m",
+      "count": 0
+    },
+    {
+      "minute": 222,
+      "timeLabel": "3h42m",
+      "count": 30
+    },
+    {
+      "minute": 223,
+      "timeLabel": "3h43m",
+      "count": 0
+    },
+    {
+      "minute": 224,
+      "timeLabel": "3h44m",
+      "count": 10
+    },
+    {
+      "minute": 225,
+      "timeLabel": "3h45m",
+      "count": 0
+    },
+    {
+      "minute": 226,
+      "timeLabel": "3h46m",
+      "count": 10
+    },
+    {
+      "minute": 227,
+      "timeLabel": "3h47m",
+      "count": 0
+    },
+    {
+      "minute": 228,
+      "timeLabel": "3h48m",
+      "count": 10
+    },
+    {
+      "minute": 229,
+      "timeLabel": "3h49m",
+      "count": 0
+    },
+    {
+      "minute": 230,
+      "timeLabel": "3h50m",
+      "count": 0
+    },
+    {
+      "minute": 231,
+      "timeLabel": "3h51m",
+      "count": 0
+    },
+    {
+      "minute": 232,
+      "timeLabel": "3h52m",
+      "count": 0
+    },
+    {
+      "minute": 233,
+      "timeLabel": "3h53m",
+      "count": 0
+    },
+    {
+      "minute": 234,
+      "timeLabel": "3h54m",
+      "count": 0
+    },
+    {
+      "minute": 235,
+      "timeLabel": "3h55m",
+      "count": 0
+    },
+    {
+      "minute": 236,
+      "timeLabel": "3h56m",
+      "count": 0
+    },
+    {
+      "minute": 237,
+      "timeLabel": "3h57m",
+      "count": 0
+    },
+    {
+      "minute": 238,
+      "timeLabel": "3h58m",
+      "count": 10
+    },
+    {
+      "minute": 239,
+      "timeLabel": "3h59m",
+      "count": 10
+    },
+    {
+      "minute": 240,
+      "timeLabel": "4h0m",
+      "count": 0
+    },
+    {
+      "minute": 241,
+      "timeLabel": "4h1m",
+      "count": 20
+    },
+    {
+      "minute": 242,
+      "timeLabel": "4h2m",
+      "count": 10
+    },
+    {
+      "minute": 243,
+      "timeLabel": "4h3m",
+      "count": 10
+    },
+    {
+      "minute": 244,
+      "timeLabel": "4h4m",
+      "count": 0
+    },
+    {
+      "minute": 245,
+      "timeLabel": "4h5m",
+      "count": 10
+    },
+    {
+      "minute": 246,
+      "timeLabel": "4h6m",
+      "count": 0
+    },
+    {
+      "minute": 247,
+      "timeLabel": "4h7m",
+      "count": 0
+    },
+    {
+      "minute": 248,
+      "timeLabel": "4h8m",
+      "count": 10
+    },
+    {
+      "minute": 249,
+      "timeLabel": "4h9m",
+      "count": 0
+    },
+    {
+      "minute": 250,
+      "timeLabel": "4h10m",
+      "count": 0
+    },
+    {
+      "minute": 251,
+      "timeLabel": "4h11m",
+      "count": 10
+    },
+    {
+      "minute": 252,
+      "timeLabel": "4h12m",
+      "count": 0
+    },
+    {
+      "minute": 253,
+      "timeLabel": "4h13m",
+      "count": 0
+    },
+    {
+      "minute": 254,
+      "timeLabel": "4h14m",
+      "count": 0
+    },
+    {
+      "minute": 255,
+      "timeLabel": "4h15m",
+      "count": 10
+    },
+    {
+      "minute": 256,
+      "timeLabel": "4h16m",
+      "count": 0
+    },
+    {
+      "minute": 257,
+      "timeLabel": "4h17m",
+      "count": 0
+    },
+    {
+      "minute": 258,
+      "timeLabel": "4h18m",
+      "count": 0
+    },
+    {
+      "minute": 259,
+      "timeLabel": "4h19m",
+      "count": 0
+    },
+    {
+      "minute": 260,
+      "timeLabel": "4h20m",
+      "count": 10
+    },
+    {
+      "minute": 261,
+      "timeLabel": "4h21m",
+      "count": 10
+    },
+    {
+      "minute": 262,
+      "timeLabel": "4h22m",
+      "count": 0
+    },
+    {
+      "minute": 263,
+      "timeLabel": "4h23m",
+      "count": 0
+    },
+    {
+      "minute": 264,
+      "timeLabel": "4h24m",
+      "count": 10
+    },
+    {
+      "minute": 265,
+      "timeLabel": "4h25m",
+      "count": 50
+    },
+    {
+      "minute": 266,
+      "timeLabel": "4h26m",
+      "count": 10
+    },
+    {
+      "minute": 267,
+      "timeLabel": "4h27m",
+      "count": 10
+    },
+    {
+      "minute": 268,
+      "timeLabel": "4h28m",
+      "count": 0
+    },
+    {
+      "minute": 269,
+      "timeLabel": "4h29m",
+      "count": 0
+    },
+    {
+      "minute": 270,
+      "timeLabel": "4h30m",
+      "count": 0
+    },
+    {
+      "minute": 271,
+      "timeLabel": "4h31m",
+      "count": 20
+    },
+    {
+      "minute": 272,
+      "timeLabel": "4h32m",
+      "count": 10
+    },
+    {
+      "minute": 273,
+      "timeLabel": "4h33m",
+      "count": 0
+    },
+    {
+      "minute": 274,
+      "timeLabel": "4h34m",
+      "count": 0
+    },
+    {
+      "minute": 275,
+      "timeLabel": "4h35m",
+      "count": 20
+    },
+    {
+      "minute": 276,
+      "timeLabel": "4h36m",
+      "count": 0
+    },
+    {
+      "minute": 277,
+      "timeLabel": "4h37m",
+      "count": 10
+    },
+    {
+      "minute": 278,
+      "timeLabel": "4h38m",
+      "count": 0
+    },
+    {
+      "minute": 279,
+      "timeLabel": "4h39m",
+      "count": 0
+    },
+    {
+      "minute": 280,
+      "timeLabel": "4h40m",
+      "count": 0
+    },
+    {
+      "minute": 281,
+      "timeLabel": "4h41m",
+      "count": 0
+    },
+    {
+      "minute": 282,
+      "timeLabel": "4h42m",
+      "count": 0
+    },
+    {
+      "minute": 283,
+      "timeLabel": "4h43m",
+      "count": 0
+    },
+    {
+      "minute": 284,
+      "timeLabel": "4h44m",
+      "count": 0
+    },
+    {
+      "minute": 285,
+      "timeLabel": "4h45m",
+      "count": 0
+    },
+    {
+      "minute": 286,
+      "timeLabel": "4h46m",
+      "count": 0
+    },
+    {
+      "minute": 287,
+      "timeLabel": "4h47m",
+      "count": 0
+    },
+    {
+      "minute": 288,
+      "timeLabel": "4h48m",
+      "count": 10
+    },
+    {
+      "minute": 289,
+      "timeLabel": "4h49m",
+      "count": 10
+    },
+    {
+      "minute": 290,
+      "timeLabel": "4h50m",
+      "count": 0
+    },
+    {
+      "minute": 291,
+      "timeLabel": "4h51m",
+      "count": 0
+    },
+    {
+      "minute": 292,
+      "timeLabel": "4h52m",
+      "count": 0
+    },
+    {
+      "minute": 293,
+      "timeLabel": "4h53m",
+      "count": 0
+    },
+    {
+      "minute": 294,
+      "timeLabel": "4h54m",
+      "count": 0
+    },
+    {
+      "minute": 295,
+      "timeLabel": "4h55m",
+      "count": 0
+    },
+    {
+      "minute": 296,
+      "timeLabel": "4h56m",
+      "count": 0
+    },
+    {
+      "minute": 297,
+      "timeLabel": "4h57m",
+      "count": 0
+    },
+    {
+      "minute": 298,
+      "timeLabel": "4h58m",
+      "count": 0
+    },
+    {
+      "minute": 299,
+      "timeLabel": "4h59m",
+      "count": 20
+    },
+    {
+      "minute": 300,
+      "timeLabel": "5h0m",
+      "count": 10
+    },
+    {
+      "minute": 301,
+      "timeLabel": "5h1m",
+      "count": 10
+    },
+    {
+      "minute": 302,
+      "timeLabel": "5h2m",
+      "count": 30
+    },
+    {
+      "minute": 303,
+      "timeLabel": "5h3m",
+      "count": 0
+    },
+    {
+      "minute": 304,
+      "timeLabel": "5h4m",
+      "count": 0
+    },
+    {
+      "minute": 305,
+      "timeLabel": "5h5m",
+      "count": 0
+    },
+    {
+      "minute": 306,
+      "timeLabel": "5h6m",
+      "count": 0
+    },
+    {
+      "minute": 307,
+      "timeLabel": "5h7m",
+      "count": 0
+    },
+    {
+      "minute": 308,
+      "timeLabel": "5h8m",
+      "count": 0
+    },
+    {
+      "minute": 309,
+      "timeLabel": "5h9m",
+      "count": 0
+    },
+    {
+      "minute": 310,
+      "timeLabel": "5h10m",
+      "count": 0
+    },
+    {
+      "minute": 311,
+      "timeLabel": "5h11m",
+      "count": 0
+    },
+    {
+      "minute": 312,
+      "timeLabel": "5h12m",
+      "count": 0
+    },
+    {
+      "minute": 313,
+      "timeLabel": "5h13m",
+      "count": 0
+    },
+    {
+      "minute": 314,
+      "timeLabel": "5h14m",
+      "count": 0
+    },
+    {
+      "minute": 315,
+      "timeLabel": "5h15m",
+      "count": 0
+    },
+    {
+      "minute": 316,
+      "timeLabel": "5h16m",
+      "count": 0
+    },
+    {
+      "minute": 317,
+      "timeLabel": "5h17m",
+      "count": 0
+    },
+    {
+      "minute": 318,
+      "timeLabel": "5h18m",
+      "count": 0
+    },
+    {
+      "minute": 319,
+      "timeLabel": "5h19m",
+      "count": 0
+    },
+    {
+      "minute": 320,
+      "timeLabel": "5h20m",
+      "count": 0
+    },
+    {
+      "minute": 321,
+      "timeLabel": "5h21m",
+      "count": 0
+    },
+    {
+      "minute": 322,
+      "timeLabel": "5h22m",
+      "count": 0
+    },
+    {
+      "minute": 323,
+      "timeLabel": "5h23m",
+      "count": 20
+    },
+    {
+      "minute": 324,
+      "timeLabel": "5h24m",
+      "count": 0
+    },
+    {
+      "minute": 325,
+      "timeLabel": "5h25m",
+      "count": 10
+    },
+    {
+      "minute": 326,
+      "timeLabel": "5h26m",
+      "count": 0
+    },
+    {
+      "minute": 327,
+      "timeLabel": "5h27m",
+      "count": 10
+    },
+    {
+      "minute": 328,
+      "timeLabel": "5h28m",
+      "count": 0
+    },
+    {
+      "minute": 329,
+      "timeLabel": "5h29m",
+      "count": 0
+    },
+    {
+      "minute": 330,
+      "timeLabel": "5h30m",
+      "count": 0
+    },
+    {
+      "minute": 331,
+      "timeLabel": "5h31m",
+      "count": 0
+    },
+    {
+      "minute": 332,
+      "timeLabel": "5h32m",
+      "count": 0
+    },
+    {
+      "minute": 333,
+      "timeLabel": "5h33m",
+      "count": 10
+    },
+    {
+      "minute": 334,
+      "timeLabel": "5h34m",
+      "count": 20
+    },
+    {
+      "minute": 335,
+      "timeLabel": "5h35m",
+      "count": 10
+    },
+    {
+      "minute": 336,
+      "timeLabel": "5h36m",
+      "count": 20
+    },
+    {
+      "minute": 337,
+      "timeLabel": "5h37m",
+      "count": 0
+    },
+    {
+      "minute": 338,
+      "timeLabel": "5h38m",
+      "count": 0
+    },
+    {
+      "minute": 339,
+      "timeLabel": "5h39m",
+      "count": 20
+    },
+    {
+      "minute": 340,
+      "timeLabel": "5h40m",
+      "count": 0
+    },
+    {
+      "minute": 341,
+      "timeLabel": "5h41m",
+      "count": 0
+    },
+    {
+      "minute": 342,
+      "timeLabel": "5h42m",
+      "count": 0
+    },
+    {
+      "minute": 343,
+      "timeLabel": "5h43m",
+      "count": 10
+    },
+    {
+      "minute": 344,
+      "timeLabel": "5h44m",
+      "count": 0
+    },
+    {
+      "minute": 345,
+      "timeLabel": "5h45m",
+      "count": 20
+    },
+    {
+      "minute": 346,
+      "timeLabel": "5h46m",
+      "count": 10
+    },
+    {
+      "minute": 347,
+      "timeLabel": "5h47m",
+      "count": 0
+    },
+    {
+      "minute": 348,
+      "timeLabel": "5h48m",
+      "count": 0
+    },
+    {
+      "minute": 349,
+      "timeLabel": "5h49m",
+      "count": 0
+    },
+    {
+      "minute": 350,
+      "timeLabel": "5h50m",
+      "count": 0
+    },
+    {
+      "minute": 351,
+      "timeLabel": "5h51m",
+      "count": 20
+    },
+    {
+      "minute": 352,
+      "timeLabel": "5h52m",
+      "count": 10
+    },
+    {
+      "minute": 353,
+      "timeLabel": "5h53m",
+      "count": 0
+    },
+    {
+      "minute": 354,
+      "timeLabel": "5h54m",
+      "count": 30
+    },
+    {
+      "minute": 355,
+      "timeLabel": "5h55m",
+      "count": 10
+    },
+    {
+      "minute": 356,
+      "timeLabel": "5h56m",
+      "count": 10
+    },
+    {
+      "minute": 357,
+      "timeLabel": "5h57m",
+      "count": 0
+    },
+    {
+      "minute": 358,
+      "timeLabel": "5h58m",
+      "count": 0
+    },
+    {
+      "minute": 359,
+      "timeLabel": "5h59m",
+      "count": 0
+    },
+    {
+      "minute": 360,
+      "timeLabel": "6h0m",
+      "count": 0
+    },
+    {
+      "minute": 361,
+      "timeLabel": "6h1m",
+      "count": 0
+    },
+    {
+      "minute": 362,
+      "timeLabel": "6h2m",
+      "count": 0
+    },
+    {
+      "minute": 363,
+      "timeLabel": "6h3m",
+      "count": 0
+    },
+    {
+      "minute": 364,
+      "timeLabel": "6h4m",
+      "count": 0
+    },
+    {
+      "minute": 365,
+      "timeLabel": "6h5m",
+      "count": 20
+    },
+    {
+      "minute": 366,
+      "timeLabel": "6h6m",
+      "count": 10
+    },
+    {
+      "minute": 367,
+      "timeLabel": "6h7m",
+      "count": 0
+    },
+    {
+      "minute": 368,
+      "timeLabel": "6h8m",
+      "count": 10
+    },
+    {
+      "minute": 369,
+      "timeLabel": "6h9m",
+      "count": 0
+    }
+  ],
+  "maxCount": 70
 }

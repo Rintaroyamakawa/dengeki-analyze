@@ -1,7 +1,322 @@
 {
   "videoId": "kCr6GAu4Ylg",
   "title": "【1万人耐久配信part4】岩を転がしながら罰ゲーム！残り30人【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-11-09T11:29:27-08:00",
-  "collectedAt": "2026-11-16T01:51:52.026Z"
+  "duration": 3312,
+  "publishedAt": "2026-11-09T17:32:46.000Z",
+  "timestamps": [
+    {
+      "time": "27:41",
+      "seconds": 1661,
+      "label": "おそらく亀ラップを歌いながら登録者１万人の瞬間を迎えた唯一のVtuber",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat",
+        "@棗なつめ-b4y"
+      ],
+      "count": 2
+    },
+    {
+      "time": "36:16",
+      "seconds": 2176,
+      "label": "記念の個人用メモ",
+      "source": "コメント",
+      "authors": [
+        "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "52:00",
+      "seconds": 3120,
+      "label": "替え歌「ニコ(帽子)をもげ!!」は",
+      "source": "コメント",
+      "authors": [
+        "@ゆき-寝落ち常習犯"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 0
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 0
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 0
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 0
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 0
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 0
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 0
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 0
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 0
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 0
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 0
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 0
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 20
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 0
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 0
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 0
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 0
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 0
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 10
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 0
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 0
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 0
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 0
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 0
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 0
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 0
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 0
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 0
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 0
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 0
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 0
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 0
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 0
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 0
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 10
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 0
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 0
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 0
+    }
+  ],
+  "maxCount": 20
 }

@@ -1,7 +1,1423 @@
 {
   "videoId": "X3ucBZUdiWQ",
   "title": "【ポケモンホワイト/ BW】#3 完全初見プレイ！相棒になったツタージャとジムバッジ3個目GETしにいくぞ！！【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-10-29T05:44:56-07:00",
-  "collectedAt": "2026-11-16T01:52:06.980Z"
+  "duration": 9493,
+  "publishedAt": "2026-10-29T09:56:51.000Z",
+  "timestamps": [
+    {
+      "time": "5:08",
+      "seconds": 308,
+      "label": "配信開始",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "8:55",
+      "seconds": 535,
+      "label": "「波止場」 なしば",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "20:08",
+      "seconds": 1208,
+      "label": "バトルパンカニー",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "26:32",
+      "seconds": 1592,
+      "label": "冷静なツッコミ",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "27:47",
+      "seconds": 1667,
+      "label": "ねむる+カゴのみ コンボを知る",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "36:21",
+      "seconds": 2181,
+      "label": "アンケート🗒",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "36:40",
+      "seconds": 2200,
+      "label": "『お仕事は？』（学生 / サラリーマン / クリエイター / 自営業 / 公務員 / 主婦 / 芸術家/ フリーター）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "37:24",
+      "seconds": 2244,
+      "label": "『対戦と交換どっちが好き？』",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "38:05",
+      "seconds": 2285,
+      "label": "変なポケモンが好き",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "38:21",
+      "seconds": 2301,
+      "label": "『好きなポケモンのタイプは？』",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "38:56",
+      "seconds": 2336,
+      "label": "『都会と田舎 住むならどっち？』（都会 / 田舎）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "39:18",
+      "seconds": 2358,
+      "label": "時間orお金",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "40:10",
+      "seconds": 2410,
+      "label": "家族が大事",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "41:33",
+      "seconds": 2493,
+      "label": "『（好きな人について）相手を選ぶならどっち？』（頭が良い / 運動ができる）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "42:41",
+      "seconds": 2561,
+      "label": "『（好きな人について）相手に求めるものは？』（外見 / 中身）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "43:30",
+      "seconds": 2610,
+      "label": "『好きな季節は？』",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "44:31",
+      "seconds": 2671,
+      "label": "夏が好き",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "45:00",
+      "seconds": 2700,
+      "label": "ニコちの好きな色",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "46:13",
+      "seconds": 2773,
+      "label": "『好きな音楽は？』（ポップス / ロック / ジャズ / ラップ / クラシック）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "46:44",
+      "seconds": 2804,
+      "label": "『好きなTV番組は？』（ニュース / ドラマ / お笑い / スポーツ / アニメ）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "47:15",
+      "seconds": 2835,
+      "label": "『好きな映画は？』（アクション / SF / 恋愛 / サスペンス / コメディ / ホラー）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "49:01",
+      "seconds": 2941,
+      "label": "『好きな学校の時間は？』（授業 / 休み時間 / 給食）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "49:52",
+      "seconds": 2992,
+      "label": "社会は苦手",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "50:22",
+      "seconds": 3022,
+      "label": "『遊びに行くならどこ？』（海 / 川 / 山）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "50:45",
+      "seconds": 3045,
+      "label": "『休日何してる？』（外で遊ぶ / 買い物 / 読書 / ゲーム / 寝てる）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "51:46",
+      "seconds": 3106,
+      "label": "∟  8月3日（デビュー日）から今日（10月29日）まで毎日配信してる",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "52:24",
+      "seconds": 3144,
+      "label": "ニコちの好きなスポーツ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "53:02",
+      "seconds": 3182,
+      "label": "『アナタが思うポケモンの面白いところは？』（戦い / 集める / お話 / ポケモン）",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "53:30",
+      "seconds": 3210,
+      "label": "プラズマ団になりたいニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "53:50",
+      "seconds": 3230,
+      "label": "『好きなジムリーダーは？』・「ネタバレなんだけどぉ！」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:03:45",
+      "seconds": 3825,
+      "label": "マイクラのスティーブモノマネ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:04:22",
+      "seconds": 3862,
+      "label": "スティーブ（村人）声マネ",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:04:40",
+      "seconds": 3880,
+      "label": "モノマネしすぎで倒される",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:05:51",
+      "seconds": 3951,
+      "label": "胸を貸したの意味で混乱",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:07:00",
+      "seconds": 4020,
+      "label": "イケボで胸を貸す",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:09:02",
+      "seconds": 4142,
+      "label": "今回喉が不調の理由",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:16:00",
+      "seconds": 4560,
+      "label": "トレーナー『わたくし このようなポケモンを連れております』→ドッコラーを繰り出す",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:16:33",
+      "seconds": 4593,
+      "label": "∟  「角材で会社を物理的に壊そうってこと？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:17:07",
+      "seconds": 4627,
+      "label": "悲鳴:_PON:",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:19:34",
+      "seconds": 4774,
+      "label": "おパンツ見えそう",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:22:45",
+      "seconds": 4965,
+      "label": "∟  「いいね…OLさん…すごくいいよ…」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:24:12",
+      "seconds": 5052,
+      "label": "囁き「はなくそ」3連発",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:25:24",
+      "seconds": 5124,
+      "label": "しゃくれニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:26:49",
+      "seconds": 5209,
+      "label": "ジト目しゃくれニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:41:41",
+      "seconds": 6101,
+      "label": "べびみる進化✨",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:41:58",
+      "seconds": 6118,
+      "label": "∟  べびみる進化後の姿予想→答え合わせ",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:43:12",
+      "seconds": 6192,
+      "label": "ジト目ニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:44:41",
+      "seconds": 6281,
+      "label": "鳴き声EDM",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:45:59",
+      "seconds": 6359,
+      "label": "∟  「50cmもあんの？でか。嫌かもしれない…」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:52:37",
+      "seconds": 6757,
+      "label": "黒幕はおじいちゃん？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "2:01:58",
+      "seconds": 7318,
+      "label": "∟  「え、ぼく終わったんじゃない？」",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:02:56",
+      "seconds": 7376,
+      "label": "急所と宿木の種で勝利",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:04:01",
+      "seconds": 7441,
+      "label": "がくしゅうそうちゲット",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:04:27",
+      "seconds": 7467,
+      "label": "弱いって言わないで",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@みゅっく25"
+      ],
+      "count": 3
+    },
+    {
+      "time": "2:06:25",
+      "seconds": 7585,
+      "label": "びっくりして叫ぶニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:15:39",
+      "seconds": 8139,
+      "label": "フィーリング占い師にツッコミ",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:16:25",
+      "seconds": 8185,
+      "label": "おだいじに　ポケモン",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:22:49",
+      "seconds": 8569,
+      "label": "スペイン語テキスト読み上げ・巻き舌がすごくそれっぽいｗｗ",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:28:19",
+      "seconds": 8899,
+      "label": "ドパって違う飲み物を買う",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "2:29:18",
+      "seconds": 8958,
+      "label": "ドパってミスその2",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 0
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 20
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 0
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 20
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 0
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 0
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 0
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 0
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 0
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 10
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 0
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 0
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 0
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 10
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 10
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 0
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 0
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 0
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 0
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 0
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 30
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 20
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 40
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 20
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 20
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 10
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 20
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 10
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 20
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 20
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 20
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 10
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 0
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 40
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 30
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 20
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 10
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 40
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 0
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 0
+    },
+    {
+      "minute": 56,
+      "timeLabel": "56m",
+      "count": 0
+    },
+    {
+      "minute": 57,
+      "timeLabel": "57m",
+      "count": 0
+    },
+    {
+      "minute": 58,
+      "timeLabel": "58m",
+      "count": 0
+    },
+    {
+      "minute": 59,
+      "timeLabel": "59m",
+      "count": 0
+    },
+    {
+      "minute": 60,
+      "timeLabel": "1h0m",
+      "count": 0
+    },
+    {
+      "minute": 61,
+      "timeLabel": "1h1m",
+      "count": 0
+    },
+    {
+      "minute": 62,
+      "timeLabel": "1h2m",
+      "count": 0
+    },
+    {
+      "minute": 63,
+      "timeLabel": "1h3m",
+      "count": 10
+    },
+    {
+      "minute": 64,
+      "timeLabel": "1h4m",
+      "count": 20
+    },
+    {
+      "minute": 65,
+      "timeLabel": "1h5m",
+      "count": 20
+    },
+    {
+      "minute": 66,
+      "timeLabel": "1h6m",
+      "count": 0
+    },
+    {
+      "minute": 67,
+      "timeLabel": "1h7m",
+      "count": 20
+    },
+    {
+      "minute": 68,
+      "timeLabel": "1h8m",
+      "count": 0
+    },
+    {
+      "minute": 69,
+      "timeLabel": "1h9m",
+      "count": 10
+    },
+    {
+      "minute": 70,
+      "timeLabel": "1h10m",
+      "count": 0
+    },
+    {
+      "minute": 71,
+      "timeLabel": "1h11m",
+      "count": 0
+    },
+    {
+      "minute": 72,
+      "timeLabel": "1h12m",
+      "count": 0
+    },
+    {
+      "minute": 73,
+      "timeLabel": "1h13m",
+      "count": 0
+    },
+    {
+      "minute": 74,
+      "timeLabel": "1h14m",
+      "count": 0
+    },
+    {
+      "minute": 75,
+      "timeLabel": "1h15m",
+      "count": 0
+    },
+    {
+      "minute": 76,
+      "timeLabel": "1h16m",
+      "count": 20
+    },
+    {
+      "minute": 77,
+      "timeLabel": "1h17m",
+      "count": 10
+    },
+    {
+      "minute": 78,
+      "timeLabel": "1h18m",
+      "count": 0
+    },
+    {
+      "minute": 79,
+      "timeLabel": "1h19m",
+      "count": 20
+    },
+    {
+      "minute": 80,
+      "timeLabel": "1h20m",
+      "count": 0
+    },
+    {
+      "minute": 81,
+      "timeLabel": "1h21m",
+      "count": 0
+    },
+    {
+      "minute": 82,
+      "timeLabel": "1h22m",
+      "count": 10
+    },
+    {
+      "minute": 83,
+      "timeLabel": "1h23m",
+      "count": 0
+    },
+    {
+      "minute": 84,
+      "timeLabel": "1h24m",
+      "count": 20
+    },
+    {
+      "minute": 85,
+      "timeLabel": "1h25m",
+      "count": 20
+    },
+    {
+      "minute": 86,
+      "timeLabel": "1h26m",
+      "count": 20
+    },
+    {
+      "minute": 87,
+      "timeLabel": "1h27m",
+      "count": 0
+    },
+    {
+      "minute": 88,
+      "timeLabel": "1h28m",
+      "count": 0
+    },
+    {
+      "minute": 89,
+      "timeLabel": "1h29m",
+      "count": 0
+    },
+    {
+      "minute": 90,
+      "timeLabel": "1h30m",
+      "count": 0
+    },
+    {
+      "minute": 91,
+      "timeLabel": "1h31m",
+      "count": 0
+    },
+    {
+      "minute": 92,
+      "timeLabel": "1h32m",
+      "count": 0
+    },
+    {
+      "minute": 93,
+      "timeLabel": "1h33m",
+      "count": 0
+    },
+    {
+      "minute": 94,
+      "timeLabel": "1h34m",
+      "count": 0
+    },
+    {
+      "minute": 95,
+      "timeLabel": "1h35m",
+      "count": 0
+    },
+    {
+      "minute": 96,
+      "timeLabel": "1h36m",
+      "count": 0
+    },
+    {
+      "minute": 97,
+      "timeLabel": "1h37m",
+      "count": 0
+    },
+    {
+      "minute": 98,
+      "timeLabel": "1h38m",
+      "count": 0
+    },
+    {
+      "minute": 99,
+      "timeLabel": "1h39m",
+      "count": 0
+    },
+    {
+      "minute": 100,
+      "timeLabel": "1h40m",
+      "count": 0
+    },
+    {
+      "minute": 101,
+      "timeLabel": "1h41m",
+      "count": 30
+    },
+    {
+      "minute": 102,
+      "timeLabel": "1h42m",
+      "count": 0
+    },
+    {
+      "minute": 103,
+      "timeLabel": "1h43m",
+      "count": 10
+    },
+    {
+      "minute": 104,
+      "timeLabel": "1h44m",
+      "count": 10
+    },
+    {
+      "minute": 105,
+      "timeLabel": "1h45m",
+      "count": 10
+    },
+    {
+      "minute": 106,
+      "timeLabel": "1h46m",
+      "count": 0
+    },
+    {
+      "minute": 107,
+      "timeLabel": "1h47m",
+      "count": 0
+    },
+    {
+      "minute": 108,
+      "timeLabel": "1h48m",
+      "count": 0
+    },
+    {
+      "minute": 109,
+      "timeLabel": "1h49m",
+      "count": 0
+    },
+    {
+      "minute": 110,
+      "timeLabel": "1h50m",
+      "count": 0
+    },
+    {
+      "minute": 111,
+      "timeLabel": "1h51m",
+      "count": 0
+    },
+    {
+      "minute": 112,
+      "timeLabel": "1h52m",
+      "count": 20
+    },
+    {
+      "minute": 113,
+      "timeLabel": "1h53m",
+      "count": 0
+    },
+    {
+      "minute": 114,
+      "timeLabel": "1h54m",
+      "count": 0
+    },
+    {
+      "minute": 115,
+      "timeLabel": "1h55m",
+      "count": 0
+    },
+    {
+      "minute": 116,
+      "timeLabel": "1h56m",
+      "count": 0
+    },
+    {
+      "minute": 117,
+      "timeLabel": "1h57m",
+      "count": 0
+    },
+    {
+      "minute": 118,
+      "timeLabel": "1h58m",
+      "count": 0
+    },
+    {
+      "minute": 119,
+      "timeLabel": "1h59m",
+      "count": 0
+    },
+    {
+      "minute": 120,
+      "timeLabel": "2h0m",
+      "count": 0
+    },
+    {
+      "minute": 121,
+      "timeLabel": "2h1m",
+      "count": 10
+    },
+    {
+      "minute": 122,
+      "timeLabel": "2h2m",
+      "count": 10
+    },
+    {
+      "minute": 123,
+      "timeLabel": "2h3m",
+      "count": 0
+    },
+    {
+      "minute": 124,
+      "timeLabel": "2h4m",
+      "count": 40
+    },
+    {
+      "minute": 125,
+      "timeLabel": "2h5m",
+      "count": 0
+    },
+    {
+      "minute": 126,
+      "timeLabel": "2h6m",
+      "count": 10
+    },
+    {
+      "minute": 127,
+      "timeLabel": "2h7m",
+      "count": 0
+    },
+    {
+      "minute": 128,
+      "timeLabel": "2h8m",
+      "count": 0
+    },
+    {
+      "minute": 129,
+      "timeLabel": "2h9m",
+      "count": 0
+    },
+    {
+      "minute": 130,
+      "timeLabel": "2h10m",
+      "count": 0
+    },
+    {
+      "minute": 131,
+      "timeLabel": "2h11m",
+      "count": 0
+    },
+    {
+      "minute": 132,
+      "timeLabel": "2h12m",
+      "count": 0
+    },
+    {
+      "minute": 133,
+      "timeLabel": "2h13m",
+      "count": 0
+    },
+    {
+      "minute": 134,
+      "timeLabel": "2h14m",
+      "count": 0
+    },
+    {
+      "minute": 135,
+      "timeLabel": "2h15m",
+      "count": 10
+    },
+    {
+      "minute": 136,
+      "timeLabel": "2h16m",
+      "count": 10
+    },
+    {
+      "minute": 137,
+      "timeLabel": "2h17m",
+      "count": 0
+    },
+    {
+      "minute": 138,
+      "timeLabel": "2h18m",
+      "count": 0
+    },
+    {
+      "minute": 139,
+      "timeLabel": "2h19m",
+      "count": 0
+    },
+    {
+      "minute": 140,
+      "timeLabel": "2h20m",
+      "count": 0
+    },
+    {
+      "minute": 141,
+      "timeLabel": "2h21m",
+      "count": 0
+    },
+    {
+      "minute": 142,
+      "timeLabel": "2h22m",
+      "count": 10
+    },
+    {
+      "minute": 143,
+      "timeLabel": "2h23m",
+      "count": 0
+    },
+    {
+      "minute": 144,
+      "timeLabel": "2h24m",
+      "count": 0
+    },
+    {
+      "minute": 145,
+      "timeLabel": "2h25m",
+      "count": 0
+    },
+    {
+      "minute": 146,
+      "timeLabel": "2h26m",
+      "count": 0
+    },
+    {
+      "minute": 147,
+      "timeLabel": "2h27m",
+      "count": 0
+    },
+    {
+      "minute": 148,
+      "timeLabel": "2h28m",
+      "count": 10
+    },
+    {
+      "minute": 149,
+      "timeLabel": "2h29m",
+      "count": 10
+    },
+    {
+      "minute": 150,
+      "timeLabel": "2h30m",
+      "count": 0
+    },
+    {
+      "minute": 151,
+      "timeLabel": "2h31m",
+      "count": 0
+    },
+    {
+      "minute": 152,
+      "timeLabel": "2h32m",
+      "count": 0
+    },
+    {
+      "minute": 153,
+      "timeLabel": "2h33m",
+      "count": 0
+    },
+    {
+      "minute": 154,
+      "timeLabel": "2h34m",
+      "count": 0
+    },
+    {
+      "minute": 155,
+      "timeLabel": "2h35m",
+      "count": 0
+    },
+    {
+      "minute": 156,
+      "timeLabel": "2h36m",
+      "count": 0
+    },
+    {
+      "minute": 157,
+      "timeLabel": "2h37m",
+      "count": 0
+    },
+    {
+      "minute": 158,
+      "timeLabel": "2h38m",
+      "count": 0
+    }
+  ],
+  "maxCount": 40
 }

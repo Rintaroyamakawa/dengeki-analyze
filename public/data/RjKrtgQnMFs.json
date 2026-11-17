@@ -1,7 +1,896 @@
 {
   "videoId": "RjKrtgQnMFs",
   "title": "【ASMR】初めてのASMR…♡【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-10-16T10:51:32-07:00",
-  "collectedAt": "2026-11-16T01:52:19.192Z"
+  "duration": 6263,
+  "publishedAt": "2026-10-16T14:56:38.000Z",
+  "timestamps": [
+    {
+      "time": "4:41",
+      "seconds": 281,
+      "label": "開始",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "6:04",
+      "seconds": 364,
+      "label": "耳マッサージ",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "9:04",
+      "seconds": 544,
+      "label": "左耳の周り　耳かき",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "12:22",
+      "seconds": 742,
+      "label": "梵天　左耳",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "13:14",
+      "seconds": 794,
+      "label": "ここすき",
+      "source": "コメント",
+      "authors": [
+        "@ファミコン-famicom"
+      ],
+      "count": 1
+    },
+    {
+      "time": "14:10",
+      "seconds": 850,
+      "label": "フラグ🚩",
+      "source": "コメント",
+      "authors": [
+        "@ファミコン-famicom"
+      ],
+      "count": 1
+    },
+    {
+      "time": "18:04",
+      "seconds": 1084,
+      "label": "焦らしニコち",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "21:26",
+      "seconds": 1286,
+      "label": "右耳の周り 耳かき",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "21:53",
+      "seconds": 1313,
+      "label": "オノマトペって言うんだっけ？これ好き",
+      "source": "コメント",
+      "authors": [
+        "@ファミコン-famicom"
+      ],
+      "count": 1
+    },
+    {
+      "time": "23:42",
+      "seconds": 1422,
+      "label": "ここら辺のゴリゴリ音好き",
+      "source": "コメント",
+      "authors": [
+        "@ファミコン-famicom"
+      ],
+      "count": 1
+    },
+    {
+      "time": "26:11",
+      "seconds": 1571,
+      "label": "右耳　梵天",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "34:05",
+      "seconds": 2045,
+      "label": "左耳 もっかい周り",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "35:19",
+      "seconds": 2119,
+      "label": "ゴリゴリした強めの音よき",
+      "source": "コメント",
+      "authors": [
+        "@KT-sp5mk"
+      ],
+      "count": 1
+    },
+    {
+      "time": "39:37",
+      "seconds": 2377,
+      "label": "左耳 耳かき 右耳　耳フー　お耳タッチ",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい"
+      ],
+      "count": 1
+    },
+    {
+      "time": "40:10",
+      "seconds": 2410,
+      "label": "左耳 耳かき　右耳　ニコちのいたずら",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@KT-sp5mk"
+      ],
+      "count": 2
+    },
+    {
+      "time": "42:34",
+      "seconds": 2554,
+      "label": "左耳 梵天　途中から右耳 マッサージ",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "50:10",
+      "seconds": 3010,
+      "label": "右耳 違う耳かき　途中から左耳 マッサージ",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "53:44",
+      "seconds": 3224,
+      "label": "＜＞  《お腹の音》",
+      "source": "コメント",
+      "authors": [
+        "@ユーレカ"
+      ],
+      "count": 1
+    },
+    {
+      "time": "57:46",
+      "seconds": 3466,
+      "label": "右耳　梵天",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:00:10",
+      "seconds": 3610,
+      "label": "左耳　耳フー",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@やまひげおにい"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:02:13",
+      "seconds": 3733,
+      "label": "左耳　綿棒",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:05:48",
+      "seconds": 3948,
+      "label": "両耳　綿棒",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:07:05",
+      "seconds": 4025,
+      "label": "【左耳綿棒、右耳マッサージ:Left Ear Cotton Swab,Right Ear Massage】",
+      "source": "コメント",
+      "authors": [
+        "@ユーレカ"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:10:32",
+      "seconds": 4232,
+      "label": "ここすき",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:13:12",
+      "seconds": 4392,
+      "label": "右耳 もふもふブラシ　途中から左耳",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:14:15",
+      "seconds": 4455,
+      "label": "音量注意:Be Careful of Volume",
+      "source": "コメント",
+      "authors": [
+        "@ユーレカ",
+        "@ファミコン-famicom"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:15:38",
+      "seconds": 4538,
+      "label": "右耳　綿棒　左耳もふもふブラシ",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:20:37",
+      "seconds": 4837,
+      "label": "耳たぶの言い方好き💛",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:23:02",
+      "seconds": 4982,
+      "label": "お耳マッサージ本格",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:24:40",
+      "seconds": 5080,
+      "label": "ここ超すき",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:29:40",
+      "seconds": 5380,
+      "label": "耳塞ぎ〜",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ファミコン-famicom"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:33:12",
+      "seconds": 5592,
+      "label": "梵天マッサージ",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい",
+        "@ユーレカ"
+      ],
+      "count": 2
+    },
+    {
+      "time": "1:41:02",
+      "seconds": 6062,
+      "label": "【おやすみ:Good nせNight】",
+      "source": "コメント",
+      "authors": [
+        "@ユーレカ"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:42:03",
+      "seconds": 6123,
+      "label": "配信終了😭😭😭",
+      "source": "コメント",
+      "authors": [
+        "@あかりゅうかい"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 20
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 20
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 0
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 20
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 20
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 10
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 10
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 0
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 0
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 10
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 30
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 10
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 0
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 20
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 0
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 0
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 0
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 20
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 10
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 0
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 0
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 0
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 10
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 20
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 0
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 20
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 0
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 0
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 0
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 0
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 0
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 0
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 0
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 20
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 0
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 0
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 10
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 0
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 0
+    },
+    {
+      "minute": 56,
+      "timeLabel": "56m",
+      "count": 0
+    },
+    {
+      "minute": 57,
+      "timeLabel": "57m",
+      "count": 20
+    },
+    {
+      "minute": 58,
+      "timeLabel": "58m",
+      "count": 0
+    },
+    {
+      "minute": 59,
+      "timeLabel": "59m",
+      "count": 0
+    },
+    {
+      "minute": 60,
+      "timeLabel": "1h0m",
+      "count": 20
+    },
+    {
+      "minute": 61,
+      "timeLabel": "1h1m",
+      "count": 0
+    },
+    {
+      "minute": 62,
+      "timeLabel": "1h2m",
+      "count": 20
+    },
+    {
+      "minute": 63,
+      "timeLabel": "1h3m",
+      "count": 0
+    },
+    {
+      "minute": 64,
+      "timeLabel": "1h4m",
+      "count": 0
+    },
+    {
+      "minute": 65,
+      "timeLabel": "1h5m",
+      "count": 20
+    },
+    {
+      "minute": 66,
+      "timeLabel": "1h6m",
+      "count": 0
+    },
+    {
+      "minute": 67,
+      "timeLabel": "1h7m",
+      "count": 10
+    },
+    {
+      "minute": 68,
+      "timeLabel": "1h8m",
+      "count": 0
+    },
+    {
+      "minute": 69,
+      "timeLabel": "1h9m",
+      "count": 0
+    },
+    {
+      "minute": 70,
+      "timeLabel": "1h10m",
+      "count": 10
+    },
+    {
+      "minute": 71,
+      "timeLabel": "1h11m",
+      "count": 0
+    },
+    {
+      "minute": 72,
+      "timeLabel": "1h12m",
+      "count": 0
+    },
+    {
+      "minute": 73,
+      "timeLabel": "1h13m",
+      "count": 20
+    },
+    {
+      "minute": 74,
+      "timeLabel": "1h14m",
+      "count": 20
+    },
+    {
+      "minute": 75,
+      "timeLabel": "1h15m",
+      "count": 20
+    },
+    {
+      "minute": 76,
+      "timeLabel": "1h16m",
+      "count": 0
+    },
+    {
+      "minute": 77,
+      "timeLabel": "1h17m",
+      "count": 0
+    },
+    {
+      "minute": 78,
+      "timeLabel": "1h18m",
+      "count": 0
+    },
+    {
+      "minute": 79,
+      "timeLabel": "1h19m",
+      "count": 0
+    },
+    {
+      "minute": 80,
+      "timeLabel": "1h20m",
+      "count": 10
+    },
+    {
+      "minute": 81,
+      "timeLabel": "1h21m",
+      "count": 0
+    },
+    {
+      "minute": 82,
+      "timeLabel": "1h22m",
+      "count": 0
+    },
+    {
+      "minute": 83,
+      "timeLabel": "1h23m",
+      "count": 20
+    },
+    {
+      "minute": 84,
+      "timeLabel": "1h24m",
+      "count": 10
+    },
+    {
+      "minute": 85,
+      "timeLabel": "1h25m",
+      "count": 0
+    },
+    {
+      "minute": 86,
+      "timeLabel": "1h26m",
+      "count": 0
+    },
+    {
+      "minute": 87,
+      "timeLabel": "1h27m",
+      "count": 0
+    },
+    {
+      "minute": 88,
+      "timeLabel": "1h28m",
+      "count": 0
+    },
+    {
+      "minute": 89,
+      "timeLabel": "1h29m",
+      "count": 20
+    },
+    {
+      "minute": 90,
+      "timeLabel": "1h30m",
+      "count": 0
+    },
+    {
+      "minute": 91,
+      "timeLabel": "1h31m",
+      "count": 0
+    },
+    {
+      "minute": 92,
+      "timeLabel": "1h32m",
+      "count": 0
+    },
+    {
+      "minute": 93,
+      "timeLabel": "1h33m",
+      "count": 20
+    },
+    {
+      "minute": 94,
+      "timeLabel": "1h34m",
+      "count": 0
+    },
+    {
+      "minute": 95,
+      "timeLabel": "1h35m",
+      "count": 0
+    },
+    {
+      "minute": 96,
+      "timeLabel": "1h36m",
+      "count": 0
+    },
+    {
+      "minute": 97,
+      "timeLabel": "1h37m",
+      "count": 0
+    },
+    {
+      "minute": 98,
+      "timeLabel": "1h38m",
+      "count": 0
+    },
+    {
+      "minute": 99,
+      "timeLabel": "1h39m",
+      "count": 0
+    },
+    {
+      "minute": 100,
+      "timeLabel": "1h40m",
+      "count": 0
+    },
+    {
+      "minute": 101,
+      "timeLabel": "1h41m",
+      "count": 10
+    },
+    {
+      "minute": 102,
+      "timeLabel": "1h42m",
+      "count": 10
+    },
+    {
+      "minute": 103,
+      "timeLabel": "1h43m",
+      "count": 0
+    },
+    {
+      "minute": 104,
+      "timeLabel": "1h44m",
+      "count": 0
+    }
+  ],
+  "maxCount": 30
 }

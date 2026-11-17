@@ -1,7 +1,276 @@
 {
   "videoId": "2lXhQ0eweLU",
   "title": "【ポケモンホワイト/ BW】#7 完全初見プレイ！5つ目のジムバッジ取りに行くぞ！！【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-11-04T05:19:31-08:00",
-  "collectedAt": "2026-11-16T01:51:58.605Z"
+  "duration": 1967,
+  "publishedAt": "2026-11-04T12:44:10.000Z",
+  "timestamps": [
+    {
+      "time": "1:38",
+      "seconds": 98,
+      "label": "配信開始　電撃家会議",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "3:50",
+      "seconds": 230,
+      "label": "電撃ニコ告白します(3日間風呂キャン)",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "4:46",
+      "seconds": 286,
+      "label": "10時間寝た報告",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "5:08",
+      "seconds": 308,
+      "label": "たんちけんの進化形ネタバレ？",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "7:18",
+      "seconds": 438,
+      "label": "ムーランドを捕まえず倒す",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "11:50",
+      "seconds": 710,
+      "label": "プラズマ団戦",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "13:45",
+      "seconds": 825,
+      "label": "ナイスミルホッグ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "18:55",
+      "seconds": 1135,
+      "label": "ねっとりボイス",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "24:32",
+      "seconds": 1472,
+      "label": "とけないこおりゲット",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "26:41",
+      "seconds": 1601,
+      "label": "あろま先輩登場",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 10
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 10
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 10
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 10
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 0
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 10
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 0
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 10
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 10
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 0
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 0
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 0
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 10
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 0
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 0
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 10
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 10
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 0
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 0
+    }
+  ],
+  "maxCount": 10
 }

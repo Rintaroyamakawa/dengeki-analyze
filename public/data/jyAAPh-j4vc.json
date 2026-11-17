@@ -1,7 +1,246 @@
 {
   "videoId": "jyAAPh-j4vc",
   "title": "【#ぽけぶい全員集合2026歌枠リレー】初めての歌枠緊張するけど楽しむぞ✨【電撃ニコ/ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-08-20T06:13:38-07:00",
-  "collectedAt": "2026-11-16T01:53:07.392Z"
+  "duration": 1702,
+  "publishedAt": "2026-08-20T12:42:40.000Z",
+  "timestamps": [
+    {
+      "time": "4:53",
+      "seconds": 293,
+      "label": "1曲目『ハム太郎のとっとこ歌』",
+      "source": "コメント",
+      "authors": [
+        "@棗なつめ-b4y"
+      ],
+      "count": 1
+    },
+    {
+      "time": "8:05",
+      "seconds": 485,
+      "label": "2曲目『星間飛行』",
+      "source": "コメント",
+      "authors": [
+        "@棗なつめ-b4y"
+      ],
+      "count": 1
+    },
+    {
+      "time": "13:05",
+      "seconds": 785,
+      "label": "3曲目『すきっちゅーの!』",
+      "source": "コメント",
+      "authors": [
+        "@棗なつめ-b4y"
+      ],
+      "count": 1
+    },
+    {
+      "time": "16:25",
+      "seconds": 985,
+      "label": "４曲目『限界突破×サバイバー』",
+      "source": "コメント",
+      "authors": [
+        "@棗なつめ-b4y"
+      ],
+      "count": 1
+    },
+    {
+      "time": "21:31",
+      "seconds": 1291,
+      "label": "5曲目『ファンサ』",
+      "source": "コメント",
+      "authors": [
+        "@棗なつめ-b4y"
+      ],
+      "count": 1
+    },
+    {
+      "time": "23:10",
+      "seconds": 1390,
+      "label": "「宝物にします」、23:21「裏切りません」、23:51「まだまだ ねえ」のところ、歌ってみた動画でも多く見られた歌詞に沿った表情の付いた歌唱で、今回はさらにそれプラス実際の表情でも表現していて、歌ってみた動画には無い歌枠ならではの臨場感があって好き🤤",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "23:29",
+      "seconds": 1409,
+      "label": "「ふざけんな」のパンチ力ある歌い方も感情ありありと伝わって良い👊ボルテッカー歌ってみたのアレンジでもあったけれど、ニコちゃんのこういう一部だけ急激に語気を強める歌い方好きだ✨カッコいい響きで普段の可愛らしい雰囲気とギャップがあるのと、声が良すぎて語気強めでも聴き心地良すぎる🫠",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    },
+    {
+      "time": "23:45",
+      "seconds": 1425,
+      "label": "ニコビーム可愛すぎ🐿️⚡️✨",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 2
+    },
+    {
+      "time": "24:03",
+      "seconds": 1443,
+      "label": "しっとりとしたフレーズに乗せるあどけない感じのピュアな歌声が切なくて、息遣いから切実さ健気さが感じられてめちゃくちゃ刺さる💘🫠",
+      "source": "コメント",
+      "authors": [
+        "@みゅっく25"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 0
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 10
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 0
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 10
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 10
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 0
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 10
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 0
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 0
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 10
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 40
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 10
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 0
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    }
+  ],
+  "maxCount": 40
 }

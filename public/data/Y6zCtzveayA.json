@@ -1,7 +1,481 @@
 {
   "videoId": "Y6zCtzveayA",
   "title": "雑談！！ちょっとだけお話ししよ？歌枠のお礼もしたい！【電撃ニコ / ぽけぶい】",
-  "heatmap": [],
-  "publishedAt": "2026-08-20T12:01:35-07:00",
-  "collectedAt": "2026-11-16T01:53:06.800Z"
+  "duration": 4168,
+  "publishedAt": "2026-08-20T15:57:32.000Z",
+  "timestamps": [
+    {
+      "time": "00:05",
+      "seconds": 5,
+      "label": "配信スタート＆ゲリラ雑談開始",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "06:17",
+      "seconds": 377,
+      "label": "歌枠の音量トラブルを全力で謝罪（みんなの耳と鼓膜を心配するニコちゃん）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "08:20",
+      "seconds": 500,
+      "label": "『限界突破サバイバー』選曲理由と『ニコビーム』の裏話（カオスなセトリの意図が明らかに！）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "14:04",
+      "seconds": 844,
+      "label": "開会式の仮装裏話（化け猫＋アイドルという謎の組み合わせでみんなを混乱させたかったニコ太郎）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "17:11",
+      "seconds": 1031,
+      "label": "「ハム太郎なのだ」モノマネに苦戦するシーン",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "23:31",
+      "seconds": 1411,
+      "label": "「クーデレって何？」クーデレの概念が分からず困惑するニコちゃんが可愛い",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "34:00",
+      "seconds": 2040,
+      "label": "歌枠のスパチャ読み上げ開始（一人一人に丁寧にお礼を伝える優しい時間）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "45:18",
+      "seconds": 2718,
+      "label": "ショート動画のタイトルが「絶対絶命」になっていることにリスナーの指摘で気づくポンコツシーン",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "48:40",
+      "seconds": 2920,
+      "label": "今後のリズム天国配信について（7が言えなくてバグるニコちゃん）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "53:19",
+      "seconds": 3199,
+      "label": "リスナーアンケート「どの歌が1番好きだった？」（4択に限界突破サバイバーを入れ忘れる痛恨のミス）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:01:57",
+      "seconds": 3717,
+      "label": "歌枠でリスナーの鼓膜を破壊した罪で訴えられる！？寸劇（神様やアロマ先輩のモノマネも必見）",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    },
+    {
+      "time": "1:06:42",
+      "seconds": 4002,
+      "label": "締めの挨拶と次回配信（マリオサンシャイン）の告知",
+      "source": "コメント",
+      "authors": [
+        "@NavyBlue_ねいびーぶるー"
+      ],
+      "count": 1
+    }
+  ],
+  "heatmapData": [
+    {
+      "minute": 0,
+      "timeLabel": "0m",
+      "count": 10
+    },
+    {
+      "minute": 1,
+      "timeLabel": "1m",
+      "count": 0
+    },
+    {
+      "minute": 2,
+      "timeLabel": "2m",
+      "count": 0
+    },
+    {
+      "minute": 3,
+      "timeLabel": "3m",
+      "count": 0
+    },
+    {
+      "minute": 4,
+      "timeLabel": "4m",
+      "count": 0
+    },
+    {
+      "minute": 5,
+      "timeLabel": "5m",
+      "count": 0
+    },
+    {
+      "minute": 6,
+      "timeLabel": "6m",
+      "count": 10
+    },
+    {
+      "minute": 7,
+      "timeLabel": "7m",
+      "count": 0
+    },
+    {
+      "minute": 8,
+      "timeLabel": "8m",
+      "count": 10
+    },
+    {
+      "minute": 9,
+      "timeLabel": "9m",
+      "count": 0
+    },
+    {
+      "minute": 10,
+      "timeLabel": "10m",
+      "count": 0
+    },
+    {
+      "minute": 11,
+      "timeLabel": "11m",
+      "count": 0
+    },
+    {
+      "minute": 12,
+      "timeLabel": "12m",
+      "count": 0
+    },
+    {
+      "minute": 13,
+      "timeLabel": "13m",
+      "count": 0
+    },
+    {
+      "minute": 14,
+      "timeLabel": "14m",
+      "count": 10
+    },
+    {
+      "minute": 15,
+      "timeLabel": "15m",
+      "count": 0
+    },
+    {
+      "minute": 16,
+      "timeLabel": "16m",
+      "count": 0
+    },
+    {
+      "minute": 17,
+      "timeLabel": "17m",
+      "count": 10
+    },
+    {
+      "minute": 18,
+      "timeLabel": "18m",
+      "count": 0
+    },
+    {
+      "minute": 19,
+      "timeLabel": "19m",
+      "count": 0
+    },
+    {
+      "minute": 20,
+      "timeLabel": "20m",
+      "count": 0
+    },
+    {
+      "minute": 21,
+      "timeLabel": "21m",
+      "count": 0
+    },
+    {
+      "minute": 22,
+      "timeLabel": "22m",
+      "count": 0
+    },
+    {
+      "minute": 23,
+      "timeLabel": "23m",
+      "count": 10
+    },
+    {
+      "minute": 24,
+      "timeLabel": "24m",
+      "count": 0
+    },
+    {
+      "minute": 25,
+      "timeLabel": "25m",
+      "count": 0
+    },
+    {
+      "minute": 26,
+      "timeLabel": "26m",
+      "count": 0
+    },
+    {
+      "minute": 27,
+      "timeLabel": "27m",
+      "count": 0
+    },
+    {
+      "minute": 28,
+      "timeLabel": "28m",
+      "count": 0
+    },
+    {
+      "minute": 29,
+      "timeLabel": "29m",
+      "count": 0
+    },
+    {
+      "minute": 30,
+      "timeLabel": "30m",
+      "count": 0
+    },
+    {
+      "minute": 31,
+      "timeLabel": "31m",
+      "count": 0
+    },
+    {
+      "minute": 32,
+      "timeLabel": "32m",
+      "count": 0
+    },
+    {
+      "minute": 33,
+      "timeLabel": "33m",
+      "count": 0
+    },
+    {
+      "minute": 34,
+      "timeLabel": "34m",
+      "count": 10
+    },
+    {
+      "minute": 35,
+      "timeLabel": "35m",
+      "count": 0
+    },
+    {
+      "minute": 36,
+      "timeLabel": "36m",
+      "count": 0
+    },
+    {
+      "minute": 37,
+      "timeLabel": "37m",
+      "count": 0
+    },
+    {
+      "minute": 38,
+      "timeLabel": "38m",
+      "count": 0
+    },
+    {
+      "minute": 39,
+      "timeLabel": "39m",
+      "count": 0
+    },
+    {
+      "minute": 40,
+      "timeLabel": "40m",
+      "count": 0
+    },
+    {
+      "minute": 41,
+      "timeLabel": "41m",
+      "count": 0
+    },
+    {
+      "minute": 42,
+      "timeLabel": "42m",
+      "count": 0
+    },
+    {
+      "minute": 43,
+      "timeLabel": "43m",
+      "count": 0
+    },
+    {
+      "minute": 44,
+      "timeLabel": "44m",
+      "count": 0
+    },
+    {
+      "minute": 45,
+      "timeLabel": "45m",
+      "count": 10
+    },
+    {
+      "minute": 46,
+      "timeLabel": "46m",
+      "count": 0
+    },
+    {
+      "minute": 47,
+      "timeLabel": "47m",
+      "count": 0
+    },
+    {
+      "minute": 48,
+      "timeLabel": "48m",
+      "count": 10
+    },
+    {
+      "minute": 49,
+      "timeLabel": "49m",
+      "count": 0
+    },
+    {
+      "minute": 50,
+      "timeLabel": "50m",
+      "count": 0
+    },
+    {
+      "minute": 51,
+      "timeLabel": "51m",
+      "count": 0
+    },
+    {
+      "minute": 52,
+      "timeLabel": "52m",
+      "count": 0
+    },
+    {
+      "minute": 53,
+      "timeLabel": "53m",
+      "count": 10
+    },
+    {
+      "minute": 54,
+      "timeLabel": "54m",
+      "count": 0
+    },
+    {
+      "minute": 55,
+      "timeLabel": "55m",
+      "count": 0
+    },
+    {
+      "minute": 56,
+      "timeLabel": "56m",
+      "count": 0
+    },
+    {
+      "minute": 57,
+      "timeLabel": "57m",
+      "count": 0
+    },
+    {
+      "minute": 58,
+      "timeLabel": "58m",
+      "count": 0
+    },
+    {
+      "minute": 59,
+      "timeLabel": "59m",
+      "count": 0
+    },
+    {
+      "minute": 60,
+      "timeLabel": "1h0m",
+      "count": 0
+    },
+    {
+      "minute": 61,
+      "timeLabel": "1h1m",
+      "count": 10
+    },
+    {
+      "minute": 62,
+      "timeLabel": "1h2m",
+      "count": 0
+    },
+    {
+      "minute": 63,
+      "timeLabel": "1h3m",
+      "count": 0
+    },
+    {
+      "minute": 64,
+      "timeLabel": "1h4m",
+      "count": 0
+    },
+    {
+      "minute": 65,
+      "timeLabel": "1h5m",
+      "count": 0
+    },
+    {
+      "minute": 66,
+      "timeLabel": "1h6m",
+      "count": 10
+    },
+    {
+      "minute": 67,
+      "timeLabel": "1h7m",
+      "count": 0
+    },
+    {
+      "minute": 68,
+      "timeLabel": "1h8m",
+      "count": 0
+    },
+    {
+      "minute": 69,
+      "timeLabel": "1h9m",
+      "count": 0
+    }
+  ],
+  "maxCount": 10
 }
