@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 type BookmarkButtonProps = {
   initialBookmarked?: boolean;
@@ -13,6 +13,7 @@ export default function BookmarkButton({
 }: BookmarkButtonProps) {
   const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
   const [videoKey, setVideoKey] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -20,7 +21,6 @@ export default function BookmarkButton({
     setIsBookmarked(nextState);
     
     if (nextState) {
-      // オンにした瞬間に動画のキーを変えてアニメーションを頭から再生させる
       setVideoKey(prev => prev + 1);
     }
 
@@ -28,6 +28,16 @@ export default function BookmarkButton({
       onToggle(nextState);
     }
   };
+
+  // 動画が表示されたら強制的に再生を走らせる
+  useEffect(() => {
+    if (isBookmarked && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(err => {
+        console.log('Autoplay prevented:', err);
+      });
+    }
+  }, [isBookmarked, videoKey]);
 
   return (
     <button
@@ -45,8 +55,8 @@ export default function BookmarkButton({
         />
       ) : (
         <div className="w-9 h-9 flex items-center justify-center pointer-events-none select-none">
-          {/* 🎥 プレビュー用・本番用の透過WebM動画 */}
           <video
+            ref={videoRef}
             key={videoKey}
             src="/lottie/bookmark.webm" 
             autoPlay
