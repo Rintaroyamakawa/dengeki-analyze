@@ -445,7 +445,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="p-3 flex-1 flex flex-col justify-between">
+<div className="p-3 flex-1 flex flex-col justify-between">
           <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
             {item.title}
           </h3>
@@ -542,7 +542,10 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h3 className="font-bold text-lg text-gray-900">
-                    {data?.title || activeArchiveTitle || (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
+                    {data?.title || 
+                     activeArchiveTitle || 
+                     (url ? archives.find(a => url.includes(a.videoId))?.title : null) || 
+                     (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
                   </h3>
                   <p className="text-xs text-gray-500 mt-1">
                     {data ? (

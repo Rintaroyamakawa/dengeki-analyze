@@ -58,7 +58,12 @@ export async function POST(req: NextRequest) {
     const youtube = await getYoutubeClient();
     const info = await youtube.getBasicInfo(videoId);
 
-    const title = info.basic_info.title || 'タイトル不明';
+    // 🛠️ 構文エラーを修正した安全なタイトル取得フォールバック
+    const title = 
+      info.basic_info?.title || 
+      (info as any).primary_info?.title?.toString() || 
+      'タイトル不明';
+
     const duration = info.basic_info.duration || 0;
     
     // 🔍 YouTubeの公開日時を取得してISO形式に変換
@@ -138,7 +143,7 @@ export async function POST(req: NextRequest) {
     const allTimestamps = Array.from(mergedMap.values());
     allTimestamps.sort((a, b) => a.seconds - b.seconds);
 
-    // 2. 📊 【ライブチャット（チャットリプレイ）の取得と熱量集計】（型エラー回避のため any を指定）
+    // 2. 📊 【ライブチャット（チャットリプレイ）の取得と熱量集計】
     const minuteMap: { [key: number]: number } = {};
     let chatFetchedCount = 0;
 
@@ -190,7 +195,7 @@ export async function POST(req: NextRequest) {
       videoId,
       title,
       duration,
-      publishedAt, // 👈 ここで公開日を返すように追加！
+      publishedAt,
       timestamps: allTimestamps,
       heatmapData,
       maxCount,
