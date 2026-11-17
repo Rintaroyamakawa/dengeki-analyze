@@ -175,6 +175,8 @@ export default function Home() {
   const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...');
 
   const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
+  // 📌 複数選択・一括削除用の選択中ID管理
+  const [selectedBookmarkIds, setSelectedBookmarkIds] = useState<string[]>([]);
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
@@ -233,6 +235,7 @@ export default function Home() {
     let updated: MyBookmark[];
     if (exists) {
       updated = myBookmarks.filter(b => b.id !== clipId);
+      setSelectedBookmarkIds(selectedBookmarkIds.filter(id => id !== clipId));
     } else {
       const currentTitle = data.title || activeArchiveTitle || '無題の配信';
       const newBookmark: MyBookmark = {
@@ -255,6 +258,36 @@ export default function Home() {
     e.stopPropagation();
     const updated = myBookmarks.filter(b => b.id !== id);
     setMyBookmarks(updated);
+    setSelectedBookmarkIds(selectedBookmarkIds.filter(i => i !== id));
+    localStorage.setItem('my_clip_bookmarks', JSON.stringify(updated));
+  };
+
+  // 📌 個別チェックボックスの切り替え
+  const toggleSelectBookmark = (id: string) => {
+    if (selectedBookmarkIds.includes(id)) {
+      setSelectedBookmarkIds(selectedBookmarkIds.filter(i => i !== id));
+    } else {
+      setSelectedBookmarkIds([...selectedBookmarkIds, id]);
+    }
+  };
+
+  // 📌 すべて選択 / すべて解除
+  const toggleSelectAllBookmarks = () => {
+    if (selectedBookmarkIds.length === myBookmarks.length) {
+      setSelectedBookmarkIds([]);
+    } else {
+      setSelectedBookmarkIds(myBookmarks.map(b => b.id));
+    }
+  };
+
+  // 📌 選択した項目を一括削除
+  const handleBulkRemoveBookmarks = () => {
+    if (selectedBookmarkIds.length === 0) return;
+    if (!confirm(`選択した ${selectedBookmarkIds.length}件の切り抜きポイントを削除しますか？`)) return;
+
+    const updated = myBookmarks.filter(b => !selectedBookmarkIds.includes(b.id));
+    setMyBookmarks(updated);
+    setSelectedBookmarkIds([]);
     localStorage.setItem('my_clip_bookmarks', JSON.stringify(updated));
   };
 
@@ -705,7 +738,7 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
 
-              {/* 🌟 マイ切り抜きポイント専用タブ（変更後の静止画ファイル名に更新） */}
+              {/* 🌟 マイ切り抜きポイント専用タブ（静止画アイコン付き） */}
               <button
                 onClick={() => setSelectedCategory('bookmarks')}
                 className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
@@ -742,6 +775,30 @@ export default function Home() {
             </div>
           </div>
 
+          {/* 📌 マイ切り抜きポイントタブ選択時：一括操作バー */}
+          {selectedCategory === 'bookmarks' && myBookmarks.length > 0 && (
+            <div className="bg-white border rounded-xl p-3 shadow-sm flex items-center justify-between text-xs">
+              <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none">
+                <input
+                  type="checkbox"
+                  checked={selectedBookmarkIds.length === myBookmarks.length && myBookmarks.length > 0}
+                  onChange={toggleSelectAllBookmarks}
+                  className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+                />
+                すべて選択 ({selectedBookmarkIds.length} / {myBookmarks.length}件 選択中)
+              </label>
+
+              <button
+                type="button"
+                disabled={selectedBookmarkIds.length === 0}
+                onClick={handleBulkRemoveBookmarks}
+                className="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1"
+              >
+                🗑️ 選択した項目を一括削除 ({selectedBookmarkIds.length}件)
+              </button>
+            </div>
+          )}
+
           {selectedCategory === 'bookmarks' ? (
             myBookmarks.length === 0 ? (
               <div className="bg-white border rounded-xl p-12 text-center text-gray-500 text-sm space-y-2">
@@ -750,59 +807,72 @@ export default function Home() {
               </div>
             ) : (
               <div className="bg-white border rounded-xl divide-y overflow-hidden">
-                {myBookmarks.map((clip) => (
-                  <div
-                    key={clip.id}
-                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-amber-50/50 transition-colors"
-                  >
-                    <div className="flex items-start sm:items-center gap-3 flex-1">
-                      <img
-                        src={`https://i.ytimg.com/vi/${clip.videoId}/mqdefault.jpg`}
-                        alt={clip.videoTitle}
-                        className="w-28 aspect-video object-cover rounded shrink-0 bg-gray-900 cursor-pointer"
-                        onClick={() => handleSelectArchive(clip.videoId, clip.videoTitle)}
-                      />
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span
-                            onClick={() => {
-                              handleSelectArchive(clip.videoId, clip.videoTitle);
-                              setTimeout(() => {
-                                setActiveItem({
-                                  time: clip.time,
-                                  seconds: clip.seconds,
-                                  label: clip.label,
-                                  source: 'マイ切り抜きポイント',
-                                  authors: ['自分'],
-                                  count: 1,
-                                });
-                              }, 600);
-                            }}
-                            className="font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded cursor-pointer hover:underline text-xs"
-                          >
-                            ▶ {clip.time} から再生
-                          </span>
-                          <span className="text-[10px] text-gray-400">{clip.createdAt} 追加</span>
+                {myBookmarks.map((clip) => {
+                  const isChecked = selectedBookmarkIds.includes(clip.id);
+                  return (
+                    <div
+                      key={clip.id}
+                      className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors ${
+                        isChecked ? 'bg-blue-50/40' : 'hover:bg-amber-50/50'
+                      }`}
+                    >
+                      <div className="flex items-start sm:items-center gap-3 flex-1">
+                        {/* 📌 個別選択用チェックボックス */}
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => toggleSelectBookmark(clip.id)}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer mt-1 sm:mt-0 shrink-0"
+                        />
+
+                        <img
+                          src={`https://i.ytimg.com/vi/${clip.videoId}/mqdefault.jpg`}
+                          alt={clip.videoTitle}
+                          className="w-28 aspect-video object-cover rounded shrink-0 bg-gray-900 cursor-pointer"
+                          onClick={() => handleSelectArchive(clip.videoId, clip.videoTitle)}
+                        />
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span
+                              onClick={() => {
+                                handleSelectArchive(clip.videoId, clip.videoTitle);
+                                setTimeout(() => {
+                                  setActiveItem({
+                                    time: clip.time,
+                                    seconds: clip.seconds,
+                                    label: clip.label,
+                                    source: 'マイ切り抜きポイント',
+                                    authors: ['自分'],
+                                    count: 1,
+                                  });
+                                }, 600);
+                              }}
+                              className="font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded cursor-pointer hover:underline text-xs"
+                            >
+                              ▶ {clip.time} から再生
+                            </span>
+                            <span className="text-[10px] text-gray-400">{clip.createdAt} 追加</span>
+                          </div>
+                          <h4 className="text-xs font-extrabold text-gray-800 line-clamp-1">
+                            {clip.label}
+                          </h4>
+                          <p className="text-[11px] text-gray-500 line-clamp-1">
+                            動画: {clip.videoTitle}
+                          </p>
                         </div>
-                        <h4 className="text-xs font-extrabold text-gray-800 line-clamp-1">
-                          {clip.label}
-                        </h4>
-                        <p className="text-[11px] text-gray-500 line-clamp-1">
-                          動画: {clip.videoTitle}
-                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                        <button
+                          onClick={(e) => removeBookmark(clip.id, e)}
+                          className="text-xs bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                        >
+                          🗑️ 削除
+                        </button>
                       </div>
                     </div>
-
-                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
-                      <button
-                        onClick={(e) => removeBookmark(clip.id, e)}
-                        className="text-xs bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg transition-colors"
-                      >
-                        🗑️ 削除
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )
           ) : loadingArchives ? (
