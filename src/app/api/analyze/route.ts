@@ -47,6 +47,27 @@ function extractTimestampsFromText(text: string, author: string) {
   return results;
 }
 
+// 🛠️ 【追加】GETリクエストで public/data/ にある全JSON（動画ID）のリストを返す
+export async function GET() {
+  try {
+    const publicDataDir = path.join(process.cwd(), 'public', 'data');
+    if (!fs.existsSync(publicDataDir)) {
+      return NextResponse.json({ videos: [] });
+    }
+    const files = fs.readdirSync(publicDataDir);
+    const videos = files
+      .filter(file => file.endsWith('.json'))
+      .map(file => {
+        const videoId = file.replace('.json', '');
+        return { videoId };
+      });
+    return NextResponse.json({ videos });
+  } catch (error: any) {
+    console.error('List API Error:', error);
+    return NextResponse.json({ videos: [] }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -55,20 +76,6 @@ export async function POST(req: NextRequest) {
 
     if (!videoId) {
       return NextResponse.json({ error: '有効なYouTube URLではありません' }, { status: 400 });
-    }
-
-    // 🛠️ 【追加】すでに public/data/ に保存済みのJSONがあれば、YouTubeを叩かずにそれをそのまま返す
-    const dataFilePath = path.join(process.cwd(), 'public', 'data', `${videoId}.json`);
-    if (fs.existsSync(dataFilePath)) {
-      try {
-        const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
-        const jsonData = JSON.parse(fileContent);
-        if (jsonData.heatmapData && jsonData.heatmapData.length > 0) {
-          return NextResponse.json(jsonData);
-        }
-      } catch (e) {
-        console.warn('保存済みJSONの読み込みに失敗しました:', e);
-      }
     }
 
     const youtube = await getYoutubeClient();
@@ -222,7 +229,6 @@ export async function POST(req: NextRequest) {
       maxCount,
     };
 
-    // 🛠️ 解析結果を public/data/ フォルダに JSON ファイルとして自動保存
     try {
       const publicDataDir = path.join(process.cwd(), 'public', 'data');
       if (!fs.existsSync(publicDataDir)) {
