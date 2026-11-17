@@ -1,11 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import * as lottieReact from 'lottie-react';
-const Lottie = (lottieReact as any).default || lottieReact;
-
-// @ts-ignore
-import animationData from '../lottie/niko-bookmark.json';
 
 type BookmarkButtonProps = {
   initialBookmarked?: boolean;
@@ -17,11 +12,18 @@ export default function BookmarkButton({
   onToggle,
 }: BookmarkButtonProps) {
   const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
+  const [videoKey, setVideoKey] = useState(0);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     const nextState = !isBookmarked;
     setIsBookmarked(nextState);
+    
+    if (nextState) {
+      // オンにした瞬間に動画のキーを変えてアニメーションを頭から再生させる
+      setVideoKey(prev => prev + 1);
+    }
+
     if (onToggle) {
       onToggle(nextState);
     }
@@ -31,7 +33,7 @@ export default function BookmarkButton({
     <button
       type="button"
       onClick={handleClick}
-      className="relative flex items-center justify-center w-11 h-11 rounded-full hover:bg-gray-100/85 transition-colors focus:outline-none cursor-pointer"
+      className="relative flex items-center justify-center w-11 h-11 rounded-full hover:bg-gray-100/80 transition-transform active:scale-90 focus:outline-none cursor-pointer"
       aria-label="ブックマーク"
       title={isBookmarked ? 'ブックマーク解除' : '切り抜き用にブックマーク'}
     >
@@ -39,15 +41,18 @@ export default function BookmarkButton({
         <img
           src="/lottie/ニコすこ！＿ブクマ＿オフ.png"
           alt="ブックマークオフ"
-          className="w-7 h-7 object-contain select-none pointer-events-none"
+          className="w-7 h-7 object-contain select-none pointer-events-none transition-transform hover:scale-110"
         />
       ) : (
-        <div className="w-9 h-9 pointer-events-none select-none flex items-center justify-center">
-          <Lottie
-            key="bookmark-active"
-            animationData={animationData}
-            loop={false}
-            autoplay={true}
+        <div className="w-9 h-9 flex items-center justify-center pointer-events-none select-none">
+          {/* 🎥 プレビュー用・本番用の透過WebM動画 */}
+          <video
+            key={videoKey}
+            src="/lottie/bookmark.webm" 
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-contain"
           />
         </div>
       )}
