@@ -47,7 +47,6 @@ function extractTimestampsFromText(text: string, author: string) {
   return results;
 }
 
-// 🛠️ 【追加】GETリクエストで public/data/ にある全JSON（動画ID）のリストを返す
 export async function GET() {
   try {
     const publicDataDir = path.join(process.cwd(), 'public', 'data');
@@ -76,6 +75,20 @@ export async function POST(req: NextRequest) {
 
     if (!videoId) {
       return NextResponse.json({ error: '有効なYouTube URLではありません' }, { status: 400 });
+    }
+
+    // 🛡️ 【ガード強化】すでに public/data/ に正常なデータが存在する場合は、再取得せずにそれを返す（上書き事故を防ぐ）
+    const dataFilePath = path.join(process.cwd(), 'public', 'data', `${videoId}.json`);
+    if (fs.existsSync(dataFilePath)) {
+      try {
+        const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
+        const jsonData = JSON.parse(fileContent);
+        if ((jsonData.timestamps && jsonData.timestamps.length > 0) || (jsonData.maxCount && jsonData.maxCount > 1)) {
+          return NextResponse.json(jsonData);
+        }
+      } catch (e) {
+        console.warn('保存済みJSONの読み込みに失敗しました:', e);
+      }
     }
 
     const youtube = await getYoutubeClient();
