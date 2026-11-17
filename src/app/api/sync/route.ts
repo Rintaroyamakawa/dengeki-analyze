@@ -15,13 +15,11 @@ export async function POST(request: Request) {
     const input = channelInput.trim();
     let channelId = '';
 
-    // UCから始まるチャンネルIDが直接入力された場合、またはURLに含まれる場合
     if (input.startsWith('UC')) {
       channelId = input;
     } else if (input.includes('/channel/')) {
       channelId = input.split('/channel/')[1].split('/')[0].split('?')[0];
     } else {
-      // ハンドル（@〜）の場合は forHandle で取得
       let handle = input;
       if (handle.includes('youtube.com/@')) {
         handle = '@' + handle.split('@')[1].split('/')[0].split('?')[0];
@@ -103,12 +101,12 @@ export async function POST(request: Request) {
       pageToken = playlistData.nextPageToken || '';
     } while (pageToken);
 
-    // 3. 50件ずつ詳細情報（配信情報・ステータス）を取得して除外条件を適用
+    // 3. 50件ずつ詳細情報を取得して、より厳密な除外条件を適用
     const filteredVideos: { videoId: string; title: string; publishedAt: string }[] = [];
 
     for (let i = 0; i < candidateIds.length; i += 50) {
       const batchIds = candidateIds.slice(i, i + 50).join(',');
-      const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails,status&id=${batchIds}&key=${apiKey}`;
+      const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails,status,contentDetails&id=${batchIds}&key=${apiKey}`;
       const detailsRes = await fetch(detailsUrl);
       const detailsData = await detailsRes.json();
 
@@ -126,14 +124,31 @@ export async function POST(request: Request) {
         const description: string = video.snippet?.description || '';
         const privacyStatus: string = video.status?.privacyStatus || '';
         const liveDetails = video.liveStreamingDetails;
+        const duration: string = video.contentDetails?.duration || ''; // ISO 8601形式 (例: PT1H2M10S)
 
-        // 条件1 & 4: タイトルに「スケジュール」または「発売中」が含まれるものを除外
+        // --- 除外フィルター ---
+
+        // 条件1: タイトルに「スケジュール」または「発売中」が含まれるもの
         if (title.includes('スケジュール') || title.includes('発売中')) {
           continue;
         }
 
-        // 条件2 & 3 (+待機所除外): ライブ配信の完了済みアーカイブのみ許可（通常動画・ショート・未配信待機所を除外）
+        // 条件2 & 3: 「動画」「ショート」および通常の投稿動画（歌ってみた等）の除外
+        // ・liveDetails（ライブ配信データ）がないものは一律で除外
+        // ・実際の配信終了時刻（actualEndTime）がないもの（未配信の待機所など）も除外
         if (!liveDetails || !liveDetails.actualEndTime) {
+          continue;
+        }
+
+        // 追加：歌ってみた、Cover、MV、ショート等のキーワードや、明らかに通常の投稿動画っぽいものを弾く
+        const lowerTitle = title.toLowerCase();
+        if (
+          lowerTitle.includes('歌ってみた') ||
+          lowerTitle.includes('cover') ||
+          lowerTitle.includes('mv') ||
+          lowerTitle.includes('shorts') ||
+          lowerTitle.includes('#shorts')
+        ) {
           continue;
         }
 
