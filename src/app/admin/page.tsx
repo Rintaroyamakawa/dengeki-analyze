@@ -18,7 +18,7 @@ type SyncedVideo = {
   publishedAt: string;
 };
 
-const DEFAULT_CHANNEL_ID = 'UCoaI0OX6-5TCEVRApZjj5-Q';
+const DEFAULT_CHANNEL_ID = '@DengekiNico';
 
 const DEFAULT_CATEGORIES = [
   '🎤 歌枠',
@@ -96,7 +96,7 @@ export default function AdminPage() {
       }
     }
     const savedChannel = localStorage.getItem('sync_channel_input');
-    if (savedChannel && savedChannel.startsWith('UC')) {
+    if (savedChannel && (savedChannel.startsWith('UC') || savedChannel.startsWith('@'))) {
       setChannelInput(savedChannel);
     }
     fetchArchives();
@@ -340,7 +340,7 @@ export default function AdminPage() {
               value={channelInput}
               onChange={(e) => setChannelInput(e.target.value)}
               disabled={isSyncing || isCollecting}
-              placeholder="チャンネルID (UC...)"
+              placeholder="チャンネルID (UC...) または @ハンドル"
               className="border border-blue-300 bg-white px-3 py-2 flex-1 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
