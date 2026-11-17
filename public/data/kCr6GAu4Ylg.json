@@ -5,15 +5,66 @@
   "publishedAt": "2026-11-09T17:32:46.000Z",
   "timestamps": [
     {
-      "time": "27:41",
-      "seconds": 1661,
-      "label": "おそらく亀ラップを歌いながら登録者１万人の瞬間を迎えた唯一のVtuber",
+      "time": "3:25",
+      "seconds": 205,
+      "label": "配信開始",
       "source": "コメント",
       "authors": [
-        "@かいだんねこ_loacat",
-        "@棗なつめ-b4y"
+        "@凪ちゃん-nagi"
       ],
-      "count": 2
+      "count": 1
+    },
+    {
+      "time": "5:00",
+      "seconds": 300,
+      "label": "岩おじクリア免除アンケート",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "14:24",
+      "seconds": 864,
+      "label": "ラストニコニコルーレット",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "16:31",
+      "seconds": 991,
+      "label": "亀ラップスタート",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
+    },
+    {
+      "time": "27:43",
+      "seconds": 1663,
+      "label": "1万人達成🎉",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi",
+        "@棗なつめ-b4y",
+        "@かいだんねこ_loacat"
+      ],
+      "count": 3
+    },
+    {
+      "time": "30:57",
+      "seconds": 1857,
+      "label": "亀ラップ歌うのやめて登録者減る",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
+      ],
+      "count": 1
     },
     {
       "time": "36:16",
@@ -22,6 +73,16 @@
       "source": "コメント",
       "authors": [
         "@かいだんねこ_loacat"
+      ],
+      "count": 1
+    },
+    {
+      "time": "46:39",
+      "seconds": 2799,
+      "label": "⭐️⭐️攻撃でしょ",
+      "source": "コメント",
+      "authors": [
+        "@凪ちゃん-nagi"
       ],
       "count": 1
     },
@@ -55,7 +116,7 @@
     {
       "minute": 3,
       "timeLabel": "3m",
-      "count": 0
+      "count": 10
     },
     {
       "minute": 4,
@@ -65,7 +126,7 @@
     {
       "minute": 5,
       "timeLabel": "5m",
-      "count": 0
+      "count": 10
     },
     {
       "minute": 6,
@@ -110,7 +171,7 @@
     {
       "minute": 14,
       "timeLabel": "14m",
-      "count": 0
+      "count": 10
     },
     {
       "minute": 15,
@@ -120,7 +181,7 @@
     {
       "minute": 16,
       "timeLabel": "16m",
-      "count": 0
+      "count": 10
     },
     {
       "minute": 17,
@@ -175,7 +236,7 @@
     {
       "minute": 27,
       "timeLabel": "27m",
-      "count": 20
+      "count": 30
     },
     {
       "minute": 28,
@@ -190,7 +251,7 @@
     {
       "minute": 30,
       "timeLabel": "30m",
-      "count": 0
+      "count": 10
     },
     {
       "minute": 31,
@@ -270,7 +331,7 @@
     {
       "minute": 46,
       "timeLabel": "46m",
-      "count": 0
+      "count": 10
     },
     {
       "minute": 47,
@@ -318,5 +379,5 @@
       "count": 0
     }
   ],
-  "maxCount": 20
+  "maxCount": 30
 }
