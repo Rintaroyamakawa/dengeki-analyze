@@ -174,7 +174,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all'); // 'all', 'bookmarks', または各カテゴリ名
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
   const [isLocal, setIsLocal] = useState(false);
-  const [lastUpdatedTime, setLastUpdatedTime] = useState<string>(''); // 🕒 最終更新時間（秒数まで）
+  const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...'); // 🕒 データ反映完了の正確な時刻
 
   // 📌 マイクリップの状態管理（localStorage永続化）
   const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
@@ -201,9 +201,6 @@ export default function Home() {
         setIsLocal(true);
       }
 
-      // 最終更新時間を現在の時刻（秒まで）に設定
-      setLastUpdatedTime(new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-
       // 保存済みのマイクリップをロード
       const savedBookmarks = localStorage.getItem('my_clip_bookmarks');
       if (savedBookmarks) {
@@ -221,6 +218,8 @@ export default function Home() {
         if (res.ok) {
           const list = await res.json();
           setArchives(list);
+          // 🕒 サーバーから最新データを受け取り、画面に反映できた瞬間の時間をセット（これでデプロイ反映のラグが正確に分かります）
+          setLastUpdatedTime(new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
         }
       } catch (e) {
         console.error('アーカイブ一覧の取得に失敗しました:', e);
@@ -445,7 +444,7 @@ export default function Home() {
           </div>
         </div>
 
-<div className="p-3 flex-1 flex flex-col justify-between">
+        <div className="p-3 flex-1 flex flex-col justify-between">
           <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
             {item.title}
           </h3>
@@ -481,11 +480,9 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
-            {lastUpdatedTime && (
-              <span className="text-[11px] font-mono text-gray-400">
-                最終更新: {lastUpdatedTime}
-              </span>
-            )}
+            <span className="text-[11px] font-mono text-gray-400">
+              最終反映: {lastUpdatedTime}
+            </span>
             {isLocal && (
               <Link
                 href="/admin"
@@ -602,7 +599,7 @@ export default function Home() {
                 </div>
               )}
 
-              {/* タイムスタンプ一覧（安全なブックマークボタン付き） */}
+              {/* タイムスタンプ一覧（アニメーション付きブックマークボタン） */}
               {data && (
                 <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
                   {data.timestamps.length === 0 ? (
@@ -638,7 +635,7 @@ export default function Home() {
                             )}
                           </span>
                           
-                          {/* 🌟 ブックマークボタン */}
+                          {/* 🌟 アニメーション付きブックマークボタン */}
                           <BookmarkButton
                             initialBookmarked={isBookmarked}
                             onToggle={() => toggleBookmark(item)}
