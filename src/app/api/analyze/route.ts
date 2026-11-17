@@ -58,21 +58,30 @@ export async function POST(req: NextRequest) {
     const youtube = await getYoutubeClient();
     const info = await youtube.getBasicInfo(videoId);
 
-    // 🛠️ 構文エラーを修正した安全なタイトル取得フォールバック
-    const title = 
-      info.basic_info?.title || 
-      (info as any).primary_info?.title?.toString() || 
-      'タイトル不明';
+    // 🛠️ タイトルを確実に取得（youtubei.jsが失敗した場合はYouTube公式oEmbed APIで必ず取得）
+    let title = info.basic_info?.title;
+    if (!title || title === 'タイトル不明') {
+      try {
+        const oembedRes = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+        if (oembedRes.ok) {
+          const oembedData = await oembedRes.json();
+          if (oembedData.title) {
+            title = oembedData.title;
+          }
+        }
+      } catch (e) {
+        console.warn('oEmbed取得失敗:', e);
+      }
+    }
+    title = title || 'タイトル不明';
 
     const duration = info.basic_info.duration || 0;
     
-    // 🔍 YouTubeの公開日時を取得してISO形式に変換
     const rawDate = info.basic_info.start_timestamp || info.basic_info.upload_date;
     const publishedAt = rawDate ? new Date(rawDate).toISOString() : null;
 
     let rawTimestamps: { time: string; seconds: number; label: string; source: string; author: string }[] = [];
 
-    // 1. コメント欄のタイムスタンプ抽出
     try {
       const commentsSection: any = await youtube.getComments(videoId);
       const contents = commentsSection?.contents || commentsSection;
@@ -105,7 +114,6 @@ export async function POST(req: NextRequest) {
       console.warn('コメント取得スキップ:', e);
     }
 
-    // タイムスタンプの重複グループ化処理
     const mergedMap = new Map<number, { time: string; seconds: number; label: string; source: string; authors: string[]; count: number }>();
 
     for (const item of rawTimestamps) {
@@ -143,7 +151,6 @@ export async function POST(req: NextRequest) {
     const allTimestamps = Array.from(mergedMap.values());
     allTimestamps.sort((a, b) => a.seconds - b.seconds);
 
-    // 2. 📊 【ライブチャット（チャットリプレイ）の取得と熱量集計】
     const minuteMap: { [key: number]: number } = {};
     let chatFetchedCount = 0;
 
@@ -164,7 +171,6 @@ export async function POST(req: NextRequest) {
       console.warn('ライブチャットリプレイの取得に失敗しました:', e);
     }
 
-    // チャットリプレイが取れない場合のフォールバック
     if (chatFetchedCount < 5) {
       allTimestamps.forEach(item => {
         const minuteKey = Math.floor(item.seconds / 60);

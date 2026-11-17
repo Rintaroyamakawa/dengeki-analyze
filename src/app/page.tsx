@@ -29,7 +29,6 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
-// 📌 ユーザー独自のマイクリップ（ブックマーク）の型
 type MyBookmark = {
   id: string;
   videoId: string;
@@ -40,10 +39,9 @@ type MyBookmark = {
   createdAt: string;
 };
 
-// 🛠️ 例外用：特定の動画IDを強制的に好きなカテゴリに入れたいときはここに追記
 const MANUAL_CATEGORY: { [videoId: string]: string } = {
-  'Y6zCtzveayA': '☕ 雑談', // 歌枠のお礼雑談
-  '3P5GTXoTH_Q': '☕ 雑談', // 初配信振り返り雑談
+  'Y6zCtzveayA': '☕ 雑談',
+  '3P5GTXoTH_Q': '☕ 雑談',
 };
 
 const matchCategoryFromText = (text: string): string | null => {
@@ -171,12 +169,11 @@ export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all'); // 'all', 'bookmarks', または各カテゴリ名
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
   const [isLocal, setIsLocal] = useState(false);
-  const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...'); // 🕒 データ反映完了の正確な時刻
+  const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...');
 
-  // 📌 マイクリップの状態管理（localStorage永続化）
   const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
 
   const [url, setUrl] = useState('');
@@ -201,7 +198,6 @@ export default function Home() {
         setIsLocal(true);
       }
 
-      // 保存済みのマイクリップをロード
       const savedBookmarks = localStorage.getItem('my_clip_bookmarks');
       if (savedBookmarks) {
         try {
@@ -218,7 +214,6 @@ export default function Home() {
         if (res.ok) {
           const list = await res.json();
           setArchives(list);
-          // 🕒 サーバーから最新データを受け取り、画面に反映できた瞬間の時間をセット（これでデプロイ反映のラグが正確に分かります）
           setLastUpdatedTime(new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
         }
       } catch (e) {
@@ -230,7 +225,6 @@ export default function Home() {
     fetchArchives();
   }, []);
 
-  // 📌 ブックマークの追加・削除ハンドラー
   const toggleBookmark = (item: TimestampItem) => {
     if (!data) return;
     const clipId = `${data.videoId}_${item.seconds}`;
@@ -599,7 +593,7 @@ export default function Home() {
                 </div>
               )}
 
-              {/* タイムスタンプ一覧（アニメーション付きブックマークボタン） */}
+              {/* タイムスタンプ一覧 */}
               {data && (
                 <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
                   {data.timestamps.length === 0 ? (
@@ -635,7 +629,7 @@ export default function Home() {
                             )}
                           </span>
                           
-                          {/* 🌟 アニメーション付きブックマークボタン */}
+                          {/* 🌟 ブックマークボタン */}
                           <BookmarkButton
                             initialBookmarked={isBookmarked}
                             onToggle={() => toggleBookmark(item)}
@@ -686,7 +680,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* 🎯 カテゴリ目次（「⭐ マイクリップ」タブ付き） */}
+          {/* 🎯 カテゴリ目次 */}
           <div className="bg-white border rounded-xl p-3 shadow-sm space-y-2">
             <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
               <span>📂 カテゴリ・シリーズで絞り込み（クリックで選択）</span>
@@ -711,7 +705,6 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
 
-              {/* 🌟 マイクリップ専用タブ */}
               <button
                 onClick={() => setSelectedCategory('bookmarks')}
                 className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1 ${
@@ -743,7 +736,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 表示切り替え：マイクリップタブが選ばれている場合 */}
           {selectedCategory === 'bookmarks' ? (
             myBookmarks.length === 0 ? (
               <div className="bg-white border rounded-xl p-12 text-center text-gray-500 text-sm space-y-2">
