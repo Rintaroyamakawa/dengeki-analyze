@@ -29,7 +29,6 @@ export default function BookmarkButton({
     }
   };
 
-  // 動画が表示されたら強制的に再生を走らせる
   useEffect(() => {
     if (isBookmarked && videoRef.current) {
       videoRef.current.currentTime = 0;

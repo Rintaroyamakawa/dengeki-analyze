@@ -705,15 +705,21 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
 
+              {/* 🌟 マイクリップ専用タブ（静止画アイコン付き） */}
               <button
                 onClick={() => setSelectedCategory('bookmarks')}
-                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1 ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
                   selectedCategory === 'bookmarks'
                     ? 'bg-amber-500 text-white shadow'
                     : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200'
                 }`}
               >
-                ⭐ マイクリップ ({myBookmarks.length})
+                <img
+                  src="/lottie/ニコすこ！＿ブクマ＿ロゴ＿項目のところの静止画.png"
+                  alt="マイクリップ"
+                  className="w-4 h-4 object-contain select-none pointer-events-none"
+                />
+                マイクリップ ({myBookmarks.length})
               </button>
 
               {CATEGORIES.map((cat) => {
