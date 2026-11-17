@@ -4,7 +4,8 @@ import { useState, useRef } from 'react';
 import * as lottieReact from 'lottie-react';
 const Lottie = (lottieReact as any).default || lottieReact;
 
-import animationData from '../../public/lottie/niko-bookmark.json';
+// @ts-ignore
+import animationData from '../lottie/niko-bookmark.json';
 
 type BookmarkButtonProps = {
   initialBookmarked?: boolean;
