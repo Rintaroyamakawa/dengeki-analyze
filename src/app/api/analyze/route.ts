@@ -210,7 +210,7 @@ export async function POST(req: NextRequest) {
 
     // 🛠️ 解析結果を data/ フォルダに JSON ファイルとして自動保存
     try {
-      const dataDir = path.join(process.cwd(), 'data');
+      const dataDir = path.join(process.cwd(), 'public', 'data');
       if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
       }
