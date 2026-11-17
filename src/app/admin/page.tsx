@@ -176,7 +176,7 @@ export default function AdminPage() {
     return payloadToSave;
   };
 
-  // 🚀 未収集の配信をすべて一括で自動収集する
+  // 🚀 未収集の配信をすべて一括で自動収集する ＋ 完了後に自動Gitプッシュ
   const handleAutoCollectAll = async () => {
     let targetUncollected = uncollectedVideos;
     if (targetUncollected.length === 0) {
@@ -237,9 +237,22 @@ export default function AdminPage() {
       console.error(e);
     }
 
+    // 🚀 収集完了後に自動でGitHubへプッシュしてサーバーを更新する
+    setStatusText(`完了！（${successCount}/${total}件保存完了。GitHubへ自動反映中...）`);
+    try {
+      const pushRes = await fetch('/api/git-push', { method: 'POST' });
+      if (pushRes.ok) {
+        showNotice(`${successCount}件の収集 ＆ GitHubへの自動反映が完了しました！`);
+      } else {
+        console.warn('Git自動プッシュに失敗しました');
+        showNotice(`${successCount}件保存しましたが、GitHubへの反映は手動で行ってください。`);
+      }
+    } catch (pushErr) {
+      console.error('Git自動プッシュエラー:', pushErr);
+    }
+
     setIsCollecting(false);
-    setStatusText(`完了！（${successCount}/${total}件をJSON保存しました）`);
-    showNotice(`${successCount}件の未収集データを一括自動収集しました！`);
+    setStatusText(`完了！（${successCount}/${total}件の保存とGitHub同期が完了）`);
   };
 
   // 個別URL収集
@@ -267,8 +280,17 @@ export default function AdminPage() {
 
     setBulkUrls('');
     await fetchArchives();
+
+    // 🚀 個別収集完了後も自動でGitHubへプッシュ
+    setStatusText(`完了！（個別保存完了。GitHubへ自動反映中...）`);
+    try {
+      await fetch('/api/git-push', { method: 'POST' });
+    } catch (e) {
+      console.error('Git自動プッシュエラー:', e);
+    }
+
     setIsCollecting(false);
-    setStatusText(`完了！（${successCount}/${lines.length}件をJSON保存しました）`);
+    setStatusText(`完了！（${successCount}/${lines.length}件をJSON保存＆GitHub同期しました）`);
     showNotice(`${successCount}件の個別データを収集・保存しました！`);
   };
 
