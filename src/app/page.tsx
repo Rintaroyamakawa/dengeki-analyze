@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import BookmarkButton from '@/components/BookmarkButton';
 
 type TimestampItem = {
   time: string;
@@ -573,7 +574,7 @@ export default function Home() {
                 </div>
               )}
 
-              {/* タイムスタンプ一覧（⭐ブックマークボタン付き） */}
+              {/* タイムスタンプ一覧（アニメーション付きブックマークボタン） */}
               <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
                 {data.timestamps.length === 0 ? (
                   <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
@@ -608,18 +609,11 @@ export default function Home() {
                           )}
                         </span>
                         
-                        {/* 🌟 ブックマークボタン */}
-                        <button
-                          onClick={() => toggleBookmark(item)}
-                          className={`px-3 py-1 rounded-full text-xs font-bold transition-all shrink-0 flex items-center gap-1 ${
-                            isBookmarked
-                              ? 'bg-amber-400 text-white shadow-sm'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                          }`}
-                          title={isBookmarked ? 'ブックマーク解除' : '切り抜き用にブックマーク'}
-                        >
-                          {isBookmarked ? '⭐ ブックマーク中' : '☆ ブックマーク'}
-                        </button>
+                        {/* 🌟 アニメーション付きブックマークボタン */}
+                        <BookmarkButton
+                          initialBookmarked={isBookmarked}
+                          onToggle={() => toggleBookmark(item)}
+                        />
 
                         <span className="text-xs text-gray-400 shrink-0 hidden sm:inline">
                           [{item.source}: {authorName} {otherCount > 0 ? `他${otherCount}人` : ''}]
@@ -727,7 +721,7 @@ export default function Home() {
             myBookmarks.length === 0 ? (
               <div className="bg-white border rounded-xl p-12 text-center text-gray-500 text-sm space-y-2">
                 <p className="font-bold text-base">⭐ マイクリップはまだありません</p>
-                <p className="text-xs text-gray-400">配信を解析したときに、タイムスタンプの横にある「☆ ブックマーク」ボタンを押すとここに保存されます！</p>
+                <p className="text-xs text-gray-400">配信を解析したときに、タイムスタンプの横にあるブックマークボタンを押すとここに保存されます！</p>
               </div>
             ) : (
               <div className="bg-white border rounded-xl divide-y overflow-hidden">
@@ -748,7 +742,6 @@ export default function Home() {
                           <span
                             onClick={() => {
                               handleSelectArchive(clip.videoId);
-                              // 少し遅らせてモーダルを開く
                               setTimeout(() => {
                                 setActiveItem({
                                   time: clip.time,
