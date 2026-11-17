@@ -174,13 +174,14 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all'); // 'all', 'bookmarks', または各カテゴリ名
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
   const [isLocal, setIsLocal] = useState(false);
+  const [lastUpdatedTime, setLastUpdatedTime] = useState<string>(''); // 🕒 最終更新時間（秒数まで）
 
   // 📌 マイクリップの状態管理（localStorage永続化）
   const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
 
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
-  const [activeArchiveTitle, setActiveArchiveTitle] = useState<string>(''); // 👈 選択中のアーカイブタイトル保持用
+  const [activeArchiveTitle, setActiveArchiveTitle] = useState<string>('');
   const [data, setData] = useState<{
     videoId: string;
     title: string;
@@ -199,6 +200,9 @@ export default function Home() {
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
         setIsLocal(true);
       }
+
+      // 最終更新時間を現在の時刻（秒まで）に設定
+      setLastUpdatedTime(new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
 
       // 保存済みのマイクリップをロード
       const savedBookmarks = localStorage.getItem('my_clip_bookmarks');
@@ -475,14 +479,22 @@ export default function Home() {
               {archives.length}件収録
             </span>
           </div>
-          {isLocal && (
-            <Link
-              href="/admin"
-              className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded transition-colors"
-            >
-              ⚙️ データ管理 (/admin)
-            </Link>
-          )}
+
+          <div className="flex items-center gap-3">
+            {lastUpdatedTime && (
+              <span className="text-[11px] font-mono text-gray-400">
+                最終更新: {lastUpdatedTime}
+              </span>
+            )}
+            {isLocal && (
+              <Link
+                href="/admin"
+                className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded transition-colors"
+              >
+                ⚙️ データ管理 (/admin)
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
@@ -587,7 +599,7 @@ export default function Home() {
                 </div>
               )}
 
-              {/* タイムスタンプ一覧（アニメーション付きブックマークボタン） */}
+              {/* タイムスタンプ一覧（安全なブックマークボタン付き） */}
               {data && (
                 <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
                   {data.timestamps.length === 0 ? (
@@ -623,7 +635,7 @@ export default function Home() {
                             )}
                           </span>
                           
-                          {/* 🌟 アニメーション付きブックマークボタン */}
+                          {/* 🌟 ブックマークボタン */}
                           <BookmarkButton
                             initialBookmarked={isBookmarked}
                             onToggle={() => toggleBookmark(item)}
