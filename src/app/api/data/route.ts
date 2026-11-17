@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const dataDir = path.join(process.cwd(), 'data');
+// 🛠️ 保存先を必ず public/data に固定
+const dataDir = path.join(process.cwd(), 'public', 'data');
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
