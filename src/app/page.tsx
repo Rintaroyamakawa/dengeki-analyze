@@ -705,7 +705,7 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
 
-              {/* 🌟 マイ切り抜きポイント専用タブ（静止画アイコン付き） */}
+              {/* 🌟 マイ切り抜きポイント専用タブ（変更後の静止画ファイル名に更新） */}
               <button
                 onClick={() => setSelectedCategory('bookmarks')}
                 className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
@@ -715,7 +715,7 @@ export default function Home() {
                 }`}
               >
                 <img
-                  src="/lottie/ニコすこ！＿ブクマ＿ロゴ＿項目のところの静止画.png"
+                  src="/lottie/nicosuko_bookmark_on_picture.png"
                   alt="マイ切り抜きポイント"
                   className="w-4 h-4 object-contain select-none pointer-events-none"
                 />

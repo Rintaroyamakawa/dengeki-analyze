@@ -54,10 +54,11 @@ export default function BookmarkButton({
         />
       ) : (
         <div className="w-9 h-9 flex items-center justify-center pointer-events-none select-none">
+          {/* 🎥 変更後のWebMファイル名に更新 */}
           <video
             ref={videoRef}
             key={videoKey}
-            src="/lottie/bookmark.webm" 
+            src="/lottie/niko_bookmark.webm" 
             autoPlay
             muted
             playsInline
