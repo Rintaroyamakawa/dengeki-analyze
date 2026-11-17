@@ -67,14 +67,16 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { videoId, data } = body;
+    
+    // 🛠️ 管理画面から直接送られてくる解析データオブジェクトから videoId を取得
+    const videoId = body.videoId;
 
     if (!videoId) {
       return NextResponse.json({ error: 'Missing videoId' }, { status: 400 });
     }
 
-    let title = data?.title || `配信アーカイブ #${videoId}`;
-    let publishedAt = data?.publishedAt || null;
+    let title = body?.title || `配信アーカイブ #${videoId}`;
+    let publishedAt = body?.publishedAt || null;
 
     try {
       // 1. タイトルをoembedから取得
@@ -103,11 +105,12 @@ export async function POST(request: Request) {
       console.error('Failed to fetch YouTube metadata:', e);
     }
 
+    // 🛠️ 解析データ（timestampsやheatmapDataなど）を一切欠落させずにそのまま保存データに統合
     const savedData = {
-      ...data,
+      ...body,
       videoId,
-      title,
-      publishedAt: publishedAt || null,
+      title: title || body.title,
+      publishedAt: publishedAt || body.publishedAt || null,
       collectedAt: new Date().toISOString(),
     };
 
