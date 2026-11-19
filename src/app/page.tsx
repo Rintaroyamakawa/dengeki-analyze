@@ -61,6 +61,61 @@ const MANUAL_CATEGORY: { [videoId: string]: string } = {
   '3P5GTXoTH_Q': '☕ 雑談',
 };
 
+const SEARCH_SYNONYM_ENTRIES: [string, string][] = [
+  ['囁き', 'ささやき'],
+  ['囁く', 'ささやく'],
+  ['唄', 'うた'],
+  ['歌', 'うた'],
+  ['泣き声', 'なきごえ'],
+  ['鳴き声', 'なきごえ'],
+  ['泣く', 'なく'],
+  ['鳴く', 'なく'],
+  ['笑い声', 'わらいごえ'],
+  ['笑う', 'わらう'],
+  ['笑い', 'わらい'],
+  ['悲鳴', 'ひめい'],
+  ['絶叫', 'ぜっきょう'],
+  ['神回', 'かみかい'],
+  ['初見', 'しょけん'],
+  ['耐久', 'たいきゅう'],
+  ['記念', 'きねん'],
+  ['雑談', 'ざつだん'],
+  ['告白', 'こくはく'],
+  ['感動', 'かんどう'],
+  ['発狂', 'はっきょう'],
+  ['悶絶', 'もんぜつ'],
+  ['可愛い', 'かわいい'],
+  ['かわいい', 'かわいい'],
+  ['尊い', 'とうとい'],
+  ['最高', 'さいこう'],
+  ['最悪', 'さいあく'],
+  ['奇跡', 'きせき'],
+  ['伝説', 'でんせつ'],
+  ['事故', 'じこ'],
+  ['放送事故', 'ほうそうじこ'],
+];
+
+const normalizeSearchText = (input: string): string => {
+  let text = input.normalize('NFKC').toLowerCase();
+  // カタカナ（ァ-ヶ）をひらがな（ぁ-ゖ）に変換
+  text = text.replace(/[\u30a1-\u30f6]/g, (ch) =>
+    String.fromCharCode(ch.charCodeAt(0) - 0x60)
+  );
+  // よく使う表記揺れをひらがな読みへ統一
+  for (const [variant, canonical] of SEARCH_SYNONYM_ENTRIES) {
+    const normVariant = variant
+      .normalize('NFKC')
+      .toLowerCase()
+      .replace(/[\u30a1-\u30f6]/g, (ch) =>
+        String.fromCharCode(ch.charCodeAt(0) - 0x60)
+      );
+    if (normVariant) {
+      text = text.split(normVariant).join(canonical);
+    }
+  }
+  return text;
+};
+
 const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('歌枠') || text.includes('歌ってみた') || text.includes('カラオケ')) {
     return '🎤 歌枠';
@@ -511,8 +566,8 @@ export default function Home() {
   }, [archives]);
 
   const crossTimestampHits = useMemo<CrossTimestampHit[]>(() => {
-    const q = timestampQuery.trim().toLowerCase();
-    if (!q) return [];
+    const normalizedQuery = normalizeSearchText(timestampQuery.trim());
+    if (!normalizedQuery) return [];
 
     const archiveMetaMap = new Map<string, { dateMs: number; tsCount: number }>();
     archives.forEach((arch) => {
@@ -537,7 +592,7 @@ export default function Home() {
         : meta.dateMs;
 
       detail.timestamps.forEach((ts) => {
-        if (ts.label && ts.label.toLowerCase().includes(q)) {
+        if (ts.label && normalizeSearchText(ts.label).includes(normalizedQuery)) {
           hits.push({
             videoId: arch.videoId,
             videoTitle: detail.title || arch.title,
