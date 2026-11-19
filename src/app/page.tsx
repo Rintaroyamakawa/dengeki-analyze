@@ -64,7 +64,7 @@ const matchCategoryFromText = (text: string): string | null => {
     return '☕ 雑談';
   }
   if (text.includes('3Dワールド') || text.includes('３Ｄワールド')) {
-    return '🐈 スーパーマリオ 3Dワールド';
+    return '💫 スーパーマリオ 3Dワールド';
   }
   if (text.includes('マリオ64') || text.includes('スーパーマリオ64')) {
     return '🍄 スーパーマリオ64';
@@ -138,6 +138,55 @@ const CATEGORIES = [
   '💫 スーパーマリオ 3Dワールド',
 ];
 
+const SERIES_GROUPS: { title: string; categories: string[] }[] = [
+  {
+    title: 'マリオシリーズ',
+    categories: [
+      '🍄 スーパーマリオ64',
+      '☀️ スーパーマリオサンシャイン',
+      '✨ スーパーマリオギャラクシー２',
+      '🌟 マリオギャラクシー',
+      '⭐ スーパーマリオRPG',
+      '📜 ペーパーマリオRPG',
+      '💫 スーパーマリオ 3Dワールド',
+    ],
+  },
+  {
+    title: 'ゼルダの伝説シリーズ',
+    categories: [
+      '🗡️ ブレスオブザワイルド',
+      '🏹 ティアーズ オブ ザ キングダム',
+      '🛡️ 時のオカリナ',
+    ],
+  },
+  {
+    title: 'ポケモンシリーズ',
+    categories: [
+      '⚡ ポケモンBW',
+    ],
+  },
+  {
+    title: 'その他',
+    categories: [
+      '🎤 歌枠',
+      '⏳ 耐久配信',
+      '🎉 記念配信',
+      '🎧 ASMR',
+      '🤝 コラボ',
+      '☕ 雑談',
+      '🥁 リズム天国 ミラクルスターズ',
+      '✏️ 漢字でGO！',
+    ],
+  },
+];
+
+const normalizeLegacyCategoryName = (cat: string): string => {
+  if (cat === '🐈 スーパーマリオ 3Dワールド') {
+    return '💫 スーパーマリオ 3Dワールド';
+  }
+  return cat;
+};
+
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
@@ -171,10 +220,10 @@ export default function Home() {
     (item: ArchiveItem) => {
       const cleanId = item.videoId.trim();
       if (manualAssignments[cleanId]) {
-        return manualAssignments[cleanId];
+        return normalizeLegacyCategoryName(manualAssignments[cleanId]);
       }
       if (MANUAL_CATEGORY[cleanId]) {
-        return MANUAL_CATEGORY[cleanId];
+        return normalizeLegacyCategoryName(MANUAL_CATEGORY[cleanId]);
       }
 
       const title = item.title.trim();
@@ -204,6 +253,26 @@ export default function Home() {
     [manualAssignments]
   );
 
+  // グループごとの表示項目リストを構築（カスタム追加項目は「その他」に含める）
+  const groupedCategorySections = useMemo(() => {
+    const knownInGroups = new Set<string>(
+      SERIES_GROUPS.flatMap((g) => g.categories)
+    );
+    const extraCustomCategories = categories.filter((c) => !knownInGroups.has(c));
+
+    return SERIES_GROUPS.map((group) => {
+      const baseList =
+        group.title === 'その他'
+          ? [...group.categories, ...extraCustomCategories]
+          : group.categories;
+      const uniqueList = Array.from(new Set(baseList));
+      return {
+        title: group.title,
+        categories: uniqueList,
+      };
+    });
+  }, [categories]);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
@@ -225,7 +294,8 @@ export default function Home() {
         try {
           const parsed = JSON.parse(savedCategories);
           if (Array.isArray(parsed)) {
-            const merged = Array.from(new Set([...CATEGORIES, ...parsed]));
+            const normalizedParsed = parsed.map((c: string) => normalizeLegacyCategoryName(c));
+            const merged = Array.from(new Set([...CATEGORIES, ...normalizedParsed]));
             setCategories(merged);
           }
         } catch (e) {
@@ -236,7 +306,12 @@ export default function Home() {
       const savedAssignments = localStorage.getItem('manual_assignments');
       if (savedAssignments) {
         try {
-          setManualAssignments(JSON.parse(savedAssignments));
+          const parsedAssignments: Record<string, string> = JSON.parse(savedAssignments);
+          const normalizedAssignments: Record<string, string> = {};
+          Object.entries(parsedAssignments).forEach(([k, v]) => {
+            normalizedAssignments[k] = normalizeLegacyCategoryName(v);
+          });
+          setManualAssignments(normalizedAssignments);
         } catch (e) {
           console.error('手動割り当ての読み込みに失敗しました:', e);
         }
@@ -334,7 +409,8 @@ export default function Home() {
     }
 
     if (selectedCategory !== 'all' && selectedCategory !== 'bookmarks') {
-      result = result.filter((item) => getCategory(item) === selectedCategory);
+      const normalizedSelected = normalizeLegacyCategoryName(selectedCategory);
+      result = result.filter((item) => getCategory(item) === normalizedSelected);
     }
 
     result.sort((a, b) => {
@@ -783,8 +859,8 @@ export default function Home() {
             )}
           </div>
 
-          {/* 🎯 カテゴリ目次 */}
-          <div className="bg-white border rounded-xl p-3 shadow-sm space-y-2">
+          {/* 🎯 カテゴリ目次（シリーズ・ジャンル別グループ表示） */}
+          <div className="bg-white border rounded-xl p-4 shadow-sm space-y-4">
             <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
               <span>📂 カテゴリ・シリーズで絞り込み（クリックで選択）</span>
               {selectedCategory !== 'all' && (
@@ -796,7 +872,8 @@ export default function Home() {
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap gap-1.5 pt-1">
+
+            <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setSelectedCategory('all')}
                 className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
@@ -823,22 +900,40 @@ export default function Home() {
                 />
                 マイ切り抜きポイント ({myBookmarks.length})
               </button>
+            </div>
 
-              {categories.map((cat) => {
-                const count = archives.filter(item => getCategory(item) === cat).length;
-                if (count === 0) return null;
+            <div className="space-y-3.5 pt-1">
+              {groupedCategorySections.map((group) => {
+                const visibleCats = group.categories.filter(
+                  (cat) => archives.filter((item) => getCategory(item) === cat).length > 0
+                );
+                if (visibleCats.length === 0) return null;
+
                 return (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
-                      selectedCategory === cat
-                        ? 'bg-blue-600 text-white shadow'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                    }`}
-                  >
-                    {cat} ({count})
-                  </button>
+                  <div key={group.title} className="space-y-1.5">
+                    <div className="flex items-center gap-2 text-[11px] font-extrabold text-gray-600">
+                      <span className="shrink-0">{group.title}</span>
+                      <span className="h-[1px] flex-1 bg-gray-200" />
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {visibleCats.map((cat) => {
+                        const count = archives.filter((item) => getCategory(item) === cat).length;
+                        return (
+                          <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
+                              selectedCategory === cat
+                                ? 'bg-blue-600 text-white shadow'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            }`}
+                          >
+                            {cat} ({count})
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 );
               })}
             </div>
