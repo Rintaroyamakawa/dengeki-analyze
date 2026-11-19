@@ -194,6 +194,17 @@ const parseArchiveTimestamp = (item: ArchiveItem): number | null => {
   return Number.isFinite(ms) && ms > 0 ? ms : null;
 };
 
+const formatPublishedDate = (raw?: string | null): string | null => {
+  if (!raw) return null;
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime()) || d.getTime() <= 0) return null;
+  return d.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+};
+
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
@@ -215,6 +226,7 @@ export default function Home() {
   const [data, setData] = useState<{
     videoId: string;
     title: string;
+    publishedAt?: string | null;
     duration: number;
     timestamps: TimestampItem[];
     heatmapData: HeatmapItem[];
@@ -802,6 +814,10 @@ export default function Home() {
                   <p className="text-xs text-gray-500 mt-1">
                     {data ? (
                       (() => {
+                        const rawPublishedAt =
+                          data.publishedAt ??
+                          archives.find((a) => a.videoId === data.videoId)?.publishedAt;
+                        const formattedDate = formatPublishedDate(rawPublishedAt);
                         const effectiveDuration = data.duration > 0
                           ? data.duration
                           : (data.heatmapData && data.heatmapData.length > 0
@@ -811,6 +827,7 @@ export default function Home() {
                         const mins = Math.floor((effectiveDuration % 3600) / 60);
                         return (
                           <>
+                            {formattedDate && <>配信日: {formattedDate} ／ </>}
                             総時間: {hours}時間{mins}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
                           </>
                         );
