@@ -689,6 +689,9 @@ export default function Home() {
 
   const renderArchiveCard = (item: ArchiveItem) => {
     const isSelected = data?.videoId === item.videoId;
+    const formattedDate = formatPublishedDate(item.publishedAt || item.updatedAt);
+    const tsCount = item.timestampCount ?? 0;
+
     return (
       <div
         key={item.videoId}
@@ -711,21 +714,26 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="p-3 flex-1 flex flex-col justify-between">
+        <div className="p-3 flex-1 flex flex-col justify-between gap-2.5">
           <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
             {item.title}
           </h3>
-          <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400 font-mono">
-            <span>ID: {item.videoId}</span>
-            <a
-              href={`https://www.youtube.com/watch?v=${item.videoId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="text-gray-400 hover:text-red-500 underline"
+
+          <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px]">
+            <span className="text-gray-400 font-mono">
+              {formattedDate ?? '日付不明'}
+            </span>
+            <span
+              className={`font-bold px-2 py-0.5 rounded-full ${
+                tsCount >= 20
+                  ? 'bg-orange-100 text-orange-700'
+                  : tsCount > 0
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'bg-gray-100 text-gray-400'
+              }`}
             >
-              YouTubeで開く ↗
-            </a>
+              ⚡ {tsCount}件
+            </span>
           </div>
         </div>
       </div>
