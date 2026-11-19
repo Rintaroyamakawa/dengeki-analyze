@@ -9,7 +9,7 @@ type ArchiveItem = {
   publishedAt: string | null;
   updatedAt: string;
   timestampCount: number;
-  category?: string; // 手動設定用
+  category?: string;
 };
 
 type SyncedVideo = {
@@ -17,6 +17,15 @@ type SyncedVideo = {
   title: string;
   publishedAt: string;
 };
+
+const SERIES_OPTIONS = [
+  'マリオシリーズ',
+  'ゼルダの伝説シリーズ',
+  'ポケモンシリーズ',
+  'その他',
+] as const;
+
+type SeriesOption = (typeof SERIES_OPTIONS)[number];
 
 const DEFAULT_CHANNEL_ID = '@DengekiNico';
 
@@ -33,13 +42,43 @@ const DEFAULT_CATEGORIES = [
   '🌟 マリオギャラクシー',
   '⭐ スーパーマリオRPG',
   '📜 ペーパーマリオRPG',
-  '🥁 リズム天国 ミラクルスターズ',
+  '💫 スーパーマリオ 3Dワールド',
   '🗡️ ブレスオブザワイルド',
   '🏹 ティアーズ オブ ザ キングダム',
   '🛡️ 時のオカリナ',
   '⚡ ポケモンBW',
+  '🥁 リズム天国 ミラクルスターズ',
   '✏️ 漢字でGO！',
 ];
+
+const DEFAULT_SERIES_MAP: Record<string, SeriesOption> = {
+  '🍄 スーパーマリオ64': 'マリオシリーズ',
+  '☀️ スーパーマリオサンシャイン': 'マリオシリーズ',
+  '✨ スーパーマリオギャラクシー２': 'マリオシリーズ',
+  '🌟 マリオギャラクシー': 'マリオシリーズ',
+  '⭐ スーパーマリオRPG': 'マリオシリーズ',
+  '📜 ペーパーマリオRPG': 'マリオシリーズ',
+  '💫 スーパーマリオ 3Dワールド': 'マリオシリーズ',
+  '🗡️ ブレスオブザワイルド': 'ゼルダの伝説シリーズ',
+  '🏹 ティアーズ オブ ザ キングダム': 'ゼルダの伝説シリーズ',
+  '🛡️ 時のオカリナ': 'ゼルダの伝説シリーズ',
+  '⚡ ポケモンBW': 'ポケモンシリーズ',
+  '🎤 歌枠': 'その他',
+  '⏳ 耐久配信': 'その他',
+  '🎉 記念配信': 'その他',
+  '🎧 ASMR': 'その他',
+  '🤝 コラボ': 'その他',
+  '☕ 雑談': 'その他',
+  '🥁 リズム天国 ミラクルスターズ': 'その他',
+  '✏️ 漢字でGO！': 'その他',
+};
+
+function normalizeCategoryName(name: string): string {
+  if (name === '🐈 スーパーマリオ 3Dワールド') {
+    return '💫 スーパーマリオ 3Dワールド';
+  }
+  return name;
+}
 
 function normalizeYoutubeUrl(input: string): string {
   const trimmed = input.trim();
@@ -52,7 +91,9 @@ function normalizeYoutubeUrl(input: string): string {
 export default function AdminPage() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [seriesMap, setSeriesMap] = useState<Record<string, string>>(DEFAULT_SERIES_MAP);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategorySeries, setNewCategorySeries] = useState<SeriesOption>('その他');
   // ✏️ 項目名変更用のステート
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
   const [editingCategoryName, setEditingCategoryName] = useState('');
@@ -70,16 +111,54 @@ export default function AdminPage() {
   const [statusText, setStatusText] = useState('準備完了');
   const [noticeMessage, setNoticeMessage] = useState('');
 
+  const persistConfig = useCallback(
+    async (
+      nextCategories: string[],
+      nextSeriesMap: Record<string, string>,
+      nextManualAssignments: Record<string, string>
+    ) => {
+      localStorage.setItem('custom_categories', JSON.stringify(nextCategories));
+      localStorage.setItem('category_series_map', JSON.stringify(nextSeriesMap));
+      localStorage.setItem('manual_assignments', JSON.stringify(nextManualAssignments));
+
+      try {
+        await fetch('/api/category-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            categories: nextCategories,
+            seriesMap: nextSeriesMap,
+            manualAssignments: nextManualAssignments,
+          }),
+        });
+      } catch (e) {
+        console.error('設定ファイル保存エラー:', e);
+      }
+    },
+    []
+  );
+
+  const buildManualAssignments = useCallback((list: ArchiveItem[]) => {
+    const manualMap: Record<string, string> = {};
+    list.forEach((item) => {
+      if (item.category) {
+        manualMap[item.videoId] = normalizeCategoryName(item.category);
+      }
+    });
+    return manualMap;
+  }, []);
+
   // ローカル保存済みデータの取得
-  const fetchArchives = useCallback(async () => {
+  const fetchArchives = useCallback(async (overrideManualMap?: Record<string, string>) => {
     try {
       const res = await fetch('/api/data');
       if (res.ok) {
         const list = await res.json();
-        const manualMap = JSON.parse(localStorage.getItem('manual_assignments') || '{}');
+        const manualMap: Record<string, string> =
+          overrideManualMap ?? JSON.parse(localStorage.getItem('manual_assignments') || '{}');
         const initialized = list.map((item: ArchiveItem) => ({
           ...item,
-          category: manualMap[item.videoId] || '',
+          category: normalizeCategoryName(manualMap[item.videoId] || ''),
         }));
         setArchives(initialized);
         return initialized as ArchiveItem[];
@@ -93,29 +172,81 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
-    const savedCategories = localStorage.getItem('custom_categories');
-    if (savedCategories) {
+    const init = async () => {
+      let baseCategories = [...DEFAULT_CATEGORIES];
+      let baseSeriesMap: Record<string, string> = { ...DEFAULT_SERIES_MAP };
+      let baseAssignments: Record<string, string> = {};
+
+      const savedCategories = localStorage.getItem('custom_categories');
+      if (savedCategories) {
+        try {
+          const parsed = JSON.parse(savedCategories);
+          if (Array.isArray(parsed)) {
+            baseCategories = parsed.map((c: string) => normalizeCategoryName(c));
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      const savedSeriesMap = localStorage.getItem('category_series_map');
+      if (savedSeriesMap) {
+        try {
+          baseSeriesMap = { ...baseSeriesMap, ...JSON.parse(savedSeriesMap) };
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      const savedAssignments = localStorage.getItem('manual_assignments');
+      if (savedAssignments) {
+        try {
+          baseAssignments = JSON.parse(savedAssignments);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
       try {
-        setCategories(JSON.parse(savedCategories));
+        const cfgRes = await fetch('/api/category-config');
+        if (cfgRes.ok) {
+          const serverCfg = await cfgRes.json();
+          if (Array.isArray(serverCfg.categories) && serverCfg.categories.length > 0) {
+            baseCategories = serverCfg.categories.map((c: string) => normalizeCategoryName(c));
+          }
+          if (serverCfg.seriesMap && typeof serverCfg.seriesMap === 'object') {
+            baseSeriesMap = { ...baseSeriesMap, ...serverCfg.seriesMap };
+          }
+          if (serverCfg.manualAssignments && typeof serverCfg.manualAssignments === 'object') {
+            baseAssignments = { ...baseAssignments, ...serverCfg.manualAssignments };
+            localStorage.setItem('manual_assignments', JSON.stringify(baseAssignments));
+          }
+        }
       } catch (e) {
         console.error(e);
       }
-    }
-    const savedChannel = localStorage.getItem('sync_channel_input');
-    if (savedChannel && (savedChannel.startsWith('UC') || savedChannel.startsWith('@'))) {
-      setChannelInput(savedChannel);
-    }
-    fetchArchives();
+
+      baseCategories.forEach((cat) => {
+        if (!baseSeriesMap[cat]) {
+          baseSeriesMap[cat] = 'その他';
+        }
+      });
+
+      setCategories(baseCategories);
+      setSeriesMap(baseSeriesMap);
+
+      const savedChannel = localStorage.getItem('sync_channel_input');
+      if (savedChannel && (savedChannel.startsWith('UC') || savedChannel.startsWith('@'))) {
+        setChannelInput(savedChannel);
+      }
+      await fetchArchives(baseAssignments);
+    };
+    init();
   }, [fetchArchives]);
 
   const showNotice = (msg: string) => {
     setNoticeMessage(msg);
     setTimeout(() => setNoticeMessage(''), 3000);
-  };
-
-  const saveCategories = (updated: string[]) => {
-    setCategories(updated);
-    localStorage.setItem('custom_categories', JSON.stringify(updated));
   };
 
   // 🔀 GitHubへ手動プッシュ
@@ -268,7 +399,6 @@ export default function AdminPage() {
       console.error(e);
     }
 
-    // 🚀 収集完了後に自動でGitHubへプッシュしてサーバーを更新する
     setStatusText(`完了！（${successCount}/${total}件保存完了。GitHubへ自動反映中...）`);
     try {
       const pushRes = await fetch('/api/git-push', { method: 'POST' });
@@ -312,7 +442,6 @@ export default function AdminPage() {
     setBulkUrls('');
     await fetchArchives();
 
-    // 🚀 個別収集完了後も自動でGitHubへプッシュ
     setStatusText(`完了！（個別保存完了。GitHubへ自動反映中...）`);
     try {
       await fetch('/api/git-push', { method: 'POST' });
@@ -325,18 +454,39 @@ export default function AdminPage() {
     showNotice(`${successCount}件の個別データを収集・保存しました！`);
   };
 
-  // 新しいカテゴリの追加
-  const handleAddCategory = (e: React.FormEvent) => {
+  // 新しいカテゴリの追加（シリーズ別分類も同時に保存）
+  const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = newCategoryName.trim();
+    const trimmed = normalizeCategoryName(newCategoryName.trim());
     if (!trimmed) return;
     if (categories.includes(trimmed)) {
       alert('すでに存在する項目です');
       return;
     }
-    saveCategories([...categories, trimmed]);
+
+    const updatedCategories = [...categories, trimmed];
+    const updatedSeriesMap = {
+      ...seriesMap,
+      [trimmed]: newCategorySeries,
+    };
+
+    setCategories(updatedCategories);
+    setSeriesMap(updatedSeriesMap);
+    await persistConfig(updatedCategories, updatedSeriesMap, buildManualAssignments(archives));
+
     setNewCategoryName('');
-    showNotice('新しい項目を追加しました！');
+    showNotice(`「${trimmed}」を${newCategorySeries}に追加しました！`);
+  };
+
+  // シリーズ別分類の変更
+  const handleSeriesChange = async (cat: string, nextSeries: string) => {
+    const updatedSeriesMap = {
+      ...seriesMap,
+      [cat]: nextSeries,
+    };
+    setSeriesMap(updatedSeriesMap);
+    await persistConfig(categories, updatedSeriesMap, buildManualAssignments(archives));
+    showNotice(`「${cat}」の分類を「${nextSeries}」に変更しました！`);
   };
 
   // ✏️ 項目名変更の開始
@@ -346,8 +496,8 @@ export default function AdminPage() {
   };
 
   // ✏️ 項目名の確定（ワンボタンで反映）
-  const handleConfirmRenameCategory = (oldName: string) => {
-    const trimmed = editingCategoryName.trim();
+  const handleConfirmRenameCategory = async (oldName: string) => {
+    const trimmed = normalizeCategoryName(editingCategoryName.trim());
     if (!trimmed) {
       alert('項目名を入力してください');
       return;
@@ -362,24 +512,18 @@ export default function AdminPage() {
     }
 
     const updatedCategories = categories.map((c) => (c === oldName ? trimmed : c));
-    saveCategories(updatedCategories);
+    const currentSeries = seriesMap[oldName] || 'その他';
+    const updatedSeriesMap: Record<string, string> = { ...seriesMap, [trimmed]: currentSeries };
+    delete updatedSeriesMap[oldName];
 
-    // 手動割り当て済みのデータも新名称に更新
-    const manualMap: Record<string, string> = JSON.parse(
-      localStorage.getItem('manual_assignments') || '{}'
+    const updatedArchives = archives.map((item) =>
+      item.category === oldName ? { ...item, category: trimmed } : item
     );
-    Object.keys(manualMap).forEach((videoId) => {
-      if (manualMap[videoId] === oldName) {
-        manualMap[videoId] = trimmed;
-      }
-    });
-    localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
 
-    setArchives((prev) =>
-      prev.map((item) =>
-        item.category === oldName ? { ...item, category: trimmed } : item
-      )
-    );
+    setCategories(updatedCategories);
+    setSeriesMap(updatedSeriesMap);
+    setArchives(updatedArchives);
+    await persistConfig(updatedCategories, updatedSeriesMap, buildManualAssignments(updatedArchives));
 
     setEditingCategory(null);
     setEditingCategoryName('');
@@ -387,53 +531,39 @@ export default function AdminPage() {
   };
 
   // 🗑️ 項目の削除
-  const handleDeleteCategory = (targetCat: string) => {
+  const handleDeleteCategory = async (targetCat: string) => {
     if (!confirm(`項目「${targetCat}」を削除しますか？（この項目が手動設定されていた配信は未設定に戻ります）`)) {
       return;
     }
 
     const updatedCategories = categories.filter((c) => c !== targetCat);
-    saveCategories(updatedCategories);
+    const updatedSeriesMap: Record<string, string> = { ...seriesMap };
+    delete updatedSeriesMap[targetCat];
 
     if (editingCategory === targetCat) {
       setEditingCategory(null);
       setEditingCategoryName('');
     }
 
-    // 手動割り当てから削除対象を解除
-    const manualMap: Record<string, string> = JSON.parse(
-      localStorage.getItem('manual_assignments') || '{}'
+    const updatedArchives = archives.map((item) =>
+      item.category === targetCat ? { ...item, category: '' } : item
     );
-    Object.keys(manualMap).forEach((videoId) => {
-      if (manualMap[videoId] === targetCat) {
-        delete manualMap[videoId];
-      }
-    });
-    localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
 
-    setArchives((prev) =>
-      prev.map((item) =>
-        item.category === targetCat ? { ...item, category: '' } : item
-      )
-    );
+    setCategories(updatedCategories);
+    setSeriesMap(updatedSeriesMap);
+    setArchives(updatedArchives);
+    await persistConfig(updatedCategories, updatedSeriesMap, buildManualAssignments(updatedArchives));
 
     showNotice(`項目「${targetCat}」を削除しました！`);
   };
 
   // カテゴリ変更
-  const handleCategoryChange = (videoId: string, newCat: string) => {
+  const handleCategoryChange = async (videoId: string, newCat: string) => {
     const updated = archives.map((item) =>
       item.videoId === videoId ? { ...item, category: newCat } : item
     );
     setArchives(updated);
-
-    const manualMap: { [key: string]: string } = {};
-    updated.forEach((item) => {
-      if (item.category) {
-        manualMap[item.videoId] = item.category;
-      }
-    });
-    localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
+    await persistConfig(categories, seriesMap, buildManualAssignments(updated));
     showNotice('項目設定を保存しました！');
   };
 
@@ -599,14 +729,19 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* 3. 項目の追加・名前変更・削除 */}
+        {/* 3. 項目の追加・シリーズ別分類・名前変更・削除 */}
         <section className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-extrabold text-gray-800 flex items-center gap-1.5">
-            <span>➕</span>
-            <span>項目（カテゴリ・シリーズ）の管理</span>
-          </h2>
+          <div className="space-y-1">
+            <h2 className="text-sm font-extrabold text-gray-800 flex items-center gap-1.5">
+              <span>➕</span>
+              <span>項目（カテゴリ・シリーズ）の管理</span>
+            </h2>
+            <p className="text-xs text-gray-500">
+              追加・変更した項目とシリーズ分類は設定ファイルに保存されます。「🐙 GitHub更新」を押すと公開版にも反映されます。
+            </p>
+          </div>
 
-          <form onSubmit={handleAddCategory} className="flex gap-2">
+          <form onSubmit={handleAddCategory} className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={newCategoryName}
@@ -614,9 +749,20 @@ export default function AdminPage() {
               placeholder="例: 🎨 お絵描き配信、💡 新企画 など..."
               className="border border-gray-300 bg-white px-3 py-2 flex-1 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <select
+              value={newCategorySeries}
+              onChange={(e) => setNewCategorySeries(e.target.value as SeriesOption)}
+              className="border border-gray-300 bg-white px-3 py-2 rounded-lg text-xs font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shrink-0"
+            >
+              {SERIES_OPTIONS.map((series) => (
+                <option key={series} value={series}>
+                  {series}
+                </option>
+              ))}
+            </select>
             <button
               type="submit"
-              className="bg-blue-600 text-white font-bold text-xs px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+              className="bg-blue-600 text-white font-bold text-xs px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors shrink-0 cursor-pointer"
             >
               項目を追加
             </button>
@@ -624,18 +770,19 @@ export default function AdminPage() {
 
           <div className="space-y-2 pt-1">
             <div className="text-xs font-bold text-gray-500">
-              登録済み項目一覧（{categories.length}件）— ワンボタンで名前変更・削除が可能
+              登録済み項目一覧（{categories.length}件）— シリーズ変更・名前変更・削除が可能
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               {categories.map((cat) => {
                 const isEditing = editingCategory === cat;
+                const currentSeries = seriesMap[cat] || 'その他';
                 return (
                   <div
                     key={cat}
-                    className="bg-white border border-gray-200 rounded-lg px-3 py-2 flex items-center justify-between gap-2"
+                    className="bg-white border border-gray-200 rounded-lg px-3 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                   >
                     {isEditing ? (
-                      <>
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
                         <input
                           type="text"
                           value={editingCategoryName}
@@ -665,11 +812,23 @@ export default function AdminPage() {
                         >
                           取消
                         </button>
-                      </>
+                      </div>
                     ) : (
                       <>
                         <span className="text-xs font-bold text-gray-800 truncate">{cat}</span>
-                        <div className="flex items-center gap-1.5 shrink-0">
+                        <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                          <select
+                            aria-label={`${cat} のシリーズ別分類`}
+                            value={currentSeries}
+                            onChange={(e) => handleSeriesChange(cat, e.target.value)}
+                            className="border border-gray-300 bg-gray-50 hover:bg-white px-2 py-1 rounded text-[11px] font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                          >
+                            {SERIES_OPTIONS.map((series) => (
+                              <option key={series} value={series}>
+                                {series}
+                              </option>
+                            ))}
+                          </select>
                           <button
                             type="button"
                             onClick={() => startRenameCategory(cat)}

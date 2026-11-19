@@ -190,6 +190,7 @@ const normalizeLegacyCategoryName = (cat: string): string => {
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
+  const [seriesMap, setSeriesMap] = useState<Record<string, string>>({});
   const [manualAssignments, setManualAssignments] = useState<Record<string, string>>({});
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -253,27 +254,45 @@ export default function Home() {
     [manualAssignments]
   );
 
-  // グループごとの表示項目リストを構築（カスタム追加項目は「その他」に含める）
+  // シリーズ別のグループ目次を構築（管理画面の seriesMap を反映）
   const groupedCategorySections = useMemo(() => {
-    const knownInGroups = new Set<string>(
-      SERIES_GROUPS.flatMap((g) => g.categories)
-    );
-    const extraCustomCategories = categories.filter((c) => !knownInGroups.has(c));
+    const orderedGroups = [
+      'マリオシリーズ',
+      'ゼルダの伝説シリーズ',
+      'ポケモンシリーズ',
+      'その他',
+    ];
 
-    return SERIES_GROUPS.map((group) => {
-      const baseList =
-        group.title === 'その他'
-          ? [...group.categories, ...extraCustomCategories]
-          : group.categories;
-      const uniqueList = Array.from(new Set(baseList));
+    const allKnownCats = Array.from(new Set([...CATEGORIES, ...categories]));
+
+    return orderedGroups.map((groupTitle) => {
+      const matchedCats = allKnownCats.filter((cat) => {
+        const assignedSeries = seriesMap[cat];
+        if (assignedSeries) {
+          return assignedSeries === groupTitle;
+        }
+        const fallbackGroup = SERIES_GROUPS.find((g) => g.title === groupTitle);
+        if (groupTitle === 'その他') {
+          const inOtherSeries = SERIES_GROUPS.some(
+            (g) => g.title !== 'その他' && g.categories.includes(cat)
+          );
+          return !inOtherSeries;
+        }
+        return fallbackGroup ? fallbackGroup.categories.includes(cat) : false;
+      });
+
       return {
-        title: group.title,
-        categories: uniqueList,
+        title: groupTitle,
+        categories: Array.from(new Set(matchedCats)),
       };
     });
-  }, [categories]);
+  }, [categories, seriesMap]);
 
   useEffect(() => {
+    let baseCategories = [...CATEGORIES];
+    let baseSeriesMap: Record<string, string> = {};
+    let baseAssignments: Record<string, string> = {};
+
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
@@ -295,11 +314,19 @@ export default function Home() {
           const parsed = JSON.parse(savedCategories);
           if (Array.isArray(parsed)) {
             const normalizedParsed = parsed.map((c: string) => normalizeLegacyCategoryName(c));
-            const merged = Array.from(new Set([...CATEGORIES, ...normalizedParsed]));
-            setCategories(merged);
+            baseCategories = Array.from(new Set([...CATEGORIES, ...normalizedParsed]));
           }
         } catch (e) {
           console.error('カテゴリの読み込みに失敗しました:', e);
+        }
+      }
+
+      const savedSeriesMap = localStorage.getItem('category_series_map');
+      if (savedSeriesMap) {
+        try {
+          baseSeriesMap = { ...baseSeriesMap, ...JSON.parse(savedSeriesMap) };
+        } catch (e) {
+          console.error('シリーズ分類の読み込みに失敗しました:', e);
         }
       }
 
@@ -307,32 +334,66 @@ export default function Home() {
       if (savedAssignments) {
         try {
           const parsedAssignments: Record<string, string> = JSON.parse(savedAssignments);
-          const normalizedAssignments: Record<string, string> = {};
           Object.entries(parsedAssignments).forEach(([k, v]) => {
-            normalizedAssignments[k] = normalizeLegacyCategoryName(v);
+            baseAssignments[k] = normalizeLegacyCategoryName(v);
           });
-          setManualAssignments(normalizedAssignments);
         } catch (e) {
           console.error('手動割り当ての読み込みに失敗しました:', e);
         }
       }
     }
 
-    const fetchArchives = async () => {
+    setCategories(baseCategories);
+    setSeriesMap(baseSeriesMap);
+    setManualAssignments(baseAssignments);
+
+    const fetchInitialData = async () => {
       try {
-        const res = await fetch('/api/data');
-        if (res.ok) {
-          const list = await res.json();
+        const [dataRes, cfgRes] = await Promise.all([
+          fetch('/api/data'),
+          fetch('/api/category-config'),
+        ]);
+
+        if (cfgRes.ok) {
+          const serverCfg = await cfgRes.json();
+          if (Array.isArray(serverCfg.categories) && serverCfg.categories.length > 0) {
+            const normalizedServerCats = serverCfg.categories.map((c: string) =>
+              normalizeLegacyCategoryName(c)
+            );
+            setCategories(normalizedServerCats);
+          }
+          if (serverCfg.seriesMap && typeof serverCfg.seriesMap === 'object') {
+            setSeriesMap((prev) => ({ ...prev, ...serverCfg.seriesMap }));
+          }
+          if (serverCfg.manualAssignments && typeof serverCfg.manualAssignments === 'object') {
+            const normalizedServerAssign: Record<string, string> = {};
+            Object.entries(serverCfg.manualAssignments).forEach(([k, v]) => {
+              if (typeof v === 'string') {
+                normalizedServerAssign[k] = normalizeLegacyCategoryName(v);
+              }
+            });
+            setManualAssignments((prev) => ({ ...prev, ...normalizedServerAssign }));
+          }
+        }
+
+        if (dataRes.ok) {
+          const list = await dataRes.json();
           setArchives(list);
-          setLastUpdatedTime(new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+          setLastUpdatedTime(
+            new Date().toLocaleTimeString('ja-JP', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            })
+          );
         }
       } catch (e) {
-        console.error('アーカイブ一覧の取得に失敗しました:', e);
+        console.error('初期データの取得に失敗しました:', e);
       } finally {
         setLoadingArchives(false);
       }
     };
-    fetchArchives();
+    fetchInitialData();
   }, []);
 
   const toggleBookmark = (item: TimestampItem) => {
