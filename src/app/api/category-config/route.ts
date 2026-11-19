@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-export const dynamic = 'force-dynamic';
-
 const CONFIG_PATH = path.join(process.cwd(), 'src', 'config', 'category-config.json');
 
 export type CategoryConfigData = {
