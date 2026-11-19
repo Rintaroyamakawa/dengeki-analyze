@@ -63,7 +63,7 @@ const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('雑談') || text.includes('振り返り')) {
     return '☕ 雑談';
   }
-  if (text.includes('3Dワールド')) {
+  if (text.includes('3Dワールド') || text.includes('３Ｄワールド')) {
     return '🐈 スーパーマリオ 3Dワールド';
   }
   if (text.includes('マリオ64') || text.includes('スーパーマリオ64')) {
@@ -135,7 +135,7 @@ const CATEGORIES = [
   '🛡️ 時のオカリナ',
   '⚡ ポケモンBW',
   '✏️ 漢字でGO！',
-  '💫 スーパーマリオ 3Dワールド',
+  '🐈 スーパーマリオ 3Dワールド',
 ];
 
 export default function Home() {
