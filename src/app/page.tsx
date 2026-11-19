@@ -888,23 +888,23 @@ export default function Home() {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-            <span className="opacity-0 group-hover:opacity-100 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-opacity">
+            <span className="opacity-0 group-hover:opacity-100 bg-blue-600 text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full shadow transition-opacity">
               📊 見どころを解析
             </span>
           </div>
         </div>
 
-        <div className="p-3 flex-1 flex flex-col justify-between gap-2.5">
-          <h3 className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed">
+        <div className="p-2 sm:p-3 flex-1 flex flex-col justify-between gap-1.5 sm:gap-2.5">
+          <h3 className="text-[11px] sm:text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug sm:leading-relaxed">
             {item.title}
           </h3>
 
-          <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px]">
-            <span className="text-gray-400 font-mono">
+          <div className="pt-1.5 sm:pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] sm:text-[11px]">
+            <span className="text-gray-400 font-mono truncate">
               {formattedDate ?? '日付不明'}
             </span>
             <span
-              className={`font-bold px-2 py-0.5 rounded-full ${
+              className={`font-bold px-1.5 sm:px-2 py-0.5 rounded-full shrink-0 ${
                 tsCount >= 20
                   ? 'bg-orange-100 text-orange-700'
                   : tsCount > 0
@@ -1445,7 +1445,7 @@ export default function Home() {
               該当するアーカイブが見つかりませんでした。
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
               {filteredArchives.map((item) => renderArchiveCard(item))}
             </div>
           )}
