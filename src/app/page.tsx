@@ -1110,12 +1110,12 @@ export default function Home() {
 
             {selectedCategory !== 'bookmarks' && (
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <div className="relative flex-1 sm:w-64">
+                <div className="relative flex-1 sm:w-72">
                   <input
                     type="text"
                     value={timestampQuery}
                     onChange={(e) => setTimestampQuery(e.target.value)}
-                    placeholder="気になるワードを検索..."
+                    placeholder="気になるワードを検索... (神プレー/悲鳴/🌴🌴)"
                     className="border border-gray-300 bg-white px-3 py-1.5 pr-7 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {timestampQuery && (
