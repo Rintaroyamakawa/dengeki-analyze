@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useDeferredValue } from 'react';
 import Link from 'next/link';
 import BookmarkButton from '@/components/BookmarkButton';
 
@@ -61,116 +61,30 @@ const MANUAL_CATEGORY: { [videoId: string]: string } = {
   '3P5GTXoTH_Q': '☕ 雑談',
 };
 
-// 表記ゆれクラス（同じグループ内の表記をすべて同一視）
-const EQUIVALENCE_CLASSES: string[][] = [
-  ['囁き', 'ささやき', 'ササヤキ'],
-  ['囁く', 'ささやく', 'ササヤク'],
-  ['歌枠', 'うたわく', 'ウタワク'],
-  ['歌う', 'うたう', 'ウタウ'],
-  ['泣き', 'なき', 'ナキ'],
-  ['泣く', 'なく', 'ナク'],
-  ['笑い', 'わらい', 'ワライ'],
-  ['笑う', 'わらう', 'ワラウ'],
-  ['爆笑', 'ばくしょう'],
-  ['怒り', 'いかり', 'おこり'],
-  ['怒る', 'おこる', 'いかる'],
-  ['悲鳴', 'ひめい', 'ヒメイ'],
-  ['絶叫', 'ぜっきょう', 'ゼッキョウ'],
-  ['叫び', 'さけび', 'サケビ'],
-  ['神回', 'かみかい', 'カミカイ'],
-  ['初見', 'しょけん', 'ショケン'],
-  ['雑談', 'ざつだん', 'ザツダン'],
-  ['耐久', 'たいきゅう', 'タイキュウ'],
-  ['記念', 'きねん', 'キネン'],
+// よく使う表記ゆれ・漢字⇔読み対応（軽量・高速）
+const SEARCH_VARIANTS: Array<[string, string]> = [
+  ['囁き', 'ささやき'],
+  ['囁く', 'ささやく'],
+  ['記念', 'きねん'],
+  ['歌枠', 'うたわく'],
+  ['歌う', 'うたう'],
+  ['泣き', 'なき'],
+  ['泣く', 'なく'],
+  ['笑い', 'わらい'],
+  ['笑う', 'わらう'],
+  ['怒り', 'いかり'],
+  ['怒る', 'おこる'],
+  ['悲鳴', 'ひめい'],
+  ['絶叫', 'ぜっきょう'],
+  ['神回', 'かみかい'],
+  ['初見', 'しょけん'],
+  ['雑談', 'ざつだん'],
+  ['耐久', 'たいきゅう'],
   ['コラボ', 'こらぼ'],
-  ['怖い', 'こわい', '恐い', 'コワイ'],
-  ['可愛い', 'かわいい', 'カワイイ'],
-  ['凄い', 'すごい', 'スゴイ'],
-  ['やばい', 'ヤバい', 'ヤバイ', '厄介'],
-  ['好き', 'すき', 'スキ'],
-  ['嫌い', 'きらい', 'キライ'],
-  ['嬉しい', 'うれしい', 'ウレシイ'],
-  ['悲しい', 'かなしい', 'カナシイ'],
-  ['楽しい', 'たのしい', 'タノシイ'],
-  ['眠い', 'ねむい', 'ネムイ'],
-  ['驚き', 'おどろき', 'オドロキ'],
-  ['驚く', 'おどろく', 'オドロク'],
-  ['謝罪', 'しゃざい', 'ごめん', 'ゴメン'],
-  ['勝利', 'しょうり', '勝ち', 'かち'],
-  ['敗北', 'はいぼく', '負け', 'まけ'],
-  ['クリア', 'くりあ', 'clear'],
-  ['ゲームオーバー', 'げーむおーばー', 'gameover'],
-  ['ボス戦', 'ぼすせん', 'ボス'],
-  ['ガチャ', 'がちゃ'],
-  ['ネタバレ', 'ねたばれ'],
-  ['フラグ', 'ふらぐ'],
-  ['回収', 'かいしゅう'],
-  ['事故', 'じこ', 'ハプニング', 'はぷにんぐ'],
-  ['奇跡', 'きせき', 'キセキ'],
-  ['天才', 'てんさい', 'ジーニアス', 'じーにあす'],
-  ['台パン', 'だいぱん'],
-  ['噛む', 'かむ', 'カミカミ', 'かみかみ'],
-  ['くしゃみ', 'クシャミ', '嚏'],
-  ['あくび', 'アクビ', '欠伸'],
+  ['配信', 'はいしん'],
+  ['奇跡', 'きせき'],
+  ['発狂', 'はっきょう'],
 ];
-
-// ひらがな2文字以下で検索したときに「この漢字が含まれていれば部分一致OK」とする対応表
-const SHORT_KANA_KANJI_MAP: Record<string, string[]> = {
-  'うた': ['歌'],
-  'なき': ['泣'],
-  'なく': ['泣'],
-  'わら': ['笑'],
-  'おこ': ['怒'],
-  'かみ': ['神', '噛'],
-  'さけ': ['叫', '酒'],
-  'こわ': ['怖', '恐', '壊'],
-  'すご': ['凄'],
-  'やば': ['ヤバ', '厄介'],
-  'おち': ['落'],
-  'しに': ['死'],
-  'まけ': ['負'],
-  'かち': ['勝'],
-  'すき': ['好'],
-  'ねこ': ['猫'],
-  'いぬ': ['犬'],
-  'とり': ['鳥'],
-  'みず': ['水'],
-  'ほし': ['星'],
-  'つき': ['月'],
-  'ひめ': ['姫'],
-  'まお': ['魔王'],
-  'てき': ['敵'],
-  'わな': ['罠'],
-  'なぞ': ['謎'],
-  'うそ': ['嘘'],
-  'ゆめ': ['夢'],
-};
-
-const SMALL_TO_LARGE_KANA: Record<string, string> = {
-  'ぁ': 'あ',
-  'ぃ': 'い',
-  'ぅ': 'う',
-  'ぇ': 'え',
-  'ぉ': 'お',
-  'っ': 'つ',
-  'ゃ': 'や',
-  'ゅ': 'ゆ',
-  'ょ': 'よ',
-  'ゎ': 'わ',
-};
-
-const KANJI_DIGITS: Record<string, string> = {
-  '一': '1',
-  '二': '2',
-  '三': '3',
-  '四': '4',
-  '五': '5',
-  '六': '6',
-  '七': '7',
-  '八': '8',
-  '九': '9',
-  '〇': '0',
-};
 
 const toHiraganaNormalized = (text: string): string => {
   return text
@@ -182,78 +96,37 @@ const toHiraganaNormalized = (text: string): string => {
 };
 
 const normalizeSearchText = (text: string): string => {
-  // 1. 全角半角・英数字の統一
-  let normalized = text.normalize('NFKC').toLowerCase();
-
-  // 2. カタカナ → ひらがな統一（これにより「くらす」⇔「クラス」など全カタカナ語が自動一致）
-  normalized = normalized.replace(/[\u30a1-\u30f6]/g, (ch) =>
-    String.fromCharCode(ch.charCodeAt(0) - 0x60)
-  );
-
-  // 3. 波ダッシュ・伸ばし棒・ハイフンのゆれ統一
-  normalized = normalized.replace(/[〜～ー−―‐]/g, 'ー');
-
-  // 4. 1桁漢数字 → 算用数字統一
-  normalized = normalized.replace(/[一二三四五六七八九〇]/g, (ch) => KANJI_DIGITS[ch] ?? ch);
-
-  // 5. 表記ゆれクラスを正規化（代表表記に統一）
-  for (const group of EQUIVALENCE_CLASSES) {
-    const canonical = toHiraganaNormalized(group[0]);
-    for (const variant of group) {
-      const normVariant = toHiraganaNormalized(variant);
-      if (normVariant !== canonical && normalized.includes(normVariant)) {
-        normalized = normalized.split(normVariant).join(canonical);
-      }
+  let normalized = toHiraganaNormalized(text);
+  for (const [kanji, kana] of SEARCH_VARIANTS) {
+    const hiraKanji = toHiraganaNormalized(kanji);
+    const hiraKana = toHiraganaNormalized(kana);
+    if (normalized.includes(hiraKanji)) {
+      normalized = normalized.split(hiraKanji).join(hiraKana);
     }
   }
-
   return normalized;
-};
-
-// 小書き仮名（「っ」「ゃ」など）のゆれも吸収した補助正規化
-const normalizeLooseKana = (text: string): string => {
-  return normalizeSearchText(text).replace(
-    /[ぁぃぅぇぉっゃゅょゎ]/g,
-    (ch) => SMALL_TO_LARGE_KANA[ch] ?? ch
-  );
 };
 
 const escapeRegExp = (str: string): string => {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
-const matchesTimestampLabel = (label: string, rawQuery: string): boolean => {
+const matchesTimestampLabel = (hiraLabel: string, normLabel: string, rawQuery: string): boolean => {
   const q = rawQuery.trim();
   if (!q) return false;
 
+  // ひらがな2文字以下は語頭・記号直後のみヒット（単語途中の「燃やし」「あやしい」を除外）
   const isShortHiraganaOnly = /^[ぁ-んー]{1,2}$/.test(q);
-
   if (isShortHiraganaOnly) {
-    // 1. 辞書に対応する漢字があれば、その漢字の出現は部分一致で許可
-    const mappedKanjis = SHORT_KANA_KANJI_MAP[q];
-    if (mappedKanjis && mappedKanjis.some((kanji) => label.includes(kanji))) {
-      return true;
-    }
-
-    // 2. ひらがな/カタカナ表記そのものについては、単語の途中（「燃やし」「あやしい」）を除外し、
-    //    文頭・スペース・記号（【 ( ・ 「 〜 など）の直後に現れる場合のみヒット
-    const hiraLabel = toHiraganaNormalized(label);
+    const hiraQuery = toHiraganaNormalized(q);
     const boundaryPattern = new RegExp(
-      `(?:^|[\\s\\u3000・、。！？!?,./()（）\\[\\]【】「」『』〜~\\-_:：])${escapeRegExp(q)}`
+      `(?:^|[\\s\\u3000・、。！？!?,./()（）\\[\\]【】「」『』〜~\\-_:：])${escapeRegExp(hiraQuery)}`
     );
     return boundaryPattern.test(hiraLabel);
   }
 
-  // 3文字以上、または漢字・カタカナ・英数字を含む場合は汎用正規化＋表記ゆれクラス＋小書き仮名ゆれで部分一致
-  const normalizedQuery = normalizeSearchText(q);
-  const normalizedLabel = normalizeSearchText(label);
-  if (normalizedLabel.includes(normalizedQuery)) {
-    return true;
-  }
-
-  const looseQuery = normalizeLooseKana(q);
-  const looseLabel = normalizeLooseKana(label);
-  return looseLabel.includes(looseQuery);
+  const normQuery = normalizeSearchText(q);
+  return normLabel.includes(normQuery);
 };
 
 const matchCategoryFromText = (text: string): string | null => {
@@ -424,6 +297,7 @@ export default function Home() {
   const [manualAssignments, setManualAssignments] = useState<Record<string, string>>({});
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [timestampQuery, setTimestampQuery] = useState('');
+  const deferredQuery = useDeferredValue(timestampQuery);
   const [detailCache, setDetailCache] = useState<Record<string, ArchiveDetailCache>>({});
   const [indexedCount, setIndexedCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -488,7 +362,6 @@ export default function Home() {
     [manualAssignments]
   );
 
-  // シリーズ別のグループ目次を構築（各項目内の「一番古い配信日時」が新しいものを後ろに配置）
   const groupedCategorySections = useMemo(() => {
     const orderedGroups = [
       'マリオシリーズ',
@@ -499,7 +372,6 @@ export default function Home() {
 
     const allKnownCats = Array.from(new Set([...CATEGORIES, ...categories]));
 
-    // 項目ごとの「一番古い配信日時（ミリ秒）」を事前計算
     const oldestTimeByCategory = new Map<string, number>();
     archives.forEach((item) => {
       const cat = getCategory(item);
@@ -529,7 +401,6 @@ export default function Home() {
 
       const uniqueCats = Array.from(new Set(matchedCats));
 
-      // 「一番古い配信日時」が早い順 → 新しい順（新しい日時の項目ほど後ろ）
       uniqueCats.sort((a, b) => {
         const timeA = oldestTimeByCategory.get(a);
         const timeB = oldestTimeByCategory.get(b);
@@ -662,7 +533,7 @@ export default function Home() {
     const prefetchDetails = async () => {
       const targetItems = archives.filter((a) => (a.timestampCount ?? 0) > 0);
       let done = 0;
-      const concurrency = 6;
+      const concurrency = 8;
 
       for (let i = 0; i < targetItems.length; i += concurrency) {
         if (cancelled) return;
@@ -705,47 +576,47 @@ export default function Home() {
     };
   }, [archives]);
 
-  const crossTimestampHits = useMemo<CrossTimestampHit[]>(() => {
-    const rawQuery = timestampQuery.trim();
-    if (!rawQuery) return [];
+  const { hits: crossTimestampHits, totalHits: crossTimestampTotal } = useMemo(() => {
+    const rawQuery = deferredQuery.trim();
+    if (!rawQuery) {
+      return { hits: [] as CrossTimestampHit[], totalHits: 0 };
+    }
 
-    const archiveMetaMap = new Map<string, { dateMs: number; tsCount: number }>();
+    const archiveMetaMap = new Map<string, { dateMs: number }>();
     archives.forEach((arch) => {
       const rawDate = arch.publishedAt || arch.updatedAt || '';
       const dateMs = rawDate ? new Date(rawDate).getTime() : 0;
       archiveMetaMap.set(arch.videoId, {
         dateMs: Number.isFinite(dateMs) ? dateMs : 0,
-        tsCount: arch.timestampCount ?? 0,
       });
     });
 
-    const hits: Array<CrossTimestampHit & { dateMs: number; overlapCount: number }> = [];
+    const matched: Array<CrossTimestampHit & { dateMs: number; overlapCount: number }> = [];
     archives.forEach((arch) => {
       const detail = detailCache[arch.videoId];
       if (!detail?.timestamps) return;
-      const meta = archiveMetaMap.get(arch.videoId) ?? {
-        dateMs: 0,
-        tsCount: arch.timestampCount ?? 0,
-      };
-      const effectiveDateMs = detail.publishedAt
-        ? new Date(detail.publishedAt).getTime() || meta.dateMs
-        : meta.dateMs;
+      const dateMs = detail.publishedAt
+        ? new Date(detail.publishedAt).getTime() || archiveMetaMap.get(arch.videoId)?.dateMs || 0
+        : archiveMetaMap.get(arch.videoId)?.dateMs || 0;
 
       detail.timestamps.forEach((ts) => {
-        if (ts.label && matchesTimestampLabel(ts.label, rawQuery)) {
-          hits.push({
+        if (!ts.label) return;
+        const hiraLabel = toHiraganaNormalized(ts.label);
+        const normLabel = normalizeSearchText(ts.label);
+        if (matchesTimestampLabel(hiraLabel, normLabel, rawQuery)) {
+          matched.push({
             videoId: arch.videoId,
             videoTitle: detail.title || arch.title,
             publishedAt: detail.publishedAt ?? arch.publishedAt,
             item: ts,
-            dateMs: effectiveDateMs,
+            dateMs,
             overlapCount: ts.count ?? 1,
           });
         }
       });
     });
 
-    hits.sort((a, b) => {
+    matched.sort((a, b) => {
       if (sortOrder === 'timestamps') {
         if (b.overlapCount !== a.overlapCount) return b.overlapCount - a.overlapCount;
         if (b.dateMs !== a.dateMs) return b.dateMs - a.dateMs;
@@ -757,8 +628,12 @@ export default function Home() {
       return a.item.seconds - b.item.seconds;
     });
 
-    return hits.map(({ dateMs: _d, overlapCount: _o, ...rest }) => rest);
-  }, [timestampQuery, archives, detailCache, sortOrder]);
+    const maxVisible = 100;
+    return {
+      hits: matched.slice(0, maxVisible).map(({ dateMs: _d, overlapCount: _o, ...rest }) => rest),
+      totalHits: matched.length,
+    };
+  }, [deferredQuery, archives, detailCache, sortOrder]);
 
   const handleOpenCrossHit = (hit: CrossTimestampHit) => {
     const cached = detailCache[hit.videoId];
@@ -1337,7 +1212,7 @@ export default function Home() {
                   <span>🔎</span>
                   <span>「{timestampQuery.trim()}」のタイムスタンプ検索結果</span>
                   <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-extrabold">
-                    {crossTimestampHits.length}件ヒット
+                    {crossTimestampTotal}件ヒット
                   </span>
                 </div>
                 <span className="text-[11px] text-gray-400 font-mono">
@@ -1350,42 +1225,49 @@ export default function Home() {
                   該当するタイムスタンプは見つかりませんでした（まだ読込中の配信がある場合は数秒後に再表示されます）。
                 </p>
               ) : (
-                <div className="divide-y border rounded-lg max-h-[340px] overflow-y-auto">
-                  {crossTimestampHits.map((hit, idx) => (
-                    <div
-                      key={`${hit.videoId}_${hit.item.seconds}_${idx}`}
-                      onClick={() => handleOpenCrossHit(hit)}
-                      className="p-3 hover:bg-blue-50 transition-colors cursor-pointer flex items-start sm:items-center justify-between gap-3 text-sm"
-                    >
-                      <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
-                        <span className="font-mono font-bold text-blue-600 shrink-0">
-                          ▶ {hit.item.time}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-bold text-gray-900 break-words flex flex-wrap items-center gap-1.5">
-                            <span>{hit.item.label}</span>
-                            {(hit.item.count || 1) > 1 && (
-                              <span className="bg-orange-100 text-orange-700 text-[11px] px-2 py-0.5 rounded-full font-bold">
-                                🔥 {hit.item.count}人設定
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-[11px] text-gray-500 truncate mt-0.5">
-                            {hit.videoTitle}
-                            {formatPublishedDate(hit.publishedAt) && (
-                              <span className="ml-2 font-mono text-gray-400">
-                                ({formatPublishedDate(hit.publishedAt)})
-                              </span>
-                            )}
+                <>
+                  {crossTimestampTotal > crossTimestampHits.length && (
+                    <p className="text-[11px] text-gray-400">
+                      件数が多いため上位{crossTimestampHits.length}件を表示しています。
+                    </p>
+                  )}
+                  <div className="divide-y border rounded-lg max-h-[340px] overflow-y-auto">
+                    {crossTimestampHits.map((hit, idx) => (
+                      <div
+                        key={`${hit.videoId}_${hit.item.seconds}_${idx}`}
+                        onClick={() => handleOpenCrossHit(hit)}
+                        className="p-3 hover:bg-blue-50 transition-colors cursor-pointer flex items-start sm:items-center justify-between gap-3 text-sm"
+                      >
+                        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                          <span className="font-mono font-bold text-blue-600 shrink-0">
+                            ▶ {hit.item.time}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-bold text-gray-900 break-words flex flex-wrap items-center gap-1.5">
+                              <span>{hit.item.label}</span>
+                              {(hit.item.count || 1) > 1 && (
+                                <span className="bg-orange-100 text-orange-700 text-[11px] px-2 py-0.5 rounded-full font-bold">
+                                  🔥 {hit.item.count}人設定
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[11px] text-gray-500 truncate mt-0.5">
+                              {hit.videoTitle}
+                              {formatPublishedDate(hit.publishedAt) && (
+                                <span className="ml-2 font-mono text-gray-400">
+                                  ({formatPublishedDate(hit.publishedAt)})
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
+                        <span className="text-xs font-bold text-blue-600 shrink-0">
+                          再生 ↗
+                        </span>
                       </div>
-                      <span className="text-xs font-bold text-blue-600 shrink-0">
-                        再生 ↗
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           )}
