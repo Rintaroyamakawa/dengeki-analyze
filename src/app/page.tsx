@@ -61,7 +61,6 @@ const MANUAL_CATEGORY: { [videoId: string]: string } = {
   '3P5GTXoTH_Q': '☕ 雑談',
 };
 
-// よく使う表記ゆれ・漢字⇔読み対応（軽量・高速）
 const SEARCH_VARIANTS: Array<[string, string]> = [
   ['囁き', 'ささやき'],
   ['囁く', 'ささやく'],
@@ -115,7 +114,6 @@ const matchesTimestampLabel = (hiraLabel: string, normLabel: string, rawQuery: s
   const q = rawQuery.trim();
   if (!q) return false;
 
-  // ひらがな2文字以下は語頭・記号直後のみヒット（単語途中の「燃やし」「あやしい」を除外）
   const isShortHiraganaOnly = /^[ぁ-んー]{1,2}$/.test(q);
   if (isShortHiraganaOnly) {
     const hiraQuery = toHiraganaNormalized(q);
@@ -309,7 +307,6 @@ export default function Home() {
   const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
   const [selectedBookmarkIds, setSelectedBookmarkIds] = useState<string[]>([]);
 
-  const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
   const [activeArchiveTitle, setActiveArchiveTitle] = useState<string>('');
   const [data, setData] = useState<{
@@ -525,7 +522,6 @@ export default function Home() {
     fetchInitialData();
   }, []);
 
-  // 全アーカイブのタイムスタンプ横断検索用に詳細JSONをバックグラウンドで順次取得・キャッシュ
   useEffect(() => {
     if (archives.length === 0) return;
     let cancelled = false;
@@ -649,7 +645,6 @@ export default function Home() {
 
     setData(baseData);
     setActiveArchiveTitle(hit.videoTitle);
-    setUrl(`https://www.youtube.com/watch?v=${hit.videoId}`);
     setError('');
     setIsVideoLoaded(false);
     setActiveItem(hit.item);
@@ -806,40 +801,6 @@ export default function Home() {
     return Math.max(...optimizedHeatmap.map(item => item.count));
   }, [optimizedHeatmap]);
 
-  const runAnalyze = async (targetUrl: string, presetTitle?: string) => {
-    setUrl(targetUrl);
-    setAnalyzing(true);
-    setError('');
-    setData(null);
-    setActiveItem(null);
-    if (presetTitle) {
-      setActiveArchiveTitle(presetTitle);
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    try {
-      const res = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: targetUrl }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'エラーが発生しました');
-      setData(json);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setAnalyzing(false);
-    }
-  };
-
-  const handleAnalyzeSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!url.trim()) return;
-    runAnalyze(url);
-  };
-
   const handleSelectArchive = async (videoId: string, title?: string) => {
     setAnalyzing(true);
     setError('');
@@ -848,7 +809,6 @@ export default function Home() {
     if (title) {
       setActiveArchiveTitle(title);
     }
-    setUrl(`https://www.youtube.com/watch?v=${videoId}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     try {
@@ -986,178 +946,156 @@ export default function Home() {
       </header>
 
       <div className="max-w-5xl mx-auto px-4 pt-6 space-y-8">
-        {/* 🔍 見どころ解析パネル */}
-        <section className="bg-white border rounded-xl p-5 shadow-sm">
-          <h2 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
-            <span>📊</span>
-            <span>配信の見どころ・チャット熱量を解析する</span>
-          </h2>
-
-          <form onSubmit={handleAnalyzeSubmit} className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="下のリストから選ぶか、配信URLを直接貼り付け..."
-              className="border border-gray-300 p-2.5 flex-1 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <button
-              type="submit"
-              disabled={analyzing}
-              className="bg-blue-600 text-white font-bold text-sm px-6 py-2.5 rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-colors shrink-0"
-            >
-              {analyzing ? '解析中...' : '解析する'}
-            </button>
-          </form>
-
-          {error && (
-            <div className="mt-4 bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm font-bold">
-              ⚠️ {error}
-            </div>
-          )}
-
-          {analyzing && (
-            <div className="mt-6 py-8 flex flex-col items-center justify-center text-gray-500 gap-2">
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-sm font-bold">コメントとチャット欄から見どころを集計中...</p>
-            </div>
-          )}
-
-          {(data || analyzing) && (
-            <div className="mt-6 pt-6 border-t space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                  <h3 className="font-bold text-lg text-gray-900">
-                    {data?.title ||
-                     activeArchiveTitle ||
-                     (url ? archives.find(a => url.includes(a.videoId))?.title : null) ||
-                     (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {data ? (
-                      (() => {
-                        const rawPublishedAt =
-                          data.publishedAt ??
-                          archives.find((a) => a.videoId === data.videoId)?.publishedAt;
-                        const formattedDate = formatPublishedDate(rawPublishedAt);
-                        const effectiveDuration = data.duration > 0
-                          ? data.duration
-                          : (data.heatmapData && data.heatmapData.length > 0
-                              ? data.heatmapData[data.heatmapData.length - 1].minute * 60
-                              : 0);
-                        const hours = Math.floor(effectiveDuration / 3600);
-                        const mins = Math.floor((effectiveDuration % 3600) / 60);
-                        return (
-                          <>
-                            {formattedDate && <>配信日: {formattedDate} ／ </>}
-                            総時間: {hours}時間{mins}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
-                          </>
-                        );
-                      })()
-                    ) : (
-                      'データを解析中...'
-                    )}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setData(null)}
-                  className="text-xs text-gray-400 hover:text-gray-600 self-start sm:self-center"
-                >
-                  ✕ 解析結果を閉じる
-                </button>
+        {/* 🔍 見どころ解析パネル（解析結果・エラー・ローディング時のみ表示） */}
+        {(data || analyzing || error) && (
+          <section className="bg-white border rounded-xl p-5 shadow-sm">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm font-bold">
+                ⚠️ {error}
               </div>
+            )}
 
-              {data && optimizedHeatmap.length > 0 && (
-                <div className="bg-gray-50 border rounded-lg p-4">
-                  <h4 className="text-xs font-bold text-gray-700 mb-2 flex items-center justify-between">
-                    <span>🔥 チャット熱量ヒートマップ（配信全体の盛り上がり分布）</span>
-                    <span className="text-[11px] text-gray-400 font-normal">バーをクリックするとその時間にジャンプ</span>
-                  </h4>
+            {analyzing && (
+              <div className="py-8 flex flex-col items-center justify-center text-gray-500 gap-2">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm font-bold">コメントとチャット欄から見どころを集計中...</p>
+              </div>
+            )}
 
-                  <div className="h-28 flex items-end gap-[1px] bg-white border-b border-x p-1 rounded">
-                    {optimizedHeatmap.map((item, idx) => {
-                      const count = item.count || 0;
-                      const heightPercent = Math.max(
-                        6,
-                        Math.min(100, (count / optimizedMaxCount) * 100)
-                      );
-                      const isHot = count > optimizedMaxCount * 0.3;
-
-                      return (
-                        <div
-                          key={idx}
-                          onClick={() => handleHeatmapClick(item)}
-                          title={`${item.targetLabel || item.timeLabel} 注目数: ${count}人`}
-                          className={`flex-1 rounded-t cursor-pointer transition-all hover:opacity-80 ${
-                            isHot ? 'bg-red-500' : count > 0 ? 'bg-blue-400' : 'bg-gray-200'
-                          }`}
-                          style={{ height: count > 0 ? `${heightPercent}%` : '4%' }}
-                        />
-                      );
-                    })}
+            {(data || analyzing) && (
+              <div className="space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">
+                      {data?.title ||
+                       activeArchiveTitle ||
+                       (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
+                    </h3>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {data ? (
+                        (() => {
+                          const rawPublishedAt =
+                            data.publishedAt ??
+                            archives.find((a) => a.videoId === data.videoId)?.publishedAt;
+                          const formattedDate = formatPublishedDate(rawPublishedAt);
+                          const effectiveDuration = data.duration > 0
+                            ? data.duration
+                            : (data.heatmapData && data.heatmapData.length > 0
+                                ? data.heatmapData[data.heatmapData.length - 1].minute * 60
+                                : 0);
+                          const hours = Math.floor(effectiveDuration / 3600);
+                          const mins = Math.floor((effectiveDuration % 3600) / 60);
+                          return (
+                            <>
+                              {formattedDate && <>配信日: {formattedDate} ／ </>}
+                              総時間: {hours}時間{mins}分 ／ 抽出タイムスタンプ: <span className="font-bold text-blue-600">{data.timestamps.length}件</span>
+                            </>
+                          );
+                        })()
+                      ) : (
+                        'データを解析中...'
+                      )}
+                    </p>
                   </div>
-                  <div className="flex justify-between text-[11px] text-gray-400 mt-1 px-1">
-                    <span>0:00 (開始)</span>
-                    <span>{optimizedHeatmap[Math.floor(optimizedHeatmap.length / 2)]?.timeLabel || ''}</span>
-                    <span>{optimizedHeatmap[optimizedHeatmap.length - 1]?.timeLabel || ''} (終了)</span>
-                  </div>
+                  <button
+                    onClick={() => setData(null)}
+                    className="text-xs text-gray-400 hover:text-gray-600 self-start sm:self-center cursor-pointer"
+                  >
+                    ✕ 解析結果を閉じる
+                  </button>
                 </div>
-              )}
 
-              {/* タイムスタンプ一覧 */}
-              {data && (
-                <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
-                  {data.timestamps.length === 0 ? (
-                    <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
-                  ) : (
-                    data.timestamps.map((item, idx) => {
-                      const clipId = `${data.videoId}_${item.seconds}`;
-                      const isBookmarked = myBookmarks.some(b => b.id === clipId);
-                      const authorName = item.authors?.[0] || '視聴者';
-                      const count = item.count || 1;
-                      const otherCount = count - 1;
+                {data && optimizedHeatmap.length > 0 && (
+                  <div className="bg-gray-50 border rounded-lg p-4">
+                    <h4 className="text-xs font-bold text-gray-700 mb-2 flex items-center justify-between">
+                      <span>🔥 チャット熱量ヒートマップ（配信全体の盛り上がり分布）</span>
+                      <span className="text-[11px] text-gray-400 font-normal">バーをクリックするとその時間にジャンプ</span>
+                    </h4>
 
-                      return (
-                        <div
-                          key={idx}
-                          className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 transition-colors"
-                        >
-                          <span
-                            onClick={() => handleOpenModal(item)}
-                            className="font-mono font-bold text-blue-600 w-16 shrink-0 cursor-pointer hover:underline"
-                          >
-                            {item.time}
-                          </span>
-                          <span
-                            onClick={() => handleOpenModal(item)}
-                            className="flex-1 flex flex-wrap items-center gap-2 cursor-pointer"
-                          >
-                            <span>{item.label}</span>
-                            {count > 1 && (
-                              <span className="bg-orange-100 text-orange-700 text-xs px-2.5 py-0.5 rounded-full font-bold shrink-0">
-                                🔥 {count}人設定
-                              </span>
-                            )}
-                          </span>
+                    <div className="h-28 flex items-end gap-[1px] bg-white border-b border-x p-1 rounded">
+                      {optimizedHeatmap.map((item, idx) => {
+                        const count = item.count || 0;
+                        const heightPercent = Math.max(
+                          6,
+                          Math.min(100, (count / optimizedMaxCount) * 100)
+                        );
+                        const isHot = count > optimizedMaxCount * 0.3;
 
-                          <BookmarkButton
-                            initialBookmarked={isBookmarked}
-                            onToggle={() => toggleBookmark(item)}
+                        return (
+                          <div
+                            key={idx}
+                            onClick={() => handleHeatmapClick(item)}
+                            title={`${item.targetLabel || item.timeLabel} 注目数: ${count}人`}
+                            className={`flex-1 rounded-t cursor-pointer transition-all hover:opacity-80 ${
+                              isHot ? 'bg-red-500' : count > 0 ? 'bg-blue-400' : 'bg-gray-200'
+                            }`}
+                            style={{ height: count > 0 ? `${heightPercent}%` : '4%' }}
                           />
+                        );
+                      })}
+                    </div>
+                    <div className="flex justify-between text-[11px] text-gray-400 mt-1 px-1">
+                      <span>0:00 (開始)</span>
+                      <span>{optimizedHeatmap[Math.floor(optimizedHeatmap.length / 2)]?.timeLabel || ''}</span>
+                      <span>{optimizedHeatmap[optimizedHeatmap.length - 1]?.timeLabel || ''} (終了)</span>
+                    </div>
+                  </div>
+                )}
 
-                          <span className="text-xs text-gray-400 shrink-0 hidden sm:inline">
-                            [{item.source}: {authorName} {otherCount > 0 ? `他${otherCount}人` : ''}]
-                          </span>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </section>
+                {/* タイムスタンプ一覧 */}
+                {data && (
+                  <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
+                    {data.timestamps.length === 0 ? (
+                      <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
+                    ) : (
+                      data.timestamps.map((item, idx) => {
+                        const clipId = `${data.videoId}_${item.seconds}`;
+                        const isBookmarked = myBookmarks.some(b => b.id === clipId);
+                        const authorName = item.authors?.[0] || '視聴者';
+                        const count = item.count || 1;
+                        const otherCount = count - 1;
+
+                        return (
+                          <div
+                            key={idx}
+                            className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 transition-colors"
+                          >
+                            <span
+                              onClick={() => handleOpenModal(item)}
+                              className="font-mono font-bold text-blue-600 w-16 shrink-0 cursor-pointer hover:underline"
+                            >
+                              {item.time}
+                            </span>
+                            <span
+                              onClick={() => handleOpenModal(item)}
+                              className="flex-1 flex flex-wrap items-center gap-2 cursor-pointer"
+                            >
+                              <span>{item.label}</span>
+                              {count > 1 && (
+                                <span className="bg-orange-100 text-orange-700 text-xs px-2.5 py-0.5 rounded-full font-bold shrink-0">
+                                  🔥 {count}人設定
+                                </span>
+                              )}
+                            </span>
+
+                            <BookmarkButton
+                              initialBookmarked={isBookmarked}
+                              onToggle={() => toggleBookmark(item)}
+                            />
+
+                            <span className="text-xs text-gray-400 shrink-0 hidden sm:inline">
+                              [{item.source}: {authorName} {otherCount > 0 ? `他${otherCount}人` : ''}]
+                            </span>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
 
         {/* 📚 保存済みアーカイブ一覧セクション */}
         <section className="space-y-4">
