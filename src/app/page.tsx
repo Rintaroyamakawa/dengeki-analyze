@@ -213,6 +213,7 @@ export default function Home() {
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState<boolean>(true);
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'timestamps'>('newest');
   const [isLocal, setIsLocal] = useState(false);
   const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...');
@@ -985,24 +986,45 @@ export default function Home() {
             )}
           </div>
 
-          {/* 🎯 カテゴリ目次（シリーズ・ジャンル別グループ表示） */}
-          <div className="bg-white border rounded-xl p-4 shadow-sm space-y-4">
-            <div className="text-xs font-bold text-gray-500 flex items-center justify-between">
-              <span>📂 カテゴリ・シリーズで絞り込み（クリックで選択）</span>
-              {selectedCategory !== 'all' && (
+          {/* 🎯 カテゴリ目次（開閉式：シリーズ・ジャンル別グループ表示） */}
+          <div className="bg-white border rounded-xl p-4 shadow-sm space-y-3">
+            <div className="text-xs font-bold text-gray-500 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={() => setIsCategoryMenuOpen((prev) => !prev)}
+                className="flex items-center gap-1.5 text-left hover:text-gray-800 transition-colors cursor-pointer"
+              >
+                <span>📂 カテゴリ・シリーズで絞り込み</span>
+                <span className="text-[11px] font-normal text-gray-400">
+                  （{isCategoryMenuOpen ? 'クリックで閉じる' : 'クリックで開く'}）
+                </span>
+              </button>
+
+              <div className="flex items-center gap-3 shrink-0">
+                {selectedCategory !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCategory('all')}
+                    className="text-blue-600 hover:underline text-xs cursor-pointer"
+                  >
+                    ✕ 絞り込みを解除
+                  </button>
+                )}
                 <button
-                  onClick={() => setSelectedCategory('all')}
-                  className="text-blue-600 hover:underline text-xs"
+                  type="button"
+                  onClick={() => setIsCategoryMenuOpen((prev) => !prev)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-[11px] px-2.5 py-1 rounded-md transition-colors cursor-pointer"
                 >
-                  ✕ 絞り込みを解除
+                  {isCategoryMenuOpen ? '▲ 閉じる' : '▼ 一覧を開く'}
                 </button>
-              )}
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
               <button
+                type="button"
                 onClick={() => setSelectedCategory('all')}
-                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all cursor-pointer ${
                   selectedCategory === 'all'
                     ? 'bg-blue-600 text-white shadow'
                     : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -1012,8 +1034,9 @@ export default function Home() {
               </button>
 
               <button
+                type="button"
                 onClick={() => setSelectedCategory('bookmarks')}
-                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                   selectedCategory === 'bookmarks'
                     ? 'bg-amber-500 text-white shadow'
                     : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200'
@@ -1026,43 +1049,62 @@ export default function Home() {
                 />
                 マイ切り抜きポイント ({myBookmarks.length})
               </button>
+
+              {!isCategoryMenuOpen &&
+                selectedCategory !== 'all' &&
+                selectedCategory !== 'bookmarks' && (
+                  <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-blue-600 text-white shadow flex items-center gap-1.5">
+                    <span>選択中: {selectedCategory}</span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCategory('all')}
+                      className="hover:text-blue-200 cursor-pointer"
+                      aria-label="絞り込み解除"
+                    >
+                      ✕
+                    </button>
+                  </span>
+                )}
             </div>
 
-            <div className="space-y-3.5 pt-1">
-              {groupedCategorySections.map((group) => {
-                const visibleCats = group.categories.filter(
-                  (cat) => archives.filter((item) => getCategory(item) === cat).length > 0
-                );
-                if (visibleCats.length === 0) return null;
+            {isCategoryMenuOpen && (
+              <div className="space-y-3.5 pt-2 border-t border-gray-100">
+                {groupedCategorySections.map((group) => {
+                  const visibleCats = group.categories.filter(
+                    (cat) => archives.filter((item) => getCategory(item) === cat).length > 0
+                  );
+                  if (visibleCats.length === 0) return null;
 
-                return (
-                  <div key={group.title} className="space-y-1.5">
-                    <div className="flex items-center gap-2 text-[11px] font-extrabold text-gray-600">
-                      <span className="shrink-0">{group.title}</span>
-                      <span className="h-[1px] flex-1 bg-gray-200" />
+                  return (
+                    <div key={group.title} className="space-y-1.5">
+                      <div className="flex items-center gap-2 text-[11px] font-extrabold text-gray-600">
+                        <span className="shrink-0">{group.title}</span>
+                        <span className="h-[1px] flex-1 bg-gray-200" />
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {visibleCats.map((cat) => {
+                          const count = archives.filter((item) => getCategory(item) === cat).length;
+                          return (
+                            <button
+                              key={cat}
+                              type="button"
+                              onClick={() => setSelectedCategory(cat)}
+                              className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all cursor-pointer ${
+                                selectedCategory === cat
+                                  ? 'bg-blue-600 text-white shadow'
+                                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                              }`}
+                            >
+                              {cat} ({count})
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {visibleCats.map((cat) => {
-                        const count = archives.filter((item) => getCategory(item) === cat).length;
-                        return (
-                          <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all ${
-                              selectedCategory === cat
-                                ? 'bg-blue-600 text-white shadow'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                            }`}
-                          >
-                            {cat} ({count})
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {selectedCategory === 'bookmarks' && myBookmarks.length > 0 && (
