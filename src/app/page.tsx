@@ -29,6 +29,23 @@ type ArchiveItem = {
   timestampCount: number;
 };
 
+type ArchiveDetailCache = {
+  videoId: string;
+  title: string;
+  publishedAt?: string | null;
+  duration: number;
+  timestamps: TimestampItem[];
+  heatmapData: HeatmapItem[];
+  maxCount: number;
+};
+
+type CrossTimestampHit = {
+  videoId: string;
+  videoTitle: string;
+  publishedAt?: string | null;
+  item: TimestampItem;
+};
+
 type MyBookmark = {
   id: string;
   videoId: string;
@@ -211,7 +228,9 @@ export default function Home() {
   const [seriesMap, setSeriesMap] = useState<Record<string, string>>({});
   const [manualAssignments, setManualAssignments] = useState<Record<string, string>>({});
   const [loadingArchives, setLoadingArchives] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [timestampQuery, setTimestampQuery] = useState('');
+  const [detailCache, setDetailCache] = useState<Record<string, ArchiveDetailCache>>({});
+  const [indexedCount, setIndexedCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState<boolean>(true);
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'timestamps'>('newest');
@@ -440,6 +459,100 @@ export default function Home() {
     fetchInitialData();
   }, []);
 
+  // 全アーカイブのタイムスタンプ横断検索用に詳細JSONをバックグラウンドで順次取得・キャッシュ
+  useEffect(() => {
+    if (archives.length === 0) return;
+    let cancelled = false;
+
+    const prefetchDetails = async () => {
+      const targetItems = archives.filter((a) => (a.timestampCount ?? 0) > 0);
+      let done = 0;
+      const concurrency = 6;
+
+      for (let i = 0; i < targetItems.length; i += concurrency) {
+        if (cancelled) return;
+        const batch = targetItems.slice(i, i + concurrency);
+        await Promise.all(
+          batch.map(async (arch) => {
+            try {
+              const res = await fetch(`/api/data?videoId=${arch.videoId}`);
+              if (!res.ok) return;
+              const json: ArchiveDetailCache = await res.json();
+              if (cancelled) return;
+              setDetailCache((prev) => {
+                if (prev[arch.videoId]) return prev;
+                return {
+                  ...prev,
+                  [arch.videoId]: {
+                    ...json,
+                    videoId: arch.videoId,
+                    title: json.title || arch.title,
+                    publishedAt: json.publishedAt ?? arch.publishedAt,
+                  },
+                };
+              });
+            } catch {
+              // 取得失敗時はスキップ
+            } finally {
+              done += 1;
+            }
+          })
+        );
+        if (!cancelled) {
+          setIndexedCount(done);
+        }
+      }
+    };
+
+    prefetchDetails();
+    return () => {
+      cancelled = true;
+    };
+  }, [archives]);
+
+  const crossTimestampHits = useMemo<CrossTimestampHit[]>(() => {
+    const q = timestampQuery.trim().toLowerCase();
+    if (!q) return [];
+
+    const hits: CrossTimestampHit[] = [];
+    archives.forEach((arch) => {
+      const detail = detailCache[arch.videoId];
+      if (!detail?.timestamps) return;
+      detail.timestamps.forEach((ts) => {
+        if (ts.label && ts.label.toLowerCase().includes(q)) {
+          hits.push({
+            videoId: arch.videoId,
+            videoTitle: detail.title || arch.title,
+            publishedAt: detail.publishedAt ?? arch.publishedAt,
+            item: ts,
+          });
+        }
+      });
+    });
+
+    return hits;
+  }, [timestampQuery, archives, detailCache]);
+
+  const handleOpenCrossHit = (hit: CrossTimestampHit) => {
+    const cached = detailCache[hit.videoId];
+    const baseData = cached ?? {
+      videoId: hit.videoId,
+      title: hit.videoTitle,
+      publishedAt: hit.publishedAt,
+      duration: 0,
+      timestamps: [hit.item],
+      heatmapData: [],
+      maxCount: 1,
+    };
+
+    setData(baseData);
+    setActiveArchiveTitle(hit.videoTitle);
+    setUrl(`https://www.youtube.com/watch?v=${hit.videoId}`);
+    setError('');
+    setIsVideoLoaded(false);
+    setActiveItem(hit.item);
+  };
+
   const toggleBookmark = (item: TimestampItem) => {
     if (!data) return;
     const clipId = `${data.videoId}_${item.seconds}`;
@@ -504,15 +617,6 @@ export default function Home() {
   const filteredArchives = useMemo(() => {
     let result = [...archives];
 
-    if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (item) =>
-          item.title.toLowerCase().includes(q) ||
-          item.videoId.toLowerCase().includes(q)
-      );
-    }
-
     if (selectedCategory !== 'all' && selectedCategory !== 'bookmarks') {
       const normalizedSelected = normalizeLegacyCategoryName(selectedCategory);
       result = result.filter((item) => getCategory(item) === normalizedSelected);
@@ -533,7 +637,7 @@ export default function Home() {
     });
 
     return result;
-  }, [archives, searchQuery, selectedCategory, sortOrder, getCategory]);
+  }, [archives, selectedCategory, sortOrder, getCategory]);
 
   const optimizedHeatmap = useMemo(() => {
     if (!data?.heatmapData) return [];
@@ -965,14 +1069,26 @@ export default function Home() {
             </h2>
 
             {selectedCategory !== 'bookmarks' && (
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="タイトルやゲーム名で検索..."
-                  className="border border-gray-300 bg-white px-3 py-1.5 rounded-lg text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="relative flex-1 sm:w-64">
+                  <input
+                    type="text"
+                    value={timestampQuery}
+                    onChange={(e) => setTimestampQuery(e.target.value)}
+                    placeholder="全タイムスタンプ横断検索..."
+                    className="border border-gray-300 bg-white px-3 py-1.5 pr-7 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  {timestampQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setTimestampQuery('')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
+                      aria-label="検索クリア"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'timestamps')}
@@ -985,6 +1101,67 @@ export default function Home() {
               </div>
             )}
           </div>
+
+          {/* 🔎 全アーカイブ タイムスタンプ横断検索結果 */}
+          {timestampQuery.trim() !== '' && selectedCategory !== 'bookmarks' && (
+            <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm space-y-3">
+              <div className="flex items-center justify-between gap-2 text-xs">
+                <div className="font-bold text-gray-800 flex items-center gap-1.5">
+                  <span>🔎</span>
+                  <span>「{timestampQuery.trim()}」のタイムスタンプ検索結果</span>
+                  <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-extrabold">
+                    {crossTimestampHits.length}件ヒット
+                  </span>
+                </div>
+                <span className="text-[11px] text-gray-400 font-mono">
+                  読込済: {indexedCount}配信
+                </span>
+              </div>
+
+              {crossTimestampHits.length === 0 ? (
+                <p className="text-xs text-gray-500 py-3">
+                  該当するタイムスタンプは見つかりませんでした（まだ読込中の配信がある場合は数秒後に再表示されます）。
+                </p>
+              ) : (
+                <div className="divide-y border rounded-lg max-h-[340px] overflow-y-auto">
+                  {crossTimestampHits.map((hit, idx) => (
+                    <div
+                      key={`${hit.videoId}_${hit.item.seconds}_${idx}`}
+                      onClick={() => handleOpenCrossHit(hit)}
+                      className="p-3 hover:bg-blue-50 transition-colors cursor-pointer flex items-start sm:items-center justify-between gap-3 text-sm"
+                    >
+                      <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                        <span className="font-mono font-bold text-blue-600 shrink-0">
+                          ▶ {hit.item.time}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-bold text-gray-900 break-words flex flex-wrap items-center gap-1.5">
+                            <span>{hit.item.label}</span>
+                            {(hit.item.count || 1) > 1 && (
+                              <span className="bg-orange-100 text-orange-700 text-[11px] px-2 py-0.5 rounded-full font-bold">
+                                🔥 {hit.item.count}人設定
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-gray-500 truncate mt-0.5">
+                            {hit.videoTitle}
+                            {formatPublishedDate(hit.publishedAt) && (
+                              <span className="ml-2 font-mono text-gray-400">
+                                ({formatPublishedDate(hit.publishedAt)})
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-blue-600 shrink-0">
+                        再生 ↗
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* 🎯 カテゴリ目次（開閉式：シリーズ・ジャンル別グループ表示） */}
           <div className="bg-white border rounded-xl p-4 shadow-sm space-y-3">
