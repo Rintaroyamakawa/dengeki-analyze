@@ -213,7 +213,7 @@ export default function Home() {
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'timestamps'>('newest');
   const [isLocal, setIsLocal] = useState(false);
   const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...');
 
@@ -518,6 +518,14 @@ export default function Home() {
     }
 
     result.sort((a, b) => {
+      if (sortOrder === 'timestamps') {
+        const countA = a.timestampCount ?? 0;
+        const countB = b.timestampCount ?? 0;
+        if (countB !== countA) return countB - countA;
+        const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
+        const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
+        return dateB - dateA;
+      }
       const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
       const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
       return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
@@ -966,11 +974,12 @@ export default function Home() {
                 />
                 <select
                   value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value as any)}
+                  onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'timestamps')}
                   className="border border-gray-300 bg-white px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-700 shrink-0"
                 >
                   <option value="newest">新しい順</option>
                   <option value="oldest">古い順</option>
+                  <option value="timestamps">タイムスタンプが多い順</option>
                 </select>
               </div>
             )}
