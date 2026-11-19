@@ -135,7 +135,7 @@ const CATEGORIES = [
   '🛡️ 時のオカリナ',
   '⚡ ポケモンBW',
   '✏️ 漢字でGO！',
-  '🐈 スーパーマリオ 3Dワールド',
+  '💫 スーパーマリオ 3Dワールド',
 ];
 
 export default function Home() {
