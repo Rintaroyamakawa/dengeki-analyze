@@ -53,6 +53,9 @@ export default function AdminPage() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
   const [newCategoryName, setNewCategoryName] = useState('');
+  // ✏️ 項目名変更用のステート
+  const [editingCategory, setEditingCategory] = useState<string | null>(null);
+  const [editingCategoryName, setEditingCategoryName] = useState('');
   const [loading, setLoading] = useState(true);
 
   // 同期・収集用ステート
@@ -106,6 +109,11 @@ export default function AdminPage() {
   const showNotice = (msg: string) => {
     setNoticeMessage(msg);
     setTimeout(() => setNoticeMessage(''), 3000);
+  };
+
+  const saveCategories = (updated: string[]) => {
+    setCategories(updated);
+    localStorage.setItem('custom_categories', JSON.stringify(updated));
   };
 
   // チャンネル同期
@@ -297,16 +305,96 @@ export default function AdminPage() {
   // 新しいカテゴリの追加
   const handleAddCategory = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCategoryName.trim()) return;
-    if (categories.includes(newCategoryName.trim())) {
+    const trimmed = newCategoryName.trim();
+    if (!trimmed) return;
+    if (categories.includes(trimmed)) {
       alert('すでに存在する項目です');
       return;
     }
-    const updated = [...categories, newCategoryName.trim()];
-    setCategories(updated);
-    localStorage.setItem('custom_categories', JSON.stringify(updated));
+    saveCategories([...categories, trimmed]);
     setNewCategoryName('');
     showNotice('新しい項目を追加しました！');
+  };
+
+  // ✏️ 項目名変更の開始
+  const startRenameCategory = (cat: string) => {
+    setEditingCategory(cat);
+    setEditingCategoryName(cat);
+  };
+
+  // ✏️ 項目名の確定（ワンボタンで反映）
+  const handleConfirmRenameCategory = (oldName: string) => {
+    const trimmed = editingCategoryName.trim();
+    if (!trimmed) {
+      alert('項目名を入力してください');
+      return;
+    }
+    if (trimmed === oldName) {
+      setEditingCategory(null);
+      return;
+    }
+    if (categories.includes(trimmed)) {
+      alert('すでに存在する項目名です');
+      return;
+    }
+
+    const updatedCategories = categories.map((c) => (c === oldName ? trimmed : c));
+    saveCategories(updatedCategories);
+
+    // 手動割り当て済みのデータも新名称に更新
+    const manualMap: Record<string, string> = JSON.parse(
+      localStorage.getItem('manual_assignments') || '{}'
+    );
+    Object.keys(manualMap).forEach((videoId) => {
+      if (manualMap[videoId] === oldName) {
+        manualMap[videoId] = trimmed;
+      }
+    });
+    localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
+
+    setArchives((prev) =>
+      prev.map((item) =>
+        item.category === oldName ? { ...item, category: trimmed } : item
+      )
+    );
+
+    setEditingCategory(null);
+    setEditingCategoryName('');
+    showNotice(`「${oldName}」を「${trimmed}」に変更しました！`);
+  };
+
+  // 🗑️ 項目の削除
+  const handleDeleteCategory = (targetCat: string) => {
+    if (!confirm(`項目「${targetCat}」を削除しますか？（この項目が手動設定されていた配信は未設定に戻ります）`)) {
+      return;
+    }
+
+    const updatedCategories = categories.filter((c) => c !== targetCat);
+    saveCategories(updatedCategories);
+
+    if (editingCategory === targetCat) {
+      setEditingCategory(null);
+      setEditingCategoryName('');
+    }
+
+    // 手動割り当てから削除対象を解除
+    const manualMap: Record<string, string> = JSON.parse(
+      localStorage.getItem('manual_assignments') || '{}'
+    );
+    Object.keys(manualMap).forEach((videoId) => {
+      if (manualMap[videoId] === targetCat) {
+        delete manualMap[videoId];
+      }
+    });
+    localStorage.setItem('manual_assignments', JSON.stringify(manualMap));
+
+    setArchives((prev) =>
+      prev.map((item) =>
+        item.category === targetCat ? { ...item, category: '' } : item
+      )
+    );
+
+    showNotice(`項目「${targetCat}」を削除しました！`);
   };
 
   // カテゴリ変更
@@ -478,12 +566,13 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* 3. 新しい項目の追加 */}
-        <section className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-3">
+        {/* 3. 項目の追加・名前変更・削除 */}
+        <section className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-4">
           <h2 className="text-sm font-extrabold text-gray-800 flex items-center gap-1.5">
             <span>➕</span>
-            <span>新しい項目（カテゴリ・シリーズ）の追加</span>
+            <span>項目（カテゴリ・シリーズ）の管理</span>
           </h2>
+
           <form onSubmit={handleAddCategory} className="flex gap-2">
             <input
               type="text"
@@ -499,6 +588,77 @@ export default function AdminPage() {
               項目を追加
             </button>
           </form>
+
+          <div className="space-y-2 pt-1">
+            <div className="text-xs font-bold text-gray-500">
+              登録済み項目一覧（{categories.length}件）— ワンボタンで名前変更・削除が可能
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {categories.map((cat) => {
+                const isEditing = editingCategory === cat;
+                return (
+                  <div
+                    key={cat}
+                    className="bg-white border border-gray-200 rounded-lg px-3 py-2 flex items-center justify-between gap-2"
+                  >
+                    {isEditing ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editingCategoryName}
+                          onChange={(e) => setEditingCategoryName(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleConfirmRenameCategory(cat);
+                            } else if (e.key === 'Escape') {
+                              setEditingCategory(null);
+                            }
+                          }}
+                          autoFocus
+                          className="border border-blue-400 rounded px-2 py-1 text-xs font-bold flex-1 min-w-0 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleConfirmRenameCategory(cat)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold px-2.5 py-1 rounded shrink-0 cursor-pointer"
+                        >
+                          確定
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingCategory(null)}
+                          className="bg-gray-100 hover:bg-gray-200 text-gray-600 text-[11px] font-bold px-2 py-1 rounded shrink-0 cursor-pointer"
+                        >
+                          取消
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-xs font-bold text-gray-800 truncate">{cat}</span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => startRenameCategory(cat)}
+                            className="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[11px] font-bold px-2 py-1 rounded transition-colors cursor-pointer"
+                          >
+                            ✏️ 名前変更
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCategory(cat)}
+                            className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[11px] font-bold px-2 py-1 rounded transition-colors cursor-pointer"
+                          >
+                            🗑️ 削除
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         {/* 4. ローカル保存済みデータ一覧 */}

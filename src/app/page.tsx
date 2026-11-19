@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import BookmarkButton from '@/components/BookmarkButton';
 
@@ -113,37 +113,6 @@ const matchCategoryFromText = (text: string): string | null => {
   return null;
 };
 
-const getCategory = (item: ArchiveItem) => {
-  const cleanId = item.videoId.trim();
-  if (MANUAL_CATEGORY[cleanId]) {
-    return MANUAL_CATEGORY[cleanId];
-  }
-
-  const title = item.title.trim();
-
-  const bracketMatches = title.match(/【([^】]+)】/g);
-  if (bracketMatches) {
-    const bracketText = bracketMatches
-      .map(m => m.slice(1, -1))
-      .filter(inner => !inner.includes('電撃ニコ'))
-      .join(' ');
-
-    if (bracketText) {
-      const catFromBracket = matchCategoryFromText(bracketText);
-      if (catFromBracket) return catFromBracket;
-    }
-  }
-
-  if (title.startsWith('雑談') || title.includes('歌枠のお礼') || title.includes('振り返り')) {
-    return '☕ 雑談';
-  }
-
-  const catFromTitle = matchCategoryFromText(title);
-  if (catFromTitle) return catFromTitle;
-
-  return '☕ 雑談';
-};
-
 const CATEGORIES = [
   '🎤 歌枠',
   '⏳ 耐久配信',
@@ -167,6 +136,8 @@ const CATEGORIES = [
 
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
+  const [categories, setCategories] = useState<string[]>(CATEGORIES);
+  const [manualAssignments, setManualAssignments] = useState<Record<string, string>>({});
   const [loadingArchives, setLoadingArchives] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -175,7 +146,6 @@ export default function Home() {
   const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('読込中...');
 
   const [myBookmarks, setMyBookmarks] = useState<MyBookmark[]>([]);
-  // 📌 複数選択・一括削除用の選択中ID管理
   const [selectedBookmarkIds, setSelectedBookmarkIds] = useState<string[]>([]);
 
   const [url, setUrl] = useState('');
@@ -193,6 +163,43 @@ export default function Home() {
   const [activeItem, setActiveItem] = useState<TimestampItem | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
+  const getCategory = useCallback(
+    (item: ArchiveItem) => {
+      const cleanId = item.videoId.trim();
+      if (manualAssignments[cleanId]) {
+        return manualAssignments[cleanId];
+      }
+      if (MANUAL_CATEGORY[cleanId]) {
+        return MANUAL_CATEGORY[cleanId];
+      }
+
+      const title = item.title.trim();
+
+      const bracketMatches = title.match(/【([^】]+)】/g);
+      if (bracketMatches) {
+        const bracketText = bracketMatches
+          .map(m => m.slice(1, -1))
+          .filter(inner => !inner.includes('電撃ニコ'))
+          .join(' ');
+
+        if (bracketText) {
+          const catFromBracket = matchCategoryFromText(bracketText);
+          if (catFromBracket) return catFromBracket;
+        }
+      }
+
+      if (title.startsWith('雑談') || title.includes('歌枠のお礼') || title.includes('振り返り')) {
+        return '☕ 雑談';
+      }
+
+      const catFromTitle = matchCategoryFromText(title);
+      if (catFromTitle) return catFromTitle;
+
+      return '☕ 雑談';
+    },
+    [manualAssignments]
+  );
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
@@ -206,6 +213,28 @@ export default function Home() {
           setMyBookmarks(JSON.parse(savedBookmarks));
         } catch (e) {
           console.error('切り抜きポイントの読み込みに失敗しました:', e);
+        }
+      }
+
+      const savedCategories = localStorage.getItem('custom_categories');
+      if (savedCategories) {
+        try {
+          const parsed = JSON.parse(savedCategories);
+          if (Array.isArray(parsed)) {
+            const merged = Array.from(new Set([...parsed, ...CATEGORIES]));
+            setCategories(merged);
+          }
+        } catch (e) {
+          console.error('カテゴリの読み込みに失敗しました:', e);
+        }
+      }
+
+      const savedAssignments = localStorage.getItem('manual_assignments');
+      if (savedAssignments) {
+        try {
+          setManualAssignments(JSON.parse(savedAssignments));
+        } catch (e) {
+          console.error('手動割り当ての読み込みに失敗しました:', e);
         }
       }
     }
@@ -262,7 +291,6 @@ export default function Home() {
     localStorage.setItem('my_clip_bookmarks', JSON.stringify(updated));
   };
 
-  // 📌 個別チェックボックスの切り替え
   const toggleSelectBookmark = (id: string) => {
     if (selectedBookmarkIds.includes(id)) {
       setSelectedBookmarkIds(selectedBookmarkIds.filter(i => i !== id));
@@ -271,7 +299,6 @@ export default function Home() {
     }
   };
 
-  // 📌 すべて選択 / すべて解除
   const toggleSelectAllBookmarks = () => {
     if (selectedBookmarkIds.length === myBookmarks.length) {
       setSelectedBookmarkIds([]);
@@ -280,7 +307,6 @@ export default function Home() {
     }
   };
 
-  // 📌 選択した項目を一括削除
   const handleBulkRemoveBookmarks = () => {
     if (selectedBookmarkIds.length === 0) return;
     if (!confirm(`選択した ${selectedBookmarkIds.length}件の切り抜きポイントを削除しますか？`)) return;
@@ -293,7 +319,7 @@ export default function Home() {
 
   const filteredArchives = useMemo(() => {
     let result = [...archives];
-    
+
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -314,7 +340,7 @@ export default function Home() {
     });
 
     return result;
-  }, [archives, searchQuery, selectedCategory, sortOrder]);
+  }, [archives, searchQuery, selectedCategory, sortOrder, getCategory]);
 
   const optimizedHeatmap = useMemo(() => {
     if (!data?.heatmapData) return [];
@@ -415,9 +441,39 @@ export default function Home() {
     runAnalyze(url);
   };
 
-  const handleSelectArchive = (videoId: string, title?: string) => {
-    const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
-    runAnalyze(watchUrl, title);
+  const handleSelectArchive = async (videoId: string, title?: string) => {
+    setAnalyzing(true);
+    setError('');
+    setData(null);
+    setActiveItem(null);
+    if (title) {
+      setActiveArchiveTitle(title);
+    }
+    setUrl(`https://www.youtube.com/watch?v=${videoId}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    try {
+      const res = await fetch(`/api/data?videoId=${videoId}`);
+      if (res.ok) {
+        const json = await res.json();
+        setData(json);
+        setAnalyzing(false);
+        return;
+      }
+
+      const analyzeRes = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: `https://www.youtube.com/watch?v=${videoId}` }),
+      });
+      const analyzeJson = await analyzeRes.json();
+      if (!analyzeRes.ok) throw new Error(analyzeJson.error || 'エラーが発生しました');
+      setData(analyzeJson);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   const handleOpenModal = (item: TimestampItem) => {
@@ -566,18 +622,18 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h3 className="font-bold text-lg text-gray-900">
-                    {data?.title || 
-                     activeArchiveTitle || 
-                     (url ? archives.find(a => url.includes(a.videoId))?.title : null) || 
+                    {data?.title ||
+                     activeArchiveTitle ||
+                     (url ? archives.find(a => url.includes(a.videoId))?.title : null) ||
                      (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
                   </h3>
                   <p className="text-xs text-gray-500 mt-1">
                     {data ? (
                       (() => {
-                        const effectiveDuration = data.duration > 0 
-                          ? data.duration 
-                          : (data.heatmapData && data.heatmapData.length > 0 
-                              ? data.heatmapData[data.heatmapData.length - 1].minute * 60 
+                        const effectiveDuration = data.duration > 0
+                          ? data.duration
+                          : (data.heatmapData && data.heatmapData.length > 0
+                              ? data.heatmapData[data.heatmapData.length - 1].minute * 60
                               : 0);
                         const hours = Math.floor(effectiveDuration / 3600);
                         const mins = Math.floor((effectiveDuration % 3600) / 60);
@@ -606,7 +662,7 @@ export default function Home() {
                     <span>🔥 チャット熱量ヒートマップ（配信全体の盛り上がり分布）</span>
                     <span className="text-[11px] text-gray-400 font-normal">バーをクリックするとその時間にジャンプ</span>
                   </h4>
-                  
+
                   <div className="h-28 flex items-end gap-[1px] bg-white border-b border-x p-1 rounded">
                     {optimizedHeatmap.map((item, idx) => {
                       const count = item.count || 0;
@@ -672,8 +728,7 @@ export default function Home() {
                               </span>
                             )}
                           </span>
-                          
-                          {/* 🌟 切り抜きポイントボタン */}
+
                           <BookmarkButton
                             initialBookmarked={isBookmarked}
                             onToggle={() => toggleBookmark(item)}
@@ -749,7 +804,6 @@ export default function Home() {
                 すべて ({archives.length})
               </button>
 
-              {/* 🌟 マイ切り抜きポイント専用タブ（静止画アイコン付き） */}
               <button
                 onClick={() => setSelectedCategory('bookmarks')}
                 className={`text-xs font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
@@ -766,7 +820,7 @@ export default function Home() {
                 マイ切り抜きポイント ({myBookmarks.length})
               </button>
 
-              {CATEGORIES.map((cat) => {
+              {categories.map((cat) => {
                 const count = archives.filter(item => getCategory(item) === cat).length;
                 if (count === 0) return null;
                 return (
@@ -786,7 +840,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 📌 マイ切り抜きポイントタブ選択時：一括操作バー */}
           {selectedCategory === 'bookmarks' && myBookmarks.length > 0 && (
             <div className="bg-white border rounded-xl p-3 shadow-sm flex items-center justify-between text-xs">
               <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none">
@@ -828,7 +881,6 @@ export default function Home() {
                       }`}
                     >
                       <div className="flex items-start sm:items-center gap-3 flex-1">
-                        {/* 📌 個別選択用チェックボックス */}
                         <input
                           type="checkbox"
                           checked={isChecked}
