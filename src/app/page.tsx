@@ -1115,7 +1115,7 @@ export default function Home() {
                     type="text"
                     value={timestampQuery}
                     onChange={(e) => setTimestampQuery(e.target.value)}
-                    placeholder="全タイムスタンプ横断検索..."
+                    placeholder="気になるワードを検索..."
                     className="border border-gray-300 bg-white px-3 py-1.5 pr-7 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {timestampQuery && (
