@@ -187,6 +187,13 @@ const normalizeLegacyCategoryName = (cat: string): string => {
   return cat;
 };
 
+const parseArchiveTimestamp = (item: ArchiveItem): number | null => {
+  const raw = item.publishedAt || item.updatedAt;
+  if (!raw) return null;
+  const ms = new Date(raw).getTime();
+  return Number.isFinite(ms) && ms > 0 ? ms : null;
+};
+
 export default function Home() {
   const [archives, setArchives] = useState<ArchiveItem[]>([]);
   const [categories, setCategories] = useState<string[]>(CATEGORIES);
@@ -254,7 +261,7 @@ export default function Home() {
     [manualAssignments]
   );
 
-  // シリーズ別のグループ目次を構築（管理画面の seriesMap を反映）
+  // シリーズ別のグループ目次を構築（各項目内の「一番古い配信日時」が新しいものを後ろに配置）
   const groupedCategorySections = useMemo(() => {
     const orderedGroups = [
       'マリオシリーズ',
@@ -264,6 +271,18 @@ export default function Home() {
     ];
 
     const allKnownCats = Array.from(new Set([...CATEGORIES, ...categories]));
+
+    // 項目ごとの「一番古い配信日時（ミリ秒）」を事前計算
+    const oldestTimeByCategory = new Map<string, number>();
+    archives.forEach((item) => {
+      const cat = getCategory(item);
+      const ms = parseArchiveTimestamp(item);
+      if (ms === null) return;
+      const prev = oldestTimeByCategory.get(cat);
+      if (prev === undefined || ms < prev) {
+        oldestTimeByCategory.set(cat, ms);
+      }
+    });
 
     return orderedGroups.map((groupTitle) => {
       const matchedCats = allKnownCats.filter((cat) => {
@@ -281,12 +300,24 @@ export default function Home() {
         return fallbackGroup ? fallbackGroup.categories.includes(cat) : false;
       });
 
+      const uniqueCats = Array.from(new Set(matchedCats));
+
+      // 「一番古い配信日時」が早い順 → 新しい順（新しい日時の項目ほど後ろ）
+      uniqueCats.sort((a, b) => {
+        const timeA = oldestTimeByCategory.get(a);
+        const timeB = oldestTimeByCategory.get(b);
+        if (timeA === undefined && timeB === undefined) return 0;
+        if (timeA === undefined) return 1;
+        if (timeB === undefined) return -1;
+        return timeA - timeB;
+      });
+
       return {
         title: groupTitle,
-        categories: Array.from(new Set(matchedCats)),
+        categories: uniqueCats,
       };
     });
-  }, [categories, seriesMap]);
+  }, [archives, categories, seriesMap, getCategory]);
 
   useEffect(() => {
     let baseCategories = [...CATEGORIES];
