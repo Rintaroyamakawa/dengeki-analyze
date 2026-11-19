@@ -61,59 +61,199 @@ const MANUAL_CATEGORY: { [videoId: string]: string } = {
   '3P5GTXoTH_Q': '☕ 雑談',
 };
 
-const SEARCH_SYNONYM_ENTRIES: [string, string][] = [
-  ['囁き', 'ささやき'],
-  ['囁く', 'ささやく'],
-  ['唄', 'うた'],
-  ['歌', 'うた'],
-  ['泣き声', 'なきごえ'],
-  ['鳴き声', 'なきごえ'],
-  ['泣く', 'なく'],
-  ['鳴く', 'なく'],
-  ['笑い声', 'わらいごえ'],
-  ['笑う', 'わらう'],
-  ['笑い', 'わらい'],
-  ['悲鳴', 'ひめい'],
-  ['絶叫', 'ぜっきょう'],
-  ['神回', 'かみかい'],
-  ['初見', 'しょけん'],
-  ['耐久', 'たいきゅう'],
-  ['記念', 'きねん'],
-  ['雑談', 'ざつだん'],
-  ['告白', 'こくはく'],
-  ['感動', 'かんどう'],
-  ['発狂', 'はっきょう'],
-  ['悶絶', 'もんぜつ'],
-  ['可愛い', 'かわいい'],
-  ['かわいい', 'かわいい'],
-  ['尊い', 'とうとい'],
-  ['最高', 'さいこう'],
-  ['最悪', 'さいあく'],
-  ['奇跡', 'きせき'],
-  ['伝説', 'でんせつ'],
-  ['事故', 'じこ'],
-  ['放送事故', 'ほうそうじこ'],
+// 表記ゆれクラス（同じグループ内の表記をすべて同一視）
+const EQUIVALENCE_CLASSES: string[][] = [
+  ['囁き', 'ささやき', 'ササヤキ'],
+  ['囁く', 'ささやく', 'ササヤク'],
+  ['歌枠', 'うたわく', 'ウタワク'],
+  ['歌う', 'うたう', 'ウタウ'],
+  ['泣き', 'なき', 'ナキ'],
+  ['泣く', 'なく', 'ナク'],
+  ['笑い', 'わらい', 'ワライ'],
+  ['笑う', 'わらう', 'ワラウ'],
+  ['爆笑', 'ばくしょう'],
+  ['怒り', 'いかり', 'おこり'],
+  ['怒る', 'おこる', 'いかる'],
+  ['悲鳴', 'ひめい', 'ヒメイ'],
+  ['絶叫', 'ぜっきょう', 'ゼッキョウ'],
+  ['叫び', 'さけび', 'サケビ'],
+  ['神回', 'かみかい', 'カミカイ'],
+  ['初見', 'しょけん', 'ショケン'],
+  ['雑談', 'ざつだん', 'ザツダン'],
+  ['耐久', 'たいきゅう', 'タイキュウ'],
+  ['記念', 'きねん', 'キネン'],
+  ['コラボ', 'こらぼ'],
+  ['怖い', 'こわい', '恐い', 'コワイ'],
+  ['可愛い', 'かわいい', 'カワイイ'],
+  ['凄い', 'すごい', 'スゴイ'],
+  ['やばい', 'ヤバい', 'ヤバイ', '厄介'],
+  ['好き', 'すき', 'スキ'],
+  ['嫌い', 'きらい', 'キライ'],
+  ['嬉しい', 'うれしい', 'ウレシイ'],
+  ['悲しい', 'かなしい', 'カナシイ'],
+  ['楽しい', 'たのしい', 'タノシイ'],
+  ['眠い', 'ねむい', 'ネムイ'],
+  ['驚き', 'おどろき', 'オドロキ'],
+  ['驚く', 'おどろく', 'オドロク'],
+  ['謝罪', 'しゃざい', 'ごめん', 'ゴメン'],
+  ['勝利', 'しょうり', '勝ち', 'かち'],
+  ['敗北', 'はいぼく', '負け', 'まけ'],
+  ['クリア', 'くりあ', 'clear'],
+  ['ゲームオーバー', 'げーむおーばー', 'gameover'],
+  ['ボス戦', 'ぼすせん', 'ボス'],
+  ['ガチャ', 'がちゃ'],
+  ['ネタバレ', 'ねたばれ'],
+  ['フラグ', 'ふらぐ'],
+  ['回収', 'かいしゅう'],
+  ['事故', 'じこ', 'ハプニング', 'はぷにんぐ'],
+  ['奇跡', 'きせき', 'キセキ'],
+  ['天才', 'てんさい', 'ジーニアス', 'じーにあす'],
+  ['台パン', 'だいぱん'],
+  ['噛む', 'かむ', 'カミカミ', 'かみかみ'],
+  ['くしゃみ', 'クシャミ', '嚏'],
+  ['あくび', 'アクビ', '欠伸'],
 ];
 
-const normalizeSearchText = (input: string): string => {
-  let text = input.normalize('NFKC').toLowerCase();
-  // カタカナ（ァ-ヶ）をひらがな（ぁ-ゖ）に変換
-  text = text.replace(/[\u30a1-\u30f6]/g, (ch) =>
+// ひらがな2文字以下で検索したときに「この漢字が含まれていれば部分一致OK」とする対応表
+const SHORT_KANA_KANJI_MAP: Record<string, string[]> = {
+  'うた': ['歌'],
+  'なき': ['泣'],
+  'なく': ['泣'],
+  'わら': ['笑'],
+  'おこ': ['怒'],
+  'かみ': ['神', '噛'],
+  'さけ': ['叫', '酒'],
+  'こわ': ['怖', '恐', '壊'],
+  'すご': ['凄'],
+  'やば': ['ヤバ', '厄介'],
+  'おち': ['落'],
+  'しに': ['死'],
+  'まけ': ['負'],
+  'かち': ['勝'],
+  'すき': ['好'],
+  'ねこ': ['猫'],
+  'いぬ': ['犬'],
+  'とり': ['鳥'],
+  'みず': ['水'],
+  'ほし': ['星'],
+  'つき': ['月'],
+  'ひめ': ['姫'],
+  'まお': ['魔王'],
+  'てき': ['敵'],
+  'わな': ['罠'],
+  'なぞ': ['謎'],
+  'うそ': ['嘘'],
+  'ゆめ': ['夢'],
+};
+
+const SMALL_TO_LARGE_KANA: Record<string, string> = {
+  'ぁ': 'あ',
+  'ぃ': 'い',
+  'ぅ': 'う',
+  'ぇ': 'え',
+  'ぉ': 'お',
+  'っ': 'つ',
+  'ゃ': 'や',
+  'ゅ': 'ゆ',
+  'ょ': 'よ',
+  'ゎ': 'わ',
+};
+
+const KANJI_DIGITS: Record<string, string> = {
+  '一': '1',
+  '二': '2',
+  '三': '3',
+  '四': '4',
+  '五': '5',
+  '六': '6',
+  '七': '7',
+  '八': '8',
+  '九': '9',
+  '〇': '0',
+};
+
+const toHiraganaNormalized = (text: string): string => {
+  return text
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[\u30a1-\u30f6]/g, (ch) =>
+      String.fromCharCode(ch.charCodeAt(0) - 0x60)
+    );
+};
+
+const normalizeSearchText = (text: string): string => {
+  // 1. 全角半角・英数字の統一
+  let normalized = text.normalize('NFKC').toLowerCase();
+
+  // 2. カタカナ → ひらがな統一（これにより「くらす」⇔「クラス」など全カタカナ語が自動一致）
+  normalized = normalized.replace(/[\u30a1-\u30f6]/g, (ch) =>
     String.fromCharCode(ch.charCodeAt(0) - 0x60)
   );
-  // よく使う表記揺れをひらがな読みへ統一
-  for (const [variant, canonical] of SEARCH_SYNONYM_ENTRIES) {
-    const normVariant = variant
-      .normalize('NFKC')
-      .toLowerCase()
-      .replace(/[\u30a1-\u30f6]/g, (ch) =>
-        String.fromCharCode(ch.charCodeAt(0) - 0x60)
-      );
-    if (normVariant) {
-      text = text.split(normVariant).join(canonical);
+
+  // 3. 波ダッシュ・伸ばし棒・ハイフンのゆれ統一
+  normalized = normalized.replace(/[〜～ー−―‐]/g, 'ー');
+
+  // 4. 1桁漢数字 → 算用数字統一
+  normalized = normalized.replace(/[一二三四五六七八九〇]/g, (ch) => KANJI_DIGITS[ch] ?? ch);
+
+  // 5. 表記ゆれクラスを正規化（代表表記に統一）
+  for (const group of EQUIVALENCE_CLASSES) {
+    const canonical = toHiraganaNormalized(group[0]);
+    for (const variant of group) {
+      const normVariant = toHiraganaNormalized(variant);
+      if (normVariant !== canonical && normalized.includes(normVariant)) {
+        normalized = normalized.split(normVariant).join(canonical);
+      }
     }
   }
-  return text;
+
+  return normalized;
+};
+
+// 小書き仮名（「っ」「ゃ」など）のゆれも吸収した補助正規化
+const normalizeLooseKana = (text: string): string => {
+  return normalizeSearchText(text).replace(
+    /[ぁぃぅぇぉっゃゅょゎ]/g,
+    (ch) => SMALL_TO_LARGE_KANA[ch] ?? ch
+  );
+};
+
+const escapeRegExp = (str: string): string => {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+const matchesTimestampLabel = (label: string, rawQuery: string): boolean => {
+  const q = rawQuery.trim();
+  if (!q) return false;
+
+  const isShortHiraganaOnly = /^[ぁ-んー]{1,2}$/.test(q);
+
+  if (isShortHiraganaOnly) {
+    // 1. 辞書に対応する漢字があれば、その漢字の出現は部分一致で許可
+    const mappedKanjis = SHORT_KANA_KANJI_MAP[q];
+    if (mappedKanjis && mappedKanjis.some((kanji) => label.includes(kanji))) {
+      return true;
+    }
+
+    // 2. ひらがな/カタカナ表記そのものについては、単語の途中（「燃やし」「あやしい」）を除外し、
+    //    文頭・スペース・記号（【 ( ・ 「 〜 など）の直後に現れる場合のみヒット
+    const hiraLabel = toHiraganaNormalized(label);
+    const boundaryPattern = new RegExp(
+      `(?:^|[\\s\\u3000・、。！？!?,./()（）\\[\\]【】「」『』〜~\\-_:：])${escapeRegExp(q)}`
+    );
+    return boundaryPattern.test(hiraLabel);
+  }
+
+  // 3文字以上、または漢字・カタカナ・英数字を含む場合は汎用正規化＋表記ゆれクラス＋小書き仮名ゆれで部分一致
+  const normalizedQuery = normalizeSearchText(q);
+  const normalizedLabel = normalizeSearchText(label);
+  if (normalizedLabel.includes(normalizedQuery)) {
+    return true;
+  }
+
+  const looseQuery = normalizeLooseKana(q);
+  const looseLabel = normalizeLooseKana(label);
+  return looseLabel.includes(looseQuery);
 };
 
 const matchCategoryFromText = (text: string): string | null => {
@@ -566,8 +706,8 @@ export default function Home() {
   }, [archives]);
 
   const crossTimestampHits = useMemo<CrossTimestampHit[]>(() => {
-    const normalizedQuery = normalizeSearchText(timestampQuery.trim());
-    if (!normalizedQuery) return [];
+    const rawQuery = timestampQuery.trim();
+    if (!rawQuery) return [];
 
     const archiveMetaMap = new Map<string, { dateMs: number; tsCount: number }>();
     archives.forEach((arch) => {
@@ -592,7 +732,7 @@ export default function Home() {
         : meta.dateMs;
 
       detail.timestamps.forEach((ts) => {
-        if (ts.label && normalizeSearchText(ts.label).includes(normalizedQuery)) {
+        if (ts.label && matchesTimestampLabel(ts.label, rawQuery)) {
           hits.push({
             videoId: arch.videoId,
             videoTitle: detail.title || arch.title,
