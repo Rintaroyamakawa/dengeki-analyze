@@ -64,6 +64,8 @@ export default function AdminPage() {
   const [showUncollectedList, setShowUncollectedList] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [isCollecting, setIsCollecting] = useState(false);
+  // 🔀 GitHub手動更新用ステート
+  const [isPushing, setIsPushing] = useState(false);
   const [bulkUrls, setBulkUrls] = useState('');
   const [statusText, setStatusText] = useState('準備完了');
   const [noticeMessage, setNoticeMessage] = useState('');
@@ -114,6 +116,27 @@ export default function AdminPage() {
   const saveCategories = (updated: string[]) => {
     setCategories(updated);
     localStorage.setItem('custom_categories', JSON.stringify(updated));
+  };
+
+  // 🔀 GitHubへ手動プッシュ
+  const handleGitPush = async () => {
+    setIsPushing(true);
+    setStatusText('GitHubへ変更をプッシュ中...');
+    try {
+      const res = await fetch('/api/git-push', { method: 'POST' });
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(result.error || 'GitHubへのプッシュに失敗しました');
+      }
+      setStatusText('GitHubへの更新が完了しました（Vercelの反映をお待ちください）');
+      showNotice('GitHubへの更新が完了しました！');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'GitHub更新エラーが発生しました';
+      setStatusText(`エラー: ${msg}`);
+      showNotice(`GitHub更新に失敗しました: ${msg}`);
+    } finally {
+      setIsPushing(false);
+    }
   };
 
   // チャンネル同期
@@ -421,12 +444,22 @@ export default function AdminPage() {
           <h1 className="text-xl font-extrabold tracking-tight text-gray-900">
             ローカルデータ収集ダッシュボード
           </h1>
-          <Link
-            href="/"
-            className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded transition-colors"
-          >
-            🏠 サイトに戻る
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleGitPush}
+              disabled={isPushing || isSyncing || isCollecting}
+              className="text-xs font-bold bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 text-white px-3 py-1.5 rounded transition-colors cursor-pointer"
+            >
+              {isPushing ? 'GitHub更新中...' : '🐙 GitHub更新'}
+            </button>
+            <Link
+              href="/"
+              className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded transition-colors"
+            >
+              🏠 サイトに戻る
+            </Link>
+          </div>
         </div>
       </header>
 
