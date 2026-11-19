@@ -524,7 +524,7 @@ export default function Home() {
       });
     });
 
-    const hits: Array<CrossTimestampHit & { dateMs: number; tsCount: number }> = [];
+    const hits: Array<CrossTimestampHit & { dateMs: number; overlapCount: number }> = [];
     archives.forEach((arch) => {
       const detail = detailCache[arch.videoId];
       if (!detail?.timestamps) return;
@@ -544,7 +544,7 @@ export default function Home() {
             publishedAt: detail.publishedAt ?? arch.publishedAt,
             item: ts,
             dateMs: effectiveDateMs,
-            tsCount: meta.tsCount,
+            overlapCount: ts.count ?? 1,
           });
         }
       });
@@ -552,7 +552,7 @@ export default function Home() {
 
     hits.sort((a, b) => {
       if (sortOrder === 'timestamps') {
-        if (b.tsCount !== a.tsCount) return b.tsCount - a.tsCount;
+        if (b.overlapCount !== a.overlapCount) return b.overlapCount - a.overlapCount;
         if (b.dateMs !== a.dateMs) return b.dateMs - a.dateMs;
         return a.item.seconds - b.item.seconds;
       }
@@ -562,7 +562,7 @@ export default function Home() {
       return a.item.seconds - b.item.seconds;
     });
 
-    return hits.map(({ dateMs: _d, tsCount: _c, ...rest }) => rest);
+    return hits.map(({ dateMs: _d, overlapCount: _o, ...rest }) => rest);
   }, [timestampQuery, archives, detailCache, sortOrder]);
 
   const handleOpenCrossHit = (hit: CrossTimestampHit) => {
