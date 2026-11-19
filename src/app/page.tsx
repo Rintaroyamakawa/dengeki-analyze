@@ -127,6 +127,62 @@ const matchesTimestampLabel = (hiraLabel: string, normLabel: string, rawQuery: s
   return normLabel.includes(normQuery);
 };
 
+const renderHighlightedLabel = (label: string, rawQuery: string) => {
+  const q = rawQuery.trim();
+  if (!q) return label;
+
+  const terms = new Set<string>([q, q.normalize('NFKC')]);
+  const normQ = normalizeSearchText(q);
+
+  for (const [kanji, kana] of SEARCH_VARIANTS) {
+    const hiraKanji = toHiraganaNormalized(kanji);
+    const hiraKana = toHiraganaNormalized(kana);
+    if (normQ.includes(hiraKana)) {
+      terms.add(kanji);
+      terms.add(kana);
+    }
+    if (normQ.includes(hiraKanji)) {
+      terms.add(kanji);
+      terms.add(kana);
+    }
+  }
+
+  const katakanaVersion = q.replace(/[\u3041-\u3096]/g, (ch) =>
+    String.fromCharCode(ch.charCodeAt(0) + 0x60)
+  );
+  const hiraganaVersion = q.replace(/[\u30a1-\u30f6]/g, (ch) =>
+    String.fromCharCode(ch.charCodeAt(0) - 0x60)
+  );
+  terms.add(katakanaVersion);
+  terms.add(hiraganaVersion);
+
+  const sortedTerms = Array.from(terms)
+    .filter((t) => t.length > 0)
+    .sort((a, b) => b.length - a.length);
+
+  if (sortedTerms.length === 0) return label;
+
+  const regex = new RegExp(`(${sortedTerms.map(escapeRegExp).join('|')})`, 'gi');
+  const parts = label.split(regex);
+
+  return parts.map((part, i) => {
+    const isMatch = sortedTerms.some(
+      (t) => part.toLowerCase() === t.toLowerCase()
+    );
+    if (isMatch) {
+      return (
+        <mark
+          key={i}
+          className="bg-yellow-200 text-gray-900 font-extrabold px-1 rounded"
+        >
+          {part}
+        </mark>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
+
 const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('歌枠') || text.includes('歌ってみた') || text.includes('カラオケ')) {
     return '🎤 歌枠';
@@ -420,7 +476,6 @@ export default function Home() {
     let baseAssignments: Record<string, string> = {};
 
     if (typeof window !== 'undefined') {
-      // スマホ幅（640px未満）のときは初期状態でカテゴリ一覧を閉じてスッキリ表示
       if (window.innerWidth < 640) {
         setIsCategoryMenuOpen(false);
       }
@@ -1117,13 +1172,16 @@ export default function Home() {
 
             {selectedCategory !== 'bookmarks' && (
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-                <div className="relative w-full sm:w-72">
+                <div className="relative w-full sm:w-80">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">
+                    🔍
+                  </span>
                   <input
                     type="text"
                     value={timestampQuery}
                     onChange={(e) => setTimestampQuery(e.target.value)}
                     placeholder="気になるワードを検索... (神プレー/悲鳴/🌴🌴)"
-                    className="border border-gray-300 bg-white px-3 py-2 sm:py-1.5 pr-8 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 bg-white pl-8 pr-8 py-2 sm:py-1.5 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {timestampQuery && (
                     <button
@@ -1151,7 +1209,7 @@ export default function Home() {
 
           {/* 🔎 全アーカイブ タイムスタンプ横断検索結果 */}
           {timestampQuery.trim() !== '' && selectedCategory !== 'bookmarks' && (
-            <div className="bg-white border border-blue-200 rounded-xl p-3.5 sm:p-4 shadow-sm space-y-3">
+            <div className="bg-white border-2 border-blue-200 rounded-xl p-3.5 sm:p-4 shadow-sm space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div className="font-bold text-gray-800 flex flex-wrap items-center gap-1.5">
                   <span>🔎</span>
@@ -1189,7 +1247,7 @@ export default function Home() {
                           </span>
                           <div className="min-w-0 flex-1">
                             <div className="font-bold text-gray-900 break-words flex flex-wrap items-center gap-1.5">
-                              <span>{hit.item.label}</span>
+                              <span>{renderHighlightedLabel(hit.item.label, deferredQuery)}</span>
                               {(hit.item.count || 1) > 1 && (
                                 <span className="bg-orange-100 text-orange-700 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold">
                                   🔥 {hit.item.count}人設定
