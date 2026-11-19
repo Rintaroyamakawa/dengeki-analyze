@@ -420,6 +420,11 @@ export default function Home() {
     let baseAssignments: Record<string, string> = {};
 
     if (typeof window !== 'undefined') {
+      // スマホ幅（640px未満）のときは初期状態でカテゴリ一覧を閉じてスッキリ表示
+      if (window.innerWidth < 640) {
+        setIsCategoryMenuOpen(false);
+      }
+
       const hostname = window.location.hostname;
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
         setIsLocal(true);
@@ -918,19 +923,21 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 font-sans pb-16">
       <header className="bg-white border-b sticky top-0 z-30 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">⚡</span>
-            <h1 className="text-lg font-extrabold tracking-tight text-gray-900">
-              電撃ニコ 見どころアーカイブ解析所
-            </h1>
-            <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded-full">
+        <div className="max-w-5xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
+          <div className="flex items-center justify-between sm:justify-start gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="text-xl sm:text-2xl shrink-0">⚡</span>
+              <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-gray-900 truncate">
+                電撃ニコ 見どころアーカイブ解析所
+              </h1>
+            </div>
+            <span className="bg-yellow-100 text-yellow-800 text-[11px] sm:text-xs font-bold px-2 py-0.5 rounded-full shrink-0">
               {archives.length}件収録
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] font-mono text-gray-400">
+          <div className="flex items-center justify-between sm:justify-end gap-3">
+            <span className="text-[10px] sm:text-[11px] font-mono text-gray-400">
               最終反映: {lastUpdatedTime}
             </span>
             {isLocal && (
@@ -945,10 +952,10 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 pt-6 space-y-8">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 pt-4 sm:pt-6 space-y-6 sm:space-y-8">
         {/* 🔍 見どころ解析パネル（解析結果・エラー・ローディング時のみ表示） */}
         {(data || analyzing || error) && (
-          <section className="bg-white border rounded-xl p-5 shadow-sm">
+          <section className="bg-white border rounded-xl p-4 sm:p-5 shadow-sm">
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm font-bold">
                 ⚠️ {error}
@@ -963,15 +970,15 @@ export default function Home() {
             )}
 
             {(data || analyzing) && (
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-bold text-lg text-gray-900">
+                    <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug">
                       {data?.title ||
                        activeArchiveTitle ||
                        (analyzing ? '配信情報を読み込み中...' : 'タイトル不明')}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-[11px] sm:text-xs text-gray-500 mt-1">
                       {data ? (
                         (() => {
                           const rawPublishedAt =
@@ -999,20 +1006,20 @@ export default function Home() {
                   </div>
                   <button
                     onClick={() => setData(null)}
-                    className="text-xs text-gray-400 hover:text-gray-600 self-start sm:self-center cursor-pointer"
+                    className="text-xs text-gray-400 hover:text-gray-600 self-end sm:self-center cursor-pointer shrink-0"
                   >
                     ✕ 解析結果を閉じる
                   </button>
                 </div>
 
                 {data && optimizedHeatmap.length > 0 && (
-                  <div className="bg-gray-50 border rounded-lg p-4">
-                    <h4 className="text-xs font-bold text-gray-700 mb-2 flex items-center justify-between">
-                      <span>🔥 チャット熱量ヒートマップ（配信全体の盛り上がり分布）</span>
-                      <span className="text-[11px] text-gray-400 font-normal">バーをクリックするとその時間にジャンプ</span>
+                  <div className="bg-gray-50 border rounded-lg p-3 sm:p-4">
+                    <h4 className="text-xs font-bold text-gray-700 mb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-0.5">
+                      <span>🔥 チャット熱量ヒートマップ</span>
+                      <span className="text-[10px] sm:text-[11px] text-gray-400 font-normal">バーをタップするとその時間にジャンプ</span>
                     </h4>
 
-                    <div className="h-28 flex items-end gap-[1px] bg-white border-b border-x p-1 rounded">
+                    <div className="h-24 sm:h-28 flex items-end gap-[1px] bg-white border-b border-x p-1 rounded">
                       {optimizedHeatmap.map((item, idx) => {
                         const count = item.count || 0;
                         const heightPercent = Math.max(
@@ -1034,17 +1041,17 @@ export default function Home() {
                         );
                       })}
                     </div>
-                    <div className="flex justify-between text-[11px] text-gray-400 mt-1 px-1">
-                      <span>0:00 (開始)</span>
+                    <div className="flex justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1 px-1">
+                      <span>0:00</span>
                       <span>{optimizedHeatmap[Math.floor(optimizedHeatmap.length / 2)]?.timeLabel || ''}</span>
-                      <span>{optimizedHeatmap[optimizedHeatmap.length - 1]?.timeLabel || ''} (終了)</span>
+                      <span>{optimizedHeatmap[optimizedHeatmap.length - 1]?.timeLabel || ''}</span>
                     </div>
                   </div>
                 )}
 
                 {/* タイムスタンプ一覧 */}
                 {data && (
-                  <div className="border rounded-lg divide-y bg-white max-h-[380px] overflow-y-auto">
+                  <div className="border rounded-lg divide-y bg-white max-h-[340px] sm:max-h-[380px] overflow-y-auto">
                     {data.timestamps.length === 0 ? (
                       <p className="p-4 text-sm text-gray-500">タイムスタンプが見つかりませんでした</p>
                     ) : (
@@ -1058,21 +1065,21 @@ export default function Home() {
                         return (
                           <div
                             key={idx}
-                            className="p-3 flex items-center gap-3 text-sm hover:bg-blue-50 transition-colors"
+                            className="p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm hover:bg-blue-50 transition-colors"
                           >
                             <span
                               onClick={() => handleOpenModal(item)}
-                              className="font-mono font-bold text-blue-600 w-16 shrink-0 cursor-pointer hover:underline"
+                              className="font-mono font-bold text-blue-600 w-14 sm:w-16 shrink-0 cursor-pointer hover:underline"
                             >
                               {item.time}
                             </span>
                             <span
                               onClick={() => handleOpenModal(item)}
-                              className="flex-1 flex flex-wrap items-center gap-2 cursor-pointer"
+                              className="flex-1 flex flex-wrap items-center gap-1.5 sm:gap-2 cursor-pointer"
                             >
                               <span>{item.label}</span>
                               {count > 1 && (
-                                <span className="bg-orange-100 text-orange-700 text-xs px-2.5 py-0.5 rounded-full font-bold shrink-0">
+                                <span className="bg-orange-100 text-orange-700 text-[11px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full font-bold shrink-0">
                                   🔥 {count}人設定
                                 </span>
                               )}
@@ -1099,7 +1106,7 @@ export default function Home() {
 
         {/* 📚 保存済みアーカイブ一覧セクション */}
         <section className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
             <h2 className="text-base font-extrabold text-gray-800 flex items-center gap-2">
               <span>🎬</span>
               <span>{selectedCategory === 'bookmarks' ? '⭐ マイ切り抜きポイント一覧' : 'アーカイブ一覧'}</span>
@@ -1109,20 +1116,20 @@ export default function Home() {
             </h2>
 
             {selectedCategory !== 'bookmarks' && (
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <div className="relative flex-1 sm:w-72">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                <div className="relative w-full sm:w-72">
                   <input
                     type="text"
                     value={timestampQuery}
                     onChange={(e) => setTimestampQuery(e.target.value)}
                     placeholder="気になるワードを検索... (神プレー/悲鳴/🌴🌴)"
-                    className="border border-gray-300 bg-white px-3 py-1.5 pr-7 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 bg-white px-3 py-2 sm:py-1.5 pr-8 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {timestampQuery && (
                     <button
                       type="button"
                       onClick={() => setTimestampQuery('')}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
                       aria-label="検索クリア"
                     >
                       ✕
@@ -1132,7 +1139,7 @@ export default function Home() {
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'timestamps')}
-                  className="border border-gray-300 bg-white px-2.5 py-1.5 rounded-lg text-xs font-bold text-gray-700 shrink-0"
+                  className="border border-gray-300 bg-white px-3 py-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-bold text-gray-700 shrink-0"
                 >
                   <option value="newest">新しい順</option>
                   <option value="oldest">古い順</option>
@@ -1144,11 +1151,11 @@ export default function Home() {
 
           {/* 🔎 全アーカイブ タイムスタンプ横断検索結果 */}
           {timestampQuery.trim() !== '' && selectedCategory !== 'bookmarks' && (
-            <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm space-y-3">
-              <div className="flex items-center justify-between gap-2 text-xs">
-                <div className="font-bold text-gray-800 flex items-center gap-1.5">
+            <div className="bg-white border border-blue-200 rounded-xl p-3.5 sm:p-4 shadow-sm space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div className="font-bold text-gray-800 flex flex-wrap items-center gap-1.5">
                   <span>🔎</span>
-                  <span>「{timestampQuery.trim()}」のタイムスタンプ検索結果</span>
+                  <span>「{timestampQuery.trim()}」の検索結果</span>
                   <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-extrabold">
                     {crossTimestampTotal}件ヒット
                   </span>
@@ -1174,9 +1181,9 @@ export default function Home() {
                       <div
                         key={`${hit.videoId}_${hit.item.seconds}_${idx}`}
                         onClick={() => handleOpenCrossHit(hit)}
-                        className="p-3 hover:bg-blue-50 transition-colors cursor-pointer flex items-start sm:items-center justify-between gap-3 text-sm"
+                        className="p-2.5 sm:p-3 hover:bg-blue-50 transition-colors cursor-pointer flex items-start sm:items-center justify-between gap-2.5 sm:gap-3 text-xs sm:text-sm"
                       >
-                        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                        <div className="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                           <span className="font-mono font-bold text-blue-600 shrink-0">
                             ▶ {hit.item.time}
                           </span>
@@ -1184,7 +1191,7 @@ export default function Home() {
                             <div className="font-bold text-gray-900 break-words flex flex-wrap items-center gap-1.5">
                               <span>{hit.item.label}</span>
                               {(hit.item.count || 1) > 1 && (
-                                <span className="bg-orange-100 text-orange-700 text-[11px] px-2 py-0.5 rounded-full font-bold">
+                                <span className="bg-orange-100 text-orange-700 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold">
                                   🔥 {hit.item.count}人設定
                                 </span>
                               )}
@@ -1211,7 +1218,7 @@ export default function Home() {
           )}
 
           {/* 🎯 カテゴリ目次（開閉式：シリーズ・ジャンル別グループ表示） */}
-          <div className="bg-white border rounded-xl p-4 shadow-sm space-y-3">
+          <div className="bg-white border rounded-xl p-3.5 sm:p-4 shadow-sm space-y-3">
             <div className="text-xs font-bold text-gray-500 flex items-center justify-between gap-2">
               <button
                 type="button"
@@ -1219,19 +1226,19 @@ export default function Home() {
                 className="flex items-center gap-1.5 text-left hover:text-gray-800 transition-colors cursor-pointer"
               >
                 <span>📂 カテゴリ・シリーズで絞り込み</span>
-                <span className="text-[11px] font-normal text-gray-400">
+                <span className="hidden sm:inline text-[11px] font-normal text-gray-400">
                   （{isCategoryMenuOpen ? 'クリックで閉じる' : 'クリックで開く'}）
                 </span>
               </button>
 
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                 {selectedCategory !== 'all' && (
                   <button
                     type="button"
                     onClick={() => setSelectedCategory('all')}
                     className="text-blue-600 hover:underline text-xs cursor-pointer"
                   >
-                    ✕ 絞り込みを解除
+                    ✕ 解除
                   </button>
                 )}
                 <button
@@ -1332,7 +1339,7 @@ export default function Home() {
           </div>
 
           {selectedCategory === 'bookmarks' && myBookmarks.length > 0 && (
-            <div className="bg-white border rounded-xl p-3 shadow-sm flex items-center justify-between text-xs">
+            <div className="bg-white border rounded-xl p-3 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
               <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none">
                 <input
                   type="checkbox"
@@ -1347,7 +1354,7 @@ export default function Home() {
                 type="button"
                 disabled={selectedBookmarkIds.length === 0}
                 onClick={handleBulkRemoveBookmarks}
-                className="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1"
+                className="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-1"
               >
                 🗑️ 選択した項目を一括削除 ({selectedBookmarkIds.length}件)
               </button>
@@ -1356,7 +1363,7 @@ export default function Home() {
 
           {selectedCategory === 'bookmarks' ? (
             myBookmarks.length === 0 ? (
-              <div className="bg-white border rounded-xl p-12 text-center text-gray-500 text-sm space-y-2">
+              <div className="bg-white border rounded-xl p-10 sm:p-12 text-center text-gray-500 text-sm space-y-2">
                 <p className="font-bold text-base">⭐ マイ切り抜きポイントはまだありません</p>
                 <p className="text-xs text-gray-400">配信を解析したときに、タイムスタンプの横にある切り抜きポイントボタンを押すとここに保存されます！</p>
               </div>
@@ -1367,11 +1374,11 @@ export default function Home() {
                   return (
                     <div
                       key={clip.id}
-                      className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors ${
+                      className={`p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition-colors ${
                         isChecked ? 'bg-blue-50/40' : 'hover:bg-amber-50/50'
                       }`}
                     >
-                      <div className="flex items-start sm:items-center gap-3 flex-1">
+                      <div className="flex items-start sm:items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
                         <input
                           type="checkbox"
                           checked={isChecked}
@@ -1382,11 +1389,11 @@ export default function Home() {
                         <img
                           src={`https://i.ytimg.com/vi/${clip.videoId}/mqdefault.jpg`}
                           alt={clip.videoTitle}
-                          className="w-28 aspect-video object-cover rounded shrink-0 bg-gray-900 cursor-pointer"
+                          className="w-24 sm:w-28 aspect-video object-cover rounded shrink-0 bg-gray-900 cursor-pointer"
                           onClick={() => handleSelectArchive(clip.videoId, clip.videoTitle)}
                         />
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                             <span
                               onClick={() => {
                                 handleSelectArchive(clip.videoId, clip.videoTitle);
@@ -1405,7 +1412,7 @@ export default function Home() {
                             >
                               ▶ {clip.time} から再生
                             </span>
-                            <span className="text-[10px] text-gray-400">{clip.createdAt} 追加</span>
+                            <span className="text-[10px] text-gray-400">{clip.createdAt}</span>
                           </div>
                           <h4 className="text-xs font-extrabold text-gray-800 line-clamp-1">
                             {clip.label}
@@ -1438,7 +1445,7 @@ export default function Home() {
               該当するアーカイブが見つかりませんでした。
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
               {filteredArchives.map((item) => renderArchiveCard(item))}
             </div>
           )}
@@ -1447,16 +1454,16 @@ export default function Home() {
 
       {/* 🎬 ポップアップ小窓レイヤー */}
       {activeItem && data && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-3 sm:p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-xl overflow-hidden animate-fadeIn">
-            <div className="flex justify-between items-center bg-gray-900 text-white px-4 py-3">
+            <div className="flex justify-between items-center bg-gray-900 text-white px-3.5 sm:px-4 py-2.5 sm:py-3">
               <div className="flex items-center gap-2 truncate">
-                <span className="font-mono text-blue-400 font-bold">{activeItem.time}</span>
-                <span className="text-sm truncate">{activeItem.label}</span>
+                <span className="font-mono text-blue-400 font-bold text-xs sm:text-sm">{activeItem.time}</span>
+                <span className="text-xs sm:text-sm truncate">{activeItem.label}</span>
               </div>
               <button
                 onClick={() => setActiveItem(null)}
-                className="text-gray-400 hover:text-white text-xl font-bold px-2 py-0.5 rounded hover:bg-gray-800 transition-colors"
+                className="text-gray-400 hover:text-white text-lg sm:text-xl font-bold px-2 py-0.5 rounded hover:bg-gray-800 transition-colors"
               >
                 ✕
               </button>
@@ -1466,7 +1473,7 @@ export default function Home() {
               {!isVideoLoaded && (
                 <div className="absolute inset-0 bg-gray-900 flex flex-col items-center justify-center text-white z-10 gap-3">
                   <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-sm font-bold tracking-wide">もうすぐ再生されるよ！待っててね！</p>
+                  <p className="text-xs sm:text-sm font-bold tracking-wide">もうすぐ再生されるよ！待っててね！</p>
                 </div>
               )}
               <iframe
