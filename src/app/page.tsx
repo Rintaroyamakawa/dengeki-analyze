@@ -63,6 +63,9 @@ const matchCategoryFromText = (text: string): string | null => {
   if (text.includes('雑談') || text.includes('振り返り')) {
     return '☕ 雑談';
   }
+  if (text.includes('3Dワールド')) {
+    return '🐈 スーパーマリオ 3Dワールド';
+  }
   if (text.includes('マリオ64') || text.includes('スーパーマリオ64')) {
     return '🍄 スーパーマリオ64';
   }
@@ -132,6 +135,7 @@ const CATEGORIES = [
   '🛡️ 時のオカリナ',
   '⚡ ポケモンBW',
   '✏️ 漢字でGO！',
+  '💫 スーパーマリオ 3Dワールド',
 ];
 
 export default function Home() {
@@ -221,7 +225,7 @@ export default function Home() {
         try {
           const parsed = JSON.parse(savedCategories);
           if (Array.isArray(parsed)) {
-            const merged = Array.from(new Set([...parsed, ...CATEGORIES]));
+            const merged = Array.from(new Set([...CATEGORIES, ...parsed]));
             setCategories(merged);
           }
         } catch (e) {
