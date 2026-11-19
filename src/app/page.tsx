@@ -514,10 +514,28 @@ export default function Home() {
     const q = timestampQuery.trim().toLowerCase();
     if (!q) return [];
 
-    const hits: CrossTimestampHit[] = [];
+    const archiveMetaMap = new Map<string, { dateMs: number; tsCount: number }>();
+    archives.forEach((arch) => {
+      const rawDate = arch.publishedAt || arch.updatedAt || '';
+      const dateMs = rawDate ? new Date(rawDate).getTime() : 0;
+      archiveMetaMap.set(arch.videoId, {
+        dateMs: Number.isFinite(dateMs) ? dateMs : 0,
+        tsCount: arch.timestampCount ?? 0,
+      });
+    });
+
+    const hits: Array<CrossTimestampHit & { dateMs: number; tsCount: number }> = [];
     archives.forEach((arch) => {
       const detail = detailCache[arch.videoId];
       if (!detail?.timestamps) return;
+      const meta = archiveMetaMap.get(arch.videoId) ?? {
+        dateMs: 0,
+        tsCount: arch.timestampCount ?? 0,
+      };
+      const effectiveDateMs = detail.publishedAt
+        ? new Date(detail.publishedAt).getTime() || meta.dateMs
+        : meta.dateMs;
+
       detail.timestamps.forEach((ts) => {
         if (ts.label && ts.label.toLowerCase().includes(q)) {
           hits.push({
@@ -525,13 +543,27 @@ export default function Home() {
             videoTitle: detail.title || arch.title,
             publishedAt: detail.publishedAt ?? arch.publishedAt,
             item: ts,
+            dateMs: effectiveDateMs,
+            tsCount: meta.tsCount,
           });
         }
       });
     });
 
-    return hits;
-  }, [timestampQuery, archives, detailCache]);
+    hits.sort((a, b) => {
+      if (sortOrder === 'timestamps') {
+        if (b.tsCount !== a.tsCount) return b.tsCount - a.tsCount;
+        if (b.dateMs !== a.dateMs) return b.dateMs - a.dateMs;
+        return a.item.seconds - b.item.seconds;
+      }
+      if (b.dateMs !== a.dateMs) {
+        return sortOrder === 'newest' ? b.dateMs - a.dateMs : a.dateMs - b.dateMs;
+      }
+      return a.item.seconds - b.item.seconds;
+    });
+
+    return hits.map(({ dateMs: _d, tsCount: _c, ...rest }) => rest);
+  }, [timestampQuery, archives, detailCache, sortOrder]);
 
   const handleOpenCrossHit = (hit: CrossTimestampHit) => {
     const cached = detailCache[hit.videoId];
